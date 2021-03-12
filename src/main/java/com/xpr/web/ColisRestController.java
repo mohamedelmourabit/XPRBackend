@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.xpr.entities.Colis;
+import com.xpr.entities.Commentaire;
+import com.xpr.entities.Historique;
 import com.xpr.exceptions.ColisException;
 import com.xpr.exceptions.LivreurException;
 import com.xpr.services.ColisService;
@@ -27,7 +29,34 @@ public class ColisRestController {
 	@Autowired
 	private ColisService colisService;
 	
+	@RequestMapping(value="/getCommentairesColis/{numCommande}",method=RequestMethod.GET)
+	public List<Commentaire> getCommentairesColis(String numCommande) {
+		return colisService.getCommentairesColis(numCommande);
+	}
 	
+	@RequestMapping(value="/getCommentairesColisPagination/{numCommande}",method=RequestMethod.GET)
+	public Page<Commentaire> getCommentairesColis(String numCommande, @RequestParam(name="page",defaultValue="0")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return colisService.getCommentairesColis(numCommande, page, size);
+	}
+	@RequestMapping(value="/getHistoriqueColis/{numCommande}",method=RequestMethod.GET)
+	public List<Historique> getHistoriqueColis(@PathVariable String numCommande) {
+		return colisService.getHistoriqueColis(numCommande);
+	}
+	@RequestMapping(value="/getHistoriqueColisPagination/{numCommande}",method=RequestMethod.GET)
+	public Page<Historique> getHistoriqueColis(@PathVariable String numCommande, @RequestParam(name="page",defaultValue="0")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return colisService.getHistoriqueColis(numCommande, page, size);
+	}
+
+	@RequestMapping(value="/addCommentaireToColis/{numCommande}",method=RequestMethod.POST)
+	public Commentaire addCommentaireToColis(@PathVariable String numCommande,@RequestBody Commentaire commentaire) {
+		return colisService.addCommentaireToColis(numCommande, commentaire);
+	}
+
+	@RequestMapping(value="/deleteCommentaireToColis/{idCommentaire}",method=RequestMethod.DELETE)
+	public void deleteCommentaireToColis(@PathVariable long idCommentaire) {
+		colisService.deleteCommentaireToColis(idCommentaire);
+	}
+
 	@RequestMapping(value="/updateStatutColis",method=RequestMethod.PUT)
 	public Colis updateStatutColis(@RequestParam(name="numCommande") String numCommande, @RequestParam(name="statut")String statut) throws ColisException {
 		return colisService.updateStatutColis(numCommande, statut);
@@ -39,26 +68,26 @@ public class ColisRestController {
 	}
 
 	@RequestMapping(value="/affectationMultipleColisAuLivreur/{cniLivreur}",method=RequestMethod.PUT)
-	public List<Colis> affectationColisToLivreur(@PathVariable String cniLivreur, List<Colis> colis) throws LivreurException {
+	public List<Colis> affectationColisToLivreur(@PathVariable String cniLivreur,@RequestBody List<Colis> colis) throws LivreurException {
 		return colisService.affectationColisToLivreur(cniLivreur, colis);
 	}
 	@RequestMapping(value="/affectationColisAuLivreur/{cniLivreur}",method=RequestMethod.PUT)
-	public Colis affectationColisToLivreur(String cniLivreur, Colis colis) throws LivreurException {
+	public Colis affectationColisToLivreur(@PathVariable String cniLivreur, @RequestBody Colis colis) throws LivreurException {
 		return colisService.affectationColisToLivreur(cniLivreur, colis);
 	}
 	
 	@RequestMapping(value="/desaffectationMultipleColisAuLivreur/{cniLivreur}",method=RequestMethod.PUT)
-	public List<Colis> desaffectationColisToLivreur(@PathVariable String cniLivreur, List<Colis> colis) throws LivreurException {
+	public List<Colis> desaffectationColisToLivreur(@PathVariable String cniLivreur,@RequestBody List<Colis> colis) throws LivreurException {
 		return colisService.desaffectationColisToLivreur(cniLivreur, colis);
 	}
 
 	@RequestMapping(value="/desaffectationColisAuLivreur/{cniLivreur}",method=RequestMethod.PUT)
-	public Colis desaffectationColisToLivreur(@PathVariable String cniLivreur, Colis colis) throws LivreurException {
+	public Colis desaffectationColisToLivreur(@PathVariable String cniLivreur,@RequestBody Colis colis) throws LivreurException {
 		return colisService.desaffectationColisToLivreur(cniLivreur, colis);
 	}
 
 	@RequestMapping(value="/affectationColisAuRamasseur/{cniRamasseur}",method=RequestMethod.PUT)
-	public Colis affectationColisToRamasseur(@PathVariable String cniRamasseur, Colis colis) throws LivreurException {
+	public Colis affectationColisToRamasseur(@PathVariable String cniRamasseur,@RequestBody Colis colis) throws LivreurException {
 		return colisService.affectationColisToRamasseur(cniRamasseur, colis);
 	}
 	
@@ -68,7 +97,7 @@ public class ColisRestController {
 	}
 
 	@RequestMapping(value="/getAllColisByClient/{cniClient}",method=RequestMethod.GET)
-	public Page<Colis> getAllColisByClient( @PathVariable String cniClient, @RequestParam(name="page",defaultValue="0")int page,@RequestParam(name="size",defaultValue="5")int size) {
+	public Page<Colis> getAllColisByClient(@PathVariable String cniClient, @RequestParam(name="page",defaultValue="0")int page,@RequestParam(name="size",defaultValue="5")int size) {
 		return colisService.getAllColisByClient(cniClient, PageRequest.of(page, size));
 	}
 	@RequestMapping(value="/getAllColis",method=RequestMethod.GET)

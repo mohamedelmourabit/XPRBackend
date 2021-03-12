@@ -3,6 +3,8 @@ package com.xpr.dto;
 
 public class RegisterForm {
 	
+	private String cni;
+	
 	private String email;
 	
 	private String password;

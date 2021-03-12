@@ -36,23 +36,23 @@ public class BonRamassageServiceImp implements BonRamassageService {
 
 	
 	@Override
-	public BonRamassage saveBonRamassage(BonRamassage bl) throws BonRamassageException {
+	public BonRamassage saveBonRamassage(BonRamassage br) throws BonRamassageException {
 		LOGGER.info("Ajout d'un nouveau BR");
 		
-		if(bl.getColis().isEmpty()) {
+		if(br.getColis().isEmpty()) {
 			throw new BonRamassageException("Erreur création BR sans colis");
 		}
 		
-		bl.setDateCreation(new Date());
-		bl.setStatut(Constants.EN_ATTENTE_RAMASSAGE);
+		br.setDateCreation(new Date());
+		br.setStatut(Constants.EN_ATTENTE_RAMASSAGE);
 		
-		bl = bonRamassageRepository.save(bl);
+		br = bonRamassageRepository.save(br);
 		
-		Historique h =Historique.getHistorique("Ajout nouveau BR: "+bl.getNom(), bl.getStatut(), "cniTest");
-		h.setBonRamassage(bl);
-		bl.getHistoriques().add(h);
+		Historique h =Historique.getHistorique("Ajout nouveau BR: "+br.getNom(), br.getStatut(), "cniTest");
+		h.setBonRamassage(br);
+		br.getHistoriques().add(h);
 		
-		return bl;
+		return br;
 	}
 
 	@Override
@@ -217,6 +217,16 @@ public class BonRamassageServiceImp implements BonRamassageService {
 		
 		
 		return bonRamassageRepository.save(br);
+	}
+
+	@Override
+	public List<Historique> getHistoriqueBonRamassage(String nom) {
+		return historiqueRepository.findHistoriqueBonRamassageByNom(nom);
+	}
+
+	@Override
+	public Page<Historique> getHistoriqueBonRamassage(String nom, int page, int size) {
+		return historiqueRepository.findHistoriqueBonRamassageByNom(nom,PageRequest.of(page, size));
 	}
 
 	

@@ -1,5 +1,6 @@
 package com.xpr.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
@@ -10,9 +11,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.xpr.dao.ColisRepository;
+import com.xpr.dao.CommentaireRepository;
 import com.xpr.dao.HistoriqueRepository;
 import com.xpr.dao.LivreurRepository;
 import com.xpr.entities.Colis;
+import com.xpr.entities.Commentaire;
 import com.xpr.entities.Historique;
 import com.xpr.entities.Livreur;
 import com.xpr.exceptions.ColisException;
@@ -30,7 +33,12 @@ public class ColisServiceImp implements ColisService {
 
 	@Autowired
 	private LivreurRepository livreurRepository;
+	
+	@Autowired
+	private HistoriqueRepository historiqueRepository;
 		
+	@Autowired
+	private CommentaireRepository commentaireRepository;
 	
 	@Override
 	public Colis saveColis(Colis colis) {
@@ -114,11 +122,7 @@ public class ColisServiceImp implements ColisService {
 		Colis colis = findColisById(numCommande);
 		 colis.setDateModification(new Date());
 		if(colis.getStatut().equals(Constants.NOUVEAU_COLIS)  || colis.getStatut().equals(Constants.EN_ATTENTE_RAMASSAGE)   )  {
-			colis.setStatut(Constants.ANNULE);
-			Historique h =Historique.getHistorique("Suppression du colis: "+colis.getNumCommande(), colis.getStatut(), "cniTest");
-			h.setColis(colis);
-			//colis.setDisabled(true);
-			colisRepository.save(colis);
+			colisRepository.delete(colis);
 		 }else {
 			 throw new ColisException("Suppresion du colis interdit arpès ramassage ");
 		 }
@@ -230,7 +234,7 @@ public class ColisServiceImp implements ColisService {
 	public List<Colis> desaffectationColisToLivreur(String cniLivreur, List<Colis> colis) throws LivreurException {
 		for(Colis coli : colis) {
 			coli.setLivreur(null);
-			Historique h =Historique.getHistorique("Désaffectation du livreur: "+cniLivreur, coli.getStatut(), "cniTest");
+			Historique h =Historique.getHistorique("Désaffectation du colis au livreur: "+cniLivreur, coli.getStatut(), "cniTest");
 			coli = colisRepository.save(coli);
 			h.setColis(coli);
 			coli.getHistoriques().add(h);
@@ -288,6 +292,49 @@ public class ColisServiceImp implements ColisService {
 	@Override
 	public Page<Colis> getAllColisByStatut(String statut, Pageable pageable) {
 		return colisRepository.getAllColisByStatut(statut, pageable);
+	}
+
+	@Override
+	public List<Historique> getHistoriqueColis(String numCommande) {
+		
+		return historiqueRepository.findHistoriqueColisByNom(numCommande);
+		
+		
+	}
+
+	@Override
+	public Page<Historique> getHistoriqueColis(String numCommande, int page, int size) {
+		
+		return  historiqueRepository.findHistoriqueColisByNumCommande(numCommande, PageRequest.of(page, size));
+	}
+
+	@Override
+	public Commentaire addCommentaireToColis(String numCommande, Commentaire commentaire) {
+		Colis c= colisRepository.findById(numCommande).orElse(null);
+		if(c!=null) {
+			
+			commentaire.setColis(c);
+			commentaire=commentaireRepository.save(commentaire);
+			return commentaire;
+		}else {
+			throw new IllegalArgumentException("colis introuvable"+numCommande);
+		}
+		
+	}
+
+	@Override
+	public void deleteCommentaireToColis(long idCommentaire) {
+		commentaireRepository.deleteById(idCommentaire);
+	}
+
+	@Override
+	public List<Commentaire> getCommentairesColis(String numCommande) {
+		return commentaireRepository.findCommentaireByColis(numCommande);
+	}
+
+	@Override
+	public Page<Commentaire> getCommentairesColis(String numCommande, int page, int size) {
+		return commentaireRepository.findCommentaireByColis(numCommande,PageRequest.of(page, size));
 	}
 	
 

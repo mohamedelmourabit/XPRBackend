@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xpr.entities.BonRamassage;
 import com.xpr.entities.Colis;
+import com.xpr.entities.Historique;
 import com.xpr.exceptions.BonRamassageException;
 import com.xpr.services.BonRamassageService;
 
@@ -27,6 +28,14 @@ public class BonRamassageRestController {
 	@Autowired
 	private BonRamassageService bonRamassageService;
 	
+	@RequestMapping(value="/getHistoriqueBonRamassage/{nom}",method=RequestMethod.GET)
+	public List<Historique> getHistoriqueBonRamassage(String nom) {
+		return bonRamassageService.getHistoriqueBonRamassage(nom);
+	}
+	@RequestMapping(value="/getHistoriqueBonRamassagePagination/{nom}",method=RequestMethod.GET)
+	public Page<Historique> getHistoriqueBonRamassage(String nom, @RequestParam(name="page",defaultValue="0")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return bonRamassageService.getHistoriqueBonRamassage(nom, page, size);
+	}
 	@RequestMapping(value="/addColisToBonRamassage/{blId}",method=RequestMethod.PUT)
 	public BonRamassage addColisToBonRamassage(@PathVariable String blId,@RequestBody  List<Colis> colis) throws BonRamassageException {
 		return bonRamassageService.addColisToBonRamassage(blId, colis);

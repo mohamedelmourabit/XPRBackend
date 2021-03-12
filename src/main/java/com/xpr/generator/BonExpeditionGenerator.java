@@ -13,20 +13,20 @@ import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
-public class FactureGenerator implements IdentifierGenerator {
+public class BonExpeditionGenerator implements IdentifierGenerator {
 
 	
 	@Override
 	public Serializable generate(SharedSessionContractImplementor session, Object object)
 	        throws HibernateException {
 
-	    String prefix = "FCT";
+	    String prefix = "BE";
 	    Connection connection = session.connection();
 
 	    try {
 	        Statement statement=connection.createStatement();
 
-	        ResultSet rs=statement.executeQuery("select count(name) as name from factures");
+	        ResultSet rs=statement.executeQuery("select count(nom) as name from bon_expeditions");
 	        
 	        Date date = Calendar.getInstance().getTime();  
 	        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");   
@@ -34,7 +34,7 @@ public class FactureGenerator implements IdentifierGenerator {
 	        if(rs.next())
 	        {
 	            int id=rs.getInt(1)+10000;
-	            String generatedId = prefix +"-" +dateNow +"-"+new Integer(id).toString();
+	            String generatedId = prefix + "-"+dateNow +"-"+new Integer(id).toString();
 	            return generatedId;
 	        }
 	    } catch (SQLException e) {

@@ -148,6 +148,15 @@ public class Historique implements Serializable  {
 		return historique;
 		
 	}
+
+	public BonExpedition getBonExpedition() {
+		return bonExpedition;
+	}
+
+	public void setBonExpedition(BonExpedition bonExpedition) {
+		this.bonExpedition = bonExpedition;
+	}
+	
 	
 
 }

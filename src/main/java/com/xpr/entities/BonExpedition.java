@@ -5,6 +5,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,18 +21,21 @@ import javax.persistence.OneToMany;
 @Table(name="bonExpeditions")
 public class BonExpedition implements Serializable  {
 	
-	@Id @GeneratedValue
-	private Long id;
+	@Id 
+	@GenericGenerator(name = "bonExpedition_nom", strategy = "com.xpr.generator.BonExpeditionGenerator")
+    @GeneratedValue(generator = "bonExpedition_nom") 
+	private String nom;
 		
 	private String statut;
 	
-	private String idBon;
-	
+
 	private String logistique;
 	
 	private String refBonLogistique;
 	
 	private Date dateCreation;
+	
+	private Date dateModification;
 	
 	@ManyToOne
 	private Agence depart;
@@ -46,16 +54,12 @@ public class BonExpedition implements Serializable  {
 	
 	private boolean disabled;
 	
+	@ManyToOne
+	private Client client;
+	
 	public BonExpedition() {
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 
 	public String getStatut() {
@@ -67,13 +71,19 @@ public class BonExpedition implements Serializable  {
 	}
 
 
-	public String getIdBon() {
-		return idBon;
+	
+
+	public String getNom() {
+		return nom;
 	}
 
-	public void setIdBon(String idBon) {
-		this.idBon = idBon;
+
+
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
+
+
 
 	public String getLogistique() {
 		return logistique;
@@ -147,6 +157,27 @@ public class BonExpedition implements Serializable  {
 		this.disabled = disabled;
 	}
 
+	public Date getDateModification() {
+		return dateModification;
+	}
+
+	public void setDateModification(Date dateModification) {
+		this.dateModification = dateModification;
+	}
+
+
+
+	public Client getClient() {
+		return client;
+	}
+
+
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+	
+	
 	
 	
 	

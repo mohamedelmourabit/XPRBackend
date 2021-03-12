@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "bonRamassage")
+@Table(name = "bonRamassages")
 public class BonRamassage implements Serializable {
 	
 	@Id 
@@ -55,7 +55,7 @@ public class BonRamassage implements Serializable {
 	private Agence agence;
 	
 	public BonRamassage() {
-		this.dateCreation = new Date();
+		
 	}
 
 	public String getNom() {

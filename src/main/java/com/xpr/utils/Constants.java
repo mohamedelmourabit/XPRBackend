@@ -9,6 +9,7 @@ public class Constants {
 	public static final String NOUVEAU_BL="Nouveau BL";
 	public static final String NOUVEAU_BR="Nouveau BR";
 	public static final String NOUVEAU_BE="Nouveau BE";
+	public static final String NOUVEAU_BRT="Nouveau BRT";
 	
 	public static final String LIVRE="Livré";
 	

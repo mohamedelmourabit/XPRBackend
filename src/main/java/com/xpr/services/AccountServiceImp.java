@@ -11,20 +11,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.xpr.dao.AutorisationRepository;
 import com.xpr.dao.ProfileRepository;
+import com.xpr.dao.ServiceRepository;
 import com.xpr.dao.UtilisateurRepository;
 import com.xpr.entities.Autorisation;
 import com.xpr.entities.Profile;
 import com.xpr.entities.Utilisateur;
 
-
-
 @Service
 @Transactional
 public class AccountServiceImp implements AccountService {
 	
-	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImp.class);
-	
 	
 	@Autowired
 	private UtilisateurRepository userRepository;
@@ -34,6 +31,9 @@ public class AccountServiceImp implements AccountService {
 	
 	@Autowired
 	private ProfileRepository profileRepository;
+	
+	@Autowired
+	private ServiceRepository serviceRepository;
 
 	
 	@Override
@@ -53,10 +53,12 @@ public class AccountServiceImp implements AccountService {
 	}
 
 	@Override
-	public void addAuthorisationToUser(String authorisation, String cni) {
+	public Utilisateur addAuthorisationToUser(String authorisation, String cni) {
 		Utilisateur user = userRepository.findByCni(cni);
 		Autorisation authorisation2 = authRepository.findByAuthName(authorisation);
 		user.getAuthorities().add(authorisation2);
+		
+		return user;
 		
 	}
 	
@@ -87,11 +89,12 @@ public class AccountServiceImp implements AccountService {
 	}
 
 	@Override
-	public void addAuthorisationToProfile(String authorisation, String profileName) {
+	public Profile addAuthorisationToProfile(String authorisation, String profileName) {
 		
 		Profile p = profileRepository.findByPrflName(profileName);
 		Autorisation auth=authRepository.findByAuthName(authorisation);
 		p.getAuthorities().add(auth);
+		return p;
 		
 	}
 
@@ -102,12 +105,14 @@ public class AccountServiceImp implements AccountService {
 	}
 
 	@Override
-	public void addProfileToUtilisateur(String cni, long profileId) {
+	public Utilisateur addProfileToUtilisateur(String cni, long profileId) {
 		
 		Utilisateur user = userRepository.findByCni(cni);
 		Profile p = new Profile();
 		p.setId(profileId);
 		user.getProfiles().add(p);
+		
+		return user;
 		
 	}
 
@@ -119,6 +124,86 @@ public class AccountServiceImp implements AccountService {
 		
 			
 		return new ArrayList<Autorisation>(p.getAuthorities());
+	}
+
+	@Override
+	public Utilisateur removeAuthorisationToUtilisateur(String cni, String autorisation) {
+		
+		Utilisateur user = userRepository.findByCni(cni);
+		
+		user.getAuthorities().removeIf(aut->aut.getAuthName().equalsIgnoreCase(autorisation));
+		
+		return user;
+
+	}
+
+	@Override
+	public Utilisateur removeProfileToUtilisateur(String cni, long profileId) {
+		Utilisateur user = userRepository.findByCni(cni);
+		
+		user.getProfiles().removeIf(prfl->prfl.getId()==profileId);
+		
+		return user;
+
+		
+	}
+
+	@Override
+	public Utilisateur addUtilisateurToServie(String cni, long serviceId) {
+		
+		Utilisateur user = userRepository.findByCni(cni);
+		
+		com.xpr.entities.Service service = serviceRepository.findById(serviceId).orElse(null) ;
+		
+		user.setService(service);
+		
+		userRepository.save(user);
+		
+		return user;
+		
+	}
+
+	@Override
+	public Utilisateur removeUtilisateurServie(String cni, long serviceId) {
+		
+		Utilisateur user = userRepository.findByCni(cni);
+		
+		com.xpr.entities.Service c = serviceRepository.findById(serviceId).orElse(null);
+		
+		
+		if(user.getService().getId()!=serviceId) {
+			throw new IllegalArgumentException("l'utilisateur "+ cni+ " n'est pas affecté au service "+(c!=null?c.getNom():serviceId));
+		}
+		
+		user.setService(null);
+		
+		return userRepository.save(user);
+		
+		
+	}
+
+	@Override
+	public com.xpr.entities.Service saveService(com.xpr.entities.Service service) {
+		
+		return serviceRepository.save(service);
+	}
+
+	@Override
+	public com.xpr.entities.Service getServices(String nomService) {
+		
+		return serviceRepository.findByNom(nomService);
+	}
+
+	@Override
+	public List<com.xpr.entities.Service> getServices() {
+		
+		return serviceRepository.findAll();
+	}
+
+	@Override
+	public void deleteService(Long idService) {
+		serviceRepository.deleteById(idService);
+		
 	}
 
 	

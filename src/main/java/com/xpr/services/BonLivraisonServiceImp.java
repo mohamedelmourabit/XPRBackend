@@ -219,6 +219,18 @@ public class BonLivraisonServiceImp implements BonLivraisonService {
 		return bonLivraisonRepository.save(bl);
 	}
 
+	@Override
+	public List<Historique> getHistoriqueBonLivraison(String nom) {
+		
+		return historiqueRepository.findHistoriqueBLByNom(nom);
+	}
+
+	@Override
+	public Page<Historique> getHistoriqueBonLivraison(String nom, int page, int size) {
+		
+		return  historiqueRepository.findHistoriqueBLByNom(nom,PageRequest.of(page, size));
+	}
+
 	
 
 }

@@ -4,23 +4,18 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import org.hibernate.annotations.GenericGenerator;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.xpr.utils.Constants;
 
 @Entity
 @Table(name = "colis")
@@ -40,16 +35,14 @@ public class Colis implements Serializable {
 	
 	private double prix;
 	
-	@Temporal(TemporalType.DATE)
 	private Date dateRamassage;
 	
-	@Temporal(TemporalType.DATE)
+	
 	private Date dateLivraison;
 	
-	@Temporal(TemporalType.DATE)
+	
 	private Date dateCreation;
 	
-	@Temporal(TemporalType.DATE)
 	private Date dateModification;
 	
 	
@@ -104,15 +97,19 @@ public class Colis implements Serializable {
 	private boolean disabled;
 		
 	@ManyToOne
+	@JsonIgnore
 	private Business business;
 	
 	@ManyToOne
+	@JsonIgnore
 	private BonExpedition bonExpedition;
 	
 	@ManyToOne
+	@JsonIgnore
 	private BonRetour bonRetour;
 	
 	@OneToMany(mappedBy = "colis",fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<Produit> produits=new HashSet<Produit>();
 	
 	@OneToMany(mappedBy = "colis",fetch = FetchType.LAZY)
@@ -124,12 +121,18 @@ public class Colis implements Serializable {
 	private Set<Commentaire> commentaires=new HashSet<Commentaire>();
 	
 	@ManyToOne
+	@JsonIgnore
 	private Agence agence;
+	
+	@ManyToOne
+	private UtilisateurXpr creerPar;
+	
+	@ManyToOne
+	private UtilisateurXpr modifierPar;
 	
 
 	public Colis() {
 		this.dateCreation = new Date();
-		this.statut=Constants.NOUVEAU_COLIS;
 	}
 
 	public String getCodeEnvoi() {
@@ -401,6 +404,30 @@ public class Colis implements Serializable {
 
 	public void setBonRetour(BonRetour bonRetour) {
 		this.bonRetour = bonRetour;
+	}
+
+	public Ramasseur getRamasseur() {
+		return ramasseur;
+	}
+
+	public void setRamasseur(Ramasseur ramasseur) {
+		this.ramasseur = ramasseur;
+	}
+
+	public UtilisateurXpr getCreerPar() {
+		return creerPar;
+	}
+
+	public void setCreerPar(UtilisateurXpr creerPar) {
+		this.creerPar = creerPar;
+	}
+
+	public UtilisateurXpr getModifierPar() {
+		return modifierPar;
+	}
+
+	public void setModifierPar(UtilisateurXpr modifierPar) {
+		this.modifierPar = modifierPar;
 	}
 
 	

@@ -11,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -50,7 +48,7 @@ public class Facture implements Serializable {
 	private boolean disabled;
 	
 	@ManyToOne
-	private UtilisateurXpr creerPar;
+	private Utilisateur creerPar;
 	
 	@ManyToOne
 	private Livreur livreur;
@@ -242,13 +240,21 @@ public class Facture implements Serializable {
 	}
 
 
-	public UtilisateurXpr getCreerPar() {
+	
+
+
+	public Utilisateur getCreerPar() {
 		return creerPar;
 	}
 
 
-	public void setCreerPar(UtilisateurXpr creerPar) {
+	public void setCreerPar(Utilisateur creerPar) {
 		this.creerPar = creerPar;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 

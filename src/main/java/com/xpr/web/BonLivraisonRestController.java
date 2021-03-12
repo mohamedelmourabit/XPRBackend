@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xpr.entities.BonLivraison;
 import com.xpr.entities.Colis;
+import com.xpr.entities.Historique;
 import com.xpr.exceptions.BonLivraisonException;
 import com.xpr.services.BonLivraisonService;
 
@@ -27,6 +28,14 @@ public class BonLivraisonRestController {
 	@Autowired
 	private BonLivraisonService bonLivraisonService;
 	
+	@RequestMapping(value="/getHistoriqueBonLivraison/{nom}",method=RequestMethod.GET)
+	public List<Historique> getHistoriqueBonLivraison(@PathVariable String nom) {
+		return bonLivraisonService.getHistoriqueBonLivraison(nom);
+	}
+	@RequestMapping(value="/getHistoriqueBonLivraisonPagination/{nom}",method=RequestMethod.GET)
+	public Page<Historique> getHistoriqueBonLivraison(@PathVariable String nom, @RequestParam(name="page",defaultValue="0")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return bonLivraisonService.getHistoriqueBonLivraison(nom, page, size);
+	}
 	@RequestMapping(value="/addColisToBonLivraison/{blId}",method=RequestMethod.PUT)
 	public BonLivraison addColisToBonLivraison(@PathVariable String blId,@RequestBody  List<Colis> colis) throws BonLivraisonException {
 		return bonLivraisonService.addColisToBonLivraison(blId, colis);

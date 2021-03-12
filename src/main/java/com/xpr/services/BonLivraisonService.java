@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import com.xpr.entities.BonLivraison;
 import com.xpr.entities.Colis;
+import com.xpr.entities.Historique;
 import com.xpr.exceptions.BonLivraisonException;
 
 
@@ -38,4 +39,9 @@ public interface BonLivraisonService {
 	public Page<BonLivraison> findAllBonLivraisonsByUtilisateurs(String emailUtilisateur, int page, int size);
 
 	public int getCountBonLivraisons();
+	
+	public List<Historique> getHistoriqueBonLivraison(String nom);
+	
+	public Page<Historique> getHistoriqueBonLivraison(String nom, int page,int size);
+	
 }

@@ -6,12 +6,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.xpr.entities.Colis;
+import com.xpr.entities.Commentaire;
+import com.xpr.entities.Historique;
 import com.xpr.exceptions.ColisException;
 import com.xpr.exceptions.LivreurException;
 
 public interface ColisService {
 	
 	public Colis saveColis(Colis colis);
+	
 
 	public Colis findColisById(String numCommande);
 
@@ -33,8 +36,6 @@ public interface ColisService {
 	
 
 	public Colis desaffectationColisToLivreur(String emailLivreur,Colis colis) throws LivreurException;
-	
-	
 	
 	public Colis affectationColisToRamasseur(String emailLivreur,Colis colis) throws LivreurException;
 	
@@ -72,8 +73,16 @@ public interface ColisService {
 
 	public Page<Colis> getAllColisByStatut(String statut, Pageable pageable);
 		
+	public List<Historique> getHistoriqueColis(String numCommande);
 	
+	public Page<Historique> getHistoriqueColis(String numCommande, int page,int size);
 	
-
+	public List<Commentaire> getCommentairesColis(String numCommande);
+	
+	public Page<Commentaire> getCommentairesColis(String numCommande, int page,int size);
+	
+	public Commentaire addCommentaireToColis(String numCommande,Commentaire commentaire);
+	
+	public void deleteCommentaireToColis(long idCommentaire);
 
 }

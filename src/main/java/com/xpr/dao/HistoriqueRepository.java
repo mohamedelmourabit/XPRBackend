@@ -20,7 +20,7 @@ public interface HistoriqueRepository extends JpaRepository<Historique, Long> {
 	public Page<Historique> findHistoriqueUtilisateurByCNI(@Param("x")String cni, Pageable pageable);
 	
 	@Query("SELECT h FROM Historique h  WHERE h.colis.numCommande=:x")
-	public List<Historique> findHistoriqueColisByNom(@Param("x")String nomColis);
+	public List<Historique> findHistoriqueColisByNom(@Param("x")String numCommande);
 	
 	@Query("SELECT h FROM Historique h  WHERE h.colis.numCommande=:x")
 	public Page<Historique> findHistoriqueColisByNumCommande(@Param("x")String numCommande, Pageable pageable);
@@ -42,6 +42,20 @@ public interface HistoriqueRepository extends JpaRepository<Historique, Long> {
 	
 	@Query("SELECT h FROM Historique h WHERE h.demande.nom=:x")
 	public Page<Historique> findHistoriqueDemandeByNom(@Param("x")String nomDemande, Pageable pageable);
+	
+	
+	@Query("SELECT h FROM Historique h WHERE h.bonExpedition.nom=:x")
+	public List<Historique> findHistoriqueBonExpeditionByNom(@Param("x")String nomBonRamassage);
+	
+	@Query("SELECT h FROM Historique h WHERE h.bonExpedition.nom=:x")
+	public Page<Historique> findHistoriqueBonExpeditionByNom(@Param("x")String nomBonRamassage, Pageable pageable);
+	
+	
+	@Query("SELECT h FROM Historique h WHERE h.bonRetour.nom=:x")
+	public List<Historique> findHistoriqueBonRetourByNom(@Param("x")String nomBonRamassage);
+	
+	@Query("SELECT h FROM Historique h WHERE h.bonRetour.nom=:x")
+	public Page<Historique> findHistoriqueBonRetourByNom(@Param("x")String nomBonRamassage, Pageable pageable);
 	
 
 }

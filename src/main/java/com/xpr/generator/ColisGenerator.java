@@ -22,7 +22,7 @@ public class ColisGenerator implements IdentifierGenerator {
 	    try {
 	        Statement statement=connection.createStatement();
 
-	        ResultSet rs=statement.executeQuery("select count(numCommande) as numCommande from Colis");
+	        ResultSet rs=statement.executeQuery("select count(num_commande) as num_commande from colis");
 	        
 	        
 	        if(rs.next())

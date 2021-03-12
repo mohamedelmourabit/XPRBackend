@@ -3,13 +3,15 @@ package com.xpr.dao;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.xpr.entities.Profile;
+
+import com.xpr.entities.Agence;
 
 
 
-public interface AgenceRepository extends JpaRepository<Profile, Long> {
+
+public interface AgenceRepository extends JpaRepository<Agence, Long> {
 	
-	public Profile findByPrflName(String prflName);
+	public Agence findByNom(String nomAgence);
 		
-
+	
 }

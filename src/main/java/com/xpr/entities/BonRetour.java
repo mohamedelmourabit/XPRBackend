@@ -25,8 +25,10 @@ public class BonRetour implements Serializable {
     @GeneratedValue(generator = "bonRetour_nom") 
 	private String nom;
 	
-	@Temporal(TemporalType.DATE)
+	
 	private Date dateCreation;
+	
+	private Date dateModification;
 	
 	@ManyToOne
 	private Livreur livreur;
@@ -42,6 +44,9 @@ public class BonRetour implements Serializable {
 	
 	@ManyToOne
 	private UtilisateurXpr creerPar;
+	
+	@ManyToOne
+	private UtilisateurXpr modifierPar;
 	
 	private String statut;
 	
@@ -119,6 +124,39 @@ public class BonRetour implements Serializable {
 		this.disabled = disabled;
 	}
 
+	public String getStatut() {
+		return statut;
+	}
+
+	public void setStatut(String statut) {
+		this.statut = statut;
+	}
+
+	public Set<Historique> getHistoriques() {
+		return historiques;
+	}
+
+	public void setHistoriques(Set<Historique> historiques) {
+		this.historiques = historiques;
+	}
+
+	public Date getDateModification() {
+		return dateModification;
+	}
+
+	public void setDateModification(Date dateModification) {
+		this.dateModification = dateModification;
+	}
+
+	public UtilisateurXpr getModifierPar() {
+		return modifierPar;
+	}
+
+	public void setModifierPar(UtilisateurXpr modifierPar) {
+		this.modifierPar = modifierPar;
+	}
+	
+	
 	
 	
 	

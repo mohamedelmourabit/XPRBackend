@@ -44,9 +44,7 @@ public class Utilisateur {
 	@ManyToOne
 	private Service service;
 	
-	
 		
-	
 	public Utilisateur(String cni) {
 		super();
 		this.cni = cni;

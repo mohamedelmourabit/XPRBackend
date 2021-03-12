@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -21,7 +22,6 @@ public class Client  implements Serializable {
 	private String nom;
 	private String contact;
 	private String telephone;
-	private String signatureClient;
 	private String prefixCommande;
 	private String address;
 	private String email;
@@ -61,6 +61,9 @@ public class Client  implements Serializable {
 	@OneToMany(mappedBy = "client",fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Set<Stock> stocks = new HashSet<Stock>();
+	
+	@ManyToOne
+	private Ville ville;
 
 	public Client() {
 		
@@ -101,19 +104,6 @@ public class Client  implements Serializable {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-
-
-
-	public String getSignatureClient() {
-		return signatureClient;
-	}
-
-
-
-	public void setSignatureClient(String signatureClient) {
-		this.signatureClient = signatureClient;
-	}
-
 
 
 	public Set<Colis> getColis() {
@@ -292,6 +282,18 @@ public class Client  implements Serializable {
 
 	public void setStocks(Set<Stock> stocks) {
 		this.stocks = stocks;
+	}
+
+
+
+	public Ville getVille() {
+		return ville;
+	}
+
+
+
+	public void setVille(Ville ville) {
+		this.ville = ville;
 	}
 	
 	

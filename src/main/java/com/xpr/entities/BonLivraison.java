@@ -53,7 +53,7 @@ public class BonLivraison implements Serializable {
 	
 	
 	public BonLivraison() {
-		this.dateCreation = new Date();
+		
 	}
 
 	public String getNom() {

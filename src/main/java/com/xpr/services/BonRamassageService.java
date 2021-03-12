@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import com.xpr.entities.BonRamassage;
 import com.xpr.entities.Colis;
+import com.xpr.entities.Historique;
 import com.xpr.exceptions.BonRamassageException;
 
 
@@ -38,4 +39,8 @@ public interface BonRamassageService {
 	public Page<BonRamassage> findAllBonRamassagesByUtilisateurs(String cniUtilisateur, int page, int size);
 
 	public int getCountBonRamassages();
+	
+	public List<Historique> getHistoriqueBonRamassage(String nom);
+	
+	public Page<Historique> getHistoriqueBonRamassage(String nom, int page,int size);
 }

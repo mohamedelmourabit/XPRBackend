@@ -6,8 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import com.xpr.entities.BonExpedition;
-import com.xpr.entities.BonLivraison;
-import com.xpr.entities.BonRamassage;
+
 
 public interface BonExpeditionRepository extends JpaRepository<BonExpedition, Long> {
 	

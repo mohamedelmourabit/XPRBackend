@@ -61,7 +61,17 @@ public class RegisterForm {
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
-	
-	
 
+
+	public String getCni() {
+		return cni;
+	}
+
+
+	public void setCni(String cni) {
+		this.cni = cni;
+	}
+	
+	
+	
 }

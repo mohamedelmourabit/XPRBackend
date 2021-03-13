@@ -52,7 +52,7 @@ public class BonRetour implements Serializable {
 	
 	private boolean disabled;
 	
-	@OneToMany(mappedBy = "bonRetour",fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "bonRetour",fetch = FetchType.EAGER)
 	private Set<Historique> historiques=new HashSet<Historique>();
 	
 	

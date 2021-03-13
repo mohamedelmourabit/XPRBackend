@@ -18,7 +18,9 @@ import com.xpr.dao.BonRetourRepository;
 import com.xpr.dao.BusinessRepository;
 import com.xpr.dao.ClientRepository;
 import com.xpr.dao.ColisRepository;
+import com.xpr.dao.CommentaireRepository;
 import com.xpr.dao.FactureRepository;
+import com.xpr.dao.HistoriqueRepository;
 import com.xpr.dao.LivreurRepository;
 import com.xpr.dao.ProduitRepository;
 import com.xpr.dao.ProfileRepository;
@@ -110,6 +112,13 @@ public class XprApplication implements CommandLineRunner {
 	@Autowired
 	private BusinessRepository businessRepository;
 
+	
+	@Autowired
+	private HistoriqueRepository historiqueRepository;
+	
+	@Autowired
+	private CommentaireRepository commentaireRepository;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(XprApplication.class, args);
 	}
@@ -168,7 +177,6 @@ public class XprApplication implements CommandLineRunner {
 		
 		
 		UtilisateurXpr utilisateurXpr = new UtilisateurXpr();
-		utilisateurXpr.getAuthorities().add(autorisation);utilisateurXpr.getAuthorities().add(autorisation2);
 		utilisateurXpr.setCni("cniUserXpr1");
 		utilisateurXpr.setNom("userXpr1");
 		utilisateurXpr.setPassword("123456");
@@ -178,11 +186,6 @@ public class XprApplication implements CommandLineRunner {
 		utilisateurXpr.getProfiles().add(profile1);
 		utilisateurXpr.getAuthorities().add(autorisation7);
 		utilisateurRepository.save(utilisateurXpr);
-		
-		
-		
-		utilisateurXpr.getProfiles().add(profile1);
-		utilisateurXpr.getAuthorities().add(autorisation7);
 		utilisateurRepository.save(utilisateurXpr);
 		
 		
@@ -198,9 +201,10 @@ public class XprApplication implements CommandLineRunner {
 		
 		
 		UtilisateurXpr utilisateurClientXpr2 = new UtilisateurXpr();
-		utilisateurClientXpr2.getAuthorities().add(autorisation);utilisateurXpr.getAuthorities().add(autorisation2);
-		utilisateurClientXpr2.setCni("cniUserXpr1");
-		utilisateurClientXpr2.setNom("userXpr1");
+		utilisateurClientXpr2.getAuthorities().add(autorisation);
+		utilisateurClientXpr2.getAuthorities().add(autorisation2);
+		utilisateurClientXpr2.setCni("cniUserXpr2");
+		utilisateurClientXpr2.setNom("userXpr2");
 		utilisateurClientXpr2.setPassword("123456");
 		utilisateurClientXpr2.setEmail("userXpr1@xpr.com");
 		utilisateurClientXpr2.setClient(client);
@@ -293,7 +297,9 @@ public class XprApplication implements CommandLineRunner {
 		c.setColis(colis1);
 		c.setDateCreation(new Date());
 		c.setCommentaire("merci de le livrer au plus vite");
+		
 		c.setUtilisateur(utilisateurXpr);
+		colis1.getCommentaires().add(c);
 		colis1.setClient(client1);
 		colis1.setDestinataire("Houssam");
 		colis1.getCommentaires().add(c);
@@ -309,12 +315,13 @@ public class XprApplication implements CommandLineRunner {
 		h.setUtilisateur(utilisateurXpr);
 		h.setStatut(colis1.getStatut());
 		h.setDateCreation(new Date());
+		
 		colis1.getHistoriques().add(h);
 		colis1.setVilleDestination(casa);
 		colis1.setStatut(Constants.EN_ATTENTE_RAMASSAGE);
 		colisRepository.save(colis1);
-		
-		
+		commentaireRepository.save(c);
+		historiqueRepository.save(h);
 		
 	
 		// affectation au ramasseur si y'a pas de stock 
@@ -332,13 +339,18 @@ public class XprApplication implements CommandLineRunner {
 		bl.getColis().add(colis1);
 		h=new Historique();
 		h.setAction("creation nouveau bl");
-		h.setColis(colis1);
+		h.setBonLivraison(bl);
 		h.setUtilisateur(utilisateurClientXpr2);
 		h.setStatut(bl.getStatut());
 		h.setDateCreation(new Date());
+		
 		bl.getHistoriques().add(h);
 		
 		bonLivraisonRepository.save(bl);
+		historiqueRepository.save(h);
+		
+		System.out.println("bl "+ bl.getNom());
+		
 		
 		
 		// Generation du Bon ramassage
@@ -352,16 +364,18 @@ public class XprApplication implements CommandLineRunner {
 		colis1.setStatut(Constants.EN_ATTENTE_RAMASSAGE);
 		h=new Historique();
 		h.setAction("creer nouveau br");
-		h.setColis(colis1);
+		h.setBonRamassage(br);
 		h.setUtilisateur(utilisateurClientXpr2);
 		h.setStatut(br.getStatut());
 		h.setDateCreation(new Date());
+		
 		br.setRamasseur(ramasseur1);
 		br.setAgence(agenceFes);
 		br.getHistoriques().add(h);
 		
 		br = bonRamassageRepository.save(br);
-		
+		System.out.println("br "+ br.getNom());
+		historiqueRepository.save(h);
 		
 		
 		// ramassage par le livreur depot sur agenceFES et envoi vers Casa
@@ -369,12 +383,14 @@ public class XprApplication implements CommandLineRunner {
 		br.setStatut("ramassé par le ramasseur");
 		h=new Historique();
 		h.setAction("réception colis agenceFes");
-		h.setColis(colis1);
+		h.setBonRamassage(br);
 		h.setUtilisateur(utilisateurClientXpr2);
 		h.setStatut(br.getStatut());
 		h.setDateCreation(new Date());
+		
 		br.getHistoriques().add(h);
 		br = bonRamassageRepository.save(br);
+		historiqueRepository.save(h);
 		colis1.setStatut("réception sur agenceFes");
 		h=new Historique();
 		h.setAction("réception colis sur agenceFes");
@@ -382,8 +398,12 @@ public class XprApplication implements CommandLineRunner {
 		h.setUtilisateur(utilisateurXpr);
 		h.setStatut(br.getStatut());
 		h.setDateCreation(new Date());
+		
 		colis1.getHistoriques().add(h);
 		colisRepository.save(colis1);
+		historiqueRepository.save(h);
+		
+		
 		
 		
 		BonExpedition be=new BonExpedition();
@@ -394,7 +414,7 @@ public class XprApplication implements CommandLineRunner {
 		colis1.setStatut("En cours d'expedition");
 		h=new Historique();
 		h.setAction("creer nouveau be");
-		h.setColis(colis1);
+		h.setBonExpedition(be);
 		h.setUtilisateur(utilisateurXpr);
 		h.setStatut(br.getStatut());
 		h.setDateCreation(new Date());
@@ -412,21 +432,22 @@ public class XprApplication implements CommandLineRunner {
 		h.setUtilisateur(utilisateurXpr);
 		h.setStatut(br.getStatut());
 		h.setDateCreation(new Date());
-		colis1.getHistoriques().add(h);
+		be.getHistoriques().add(h);
 		
 		be = bonExpeditionRepository.save(be);
-			
-		
+		System.out.println("be "+ be.getNom());
+		historiqueRepository.save(h);
 		// arrive vers casa
 		
 		be.setStatut(Constants.EXPEDIE);
 		h=new Historique();
 		h.setAction("Confirmation reception expedition");
-		h.setColis(colis1);
+		h.setBonExpedition(be);
 		h.setUtilisateur(utilisateurXpr);
 		h.setStatut(br.getStatut());
 		h.setDateCreation(new Date());
 		be.getHistoriques().add(h);
+		historiqueRepository.save(h);
 		colis1.setStatut(Constants.EXPEDIE);
 		
 		h=new Historique();
@@ -438,7 +459,7 @@ public class XprApplication implements CommandLineRunner {
 		colis1.getHistoriques().add(h);
 		
 		be = bonExpeditionRepository.save(be);
-		
+		historiqueRepository.save(h);
 		//affectation au livreur  
 		
 		colis1.setLivreur(livreur2);
@@ -450,7 +471,7 @@ public class XprApplication implements CommandLineRunner {
 		h.setStatut(br.getStatut());
 		h.setDateCreation(new Date());
 		colis1.getHistoriques().add(h);
-		
+		historiqueRepository.save(h);
 		// Livraison client
 		
 		colis1.setLivreur(livreur2);
@@ -462,6 +483,7 @@ public class XprApplication implements CommandLineRunner {
 		h.setStatut(br.getStatut());
 		h.setDateCreation(new Date());
 		colis1.getHistoriques().add(h);
+		historiqueRepository.save(h);
 		
 		// facturation par le  livreur 2
 		
@@ -487,6 +509,8 @@ public class XprApplication implements CommandLineRunner {
 		
 		facture.setType("Livré");
 		facture = factureRepository.save(facture);
+		
+		System.out.println("facture " + facture.getName());
 		
 		// apres reception du paiement par le livreur
 		

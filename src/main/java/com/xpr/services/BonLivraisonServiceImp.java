@@ -52,6 +52,8 @@ public class BonLivraisonServiceImp implements BonLivraisonService {
 		h.setBonLivraison(bl);
 		bl.getHistoriques().add(h);
 		
+		historiqueRepository.save(h);
+		
 		return bl;
 	}
 
@@ -97,7 +99,7 @@ public class BonLivraisonServiceImp implements BonLivraisonService {
 		Historique h =Historique.getHistorique("Modification BL: "+nom, bonLivraison.getStatut(), "cniTest");
 		h.setBonLivraison(bonLivraison);
 		bonLivraison.getHistoriques().add(h);
-		
+		historiqueRepository.save(h);
 		
 		return bonLivraison;
 	}
@@ -116,12 +118,14 @@ public class BonLivraisonServiceImp implements BonLivraisonService {
 		bl.setStatut(Constants.ANNULE);
 		
 		Historique h =Historique.getHistorique("Suppression BL: "+nom, bl.getStatut(), "cniTest");
-		h.setBonLivraison(bl);
+		
 		bl.getHistoriques().add(h);
 		bl.setDisabled(true);
 		
 		if(bl!=null) {
-			bonLivraisonRepository.save(bl);
+			bl = bonLivraisonRepository.save(bl);
+			h.setBonLivraison(bl);
+			historiqueRepository.save(h);
 		}
 	}
 
@@ -140,6 +144,8 @@ public class BonLivraisonServiceImp implements BonLivraisonService {
 		Historique h =Historique.getHistorique("Ajout nouveau BL: "+bl.getNom(), bl.getStatut(), "cniTest");
 		h.setBonLivraison(bl);
 		bl.getHistoriques().add(h);
+		
+		historiqueRepository.save(h);
 		
 		return bl;
 	}
@@ -171,8 +177,9 @@ public class BonLivraisonServiceImp implements BonLivraisonService {
 		
 		Historique h =Historique.getHistorique("Ajout " + colis.size()+" colis to BL: "+bl.getNom(), bl.getStatut(), "cniTest");
 		h.setBonLivraison(bl);
-		
 		bl.getColis().addAll(colis);
+		historiqueRepository.save(h);
+		
 		return bl;
 	}
 
@@ -228,7 +235,7 @@ public class BonLivraisonServiceImp implements BonLivraisonService {
 	@Override
 	public Page<Historique> getHistoriqueBonLivraison(String nom, int page, int size) {
 		
-		return  historiqueRepository.findHistoriqueBLByNom(nom,PageRequest.of(page, size));
+		return  historiqueRepository.findHistoriqueBLByNom2(nom,PageRequest.of(page, size));
 	}
 
 	

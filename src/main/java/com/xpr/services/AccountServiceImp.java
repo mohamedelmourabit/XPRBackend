@@ -7,6 +7,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.xpr.dao.AutorisationRepository;
@@ -68,6 +70,8 @@ public class AccountServiceImp implements AccountService {
 		Utilisateur user = userRepository.findByCni(cni);
 		Set<Autorisation> autorisations = new HashSet<Autorisation>();
 		
+		System.out.println(findProfilesByUsers(cni));
+		
 		for(Profile profile : findProfilesByUsers(cni)) {
         	for(Autorisation auth : findAutorisationByProfile(profile.getPrflName())) {
         		autorisations.add(auth);
@@ -79,7 +83,7 @@ public class AccountServiceImp implements AccountService {
         		autorisations.add(auth);
         	}
         }
-		return userRepository.findUserAuthority(cni);
+		return new ArrayList<Autorisation>(autorisations);
 	}
 
 	@Override
@@ -101,7 +105,8 @@ public class AccountServiceImp implements AccountService {
 	@Override
 	public List<Profile> findProfilesByUsers(String cni) {
 		
-		return profileRepository.findProfilesByUtilisateur(cni);
+		Utilisateur user = userRepository.findByCni(cni);
+		return new ArrayList<Profile>(user.getProfiles());
 	}
 
 	@Override
@@ -204,6 +209,32 @@ public class AccountServiceImp implements AccountService {
 	public void deleteService(Long idService) {
 		serviceRepository.deleteById(idService);
 		
+	}
+
+	@Override
+	public List<Profile> getAllProfiles() {
+		return profileRepository.findAll();
+	}
+
+	@Override
+	public List<Autorisation> getAllAutorisations() {
+		return authRepository.findAll();
+	}
+
+	@Override
+	public Profile addProfile(Profile profile) {
+		return profileRepository.save(profile);
+	}
+
+	@Override
+	public Page<Autorisation> getAllAutorisations(int page, int size) {
+
+		return authRepository.getAllAutorisations(PageRequest.of(page, size));
+	}
+
+	@Override
+	public Page<Autorisation> findAutorisationByProfile(String profile, int page, int size) {
+		return profileRepository.findAuthoritiesByPrflName2(profile, PageRequest.of(page, size));
 	}
 
 	

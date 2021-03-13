@@ -60,7 +60,7 @@ public class Utilisateur {
 	@JsonIgnore
 	private Set<Autorisation> authorities = new HashSet<>();
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany
 	@JsonIgnore
 	private Set<Profile> profiles = new HashSet<>();
 	

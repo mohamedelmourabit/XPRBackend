@@ -52,6 +52,8 @@ public class BonExpeditionServiceImp implements BonExpeditionService {
 		h.setBonExpedition(be);
 		be.getHistoriques().add(h);
 		
+		historiqueRepository.save(h);
+		
 		return be;
 	}
 
@@ -98,7 +100,7 @@ public class BonExpeditionServiceImp implements BonExpeditionService {
 		h.setBonExpedition(bonExpedition);
 		bonExpedition.getHistoriques().add(h);
 		
-		
+		historiqueRepository.save(h);
 		return bonExpedition;
 	}
 
@@ -116,12 +118,13 @@ public class BonExpeditionServiceImp implements BonExpeditionService {
 		bl.setStatut(Constants.ANNULE);
 		
 		Historique h =Historique.getHistorique("Suppression BR: "+nom, bl.getStatut(), "cniTest");
-		h.setBonExpedition(bl);
 		bl.getHistoriques().add(h);
 		bl.setDisabled(true);
 		
 		if(bl!=null) {
 			bonExpeditionRepository.save(bl);
+			h.setBonExpedition(bl);
+			historiqueRepository.save(h);
 		}
 	}
 
@@ -140,6 +143,8 @@ public class BonExpeditionServiceImp implements BonExpeditionService {
 		Historique h =Historique.getHistorique("Ajout nouveau BR: "+bl.getNom(), bl.getStatut(), "cniTest");
 		h.setBonExpedition(bl);
 		bl.getHistoriques().add(h);
+		
+		historiqueRepository.save(h);
 		
 		return bl;
 	}
@@ -173,6 +178,8 @@ public class BonExpeditionServiceImp implements BonExpeditionService {
 		h.setBonExpedition(bl);
 		
 		bl.getColis().addAll(colis);
+		
+		historiqueRepository.save(h);
 		return bl;
 	}
 
@@ -226,7 +233,7 @@ public class BonExpeditionServiceImp implements BonExpeditionService {
 
 	@Override
 	public Page<Historique> getHistoriqueBonExpedition(String nom, int page, int size) {
-		return historiqueRepository.findHistoriqueBonExpeditionByNom(nom,PageRequest.of(page, size));
+		return historiqueRepository.findHistoriqueBonExpeditionByNom2(nom,PageRequest.of(page, size));
 	}
 
 	

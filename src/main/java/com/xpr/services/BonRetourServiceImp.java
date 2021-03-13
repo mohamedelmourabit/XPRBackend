@@ -50,6 +50,7 @@ public class BonRetourServiceImp implements BonRetourService {
 		Historique h =Historique.getHistorique("Ajout nouveau BRT: "+brt.getNom(), brt.getStatut(), "cniTest");
 		h.setBonRetour(brt);
 		brt.getHistoriques().add(h);
+		historiqueRepository.save(h);
 		
 		return brt;
 	}
@@ -96,6 +97,7 @@ public class BonRetourServiceImp implements BonRetourService {
 		Historique h =Historique.getHistorique("Modification BRT: "+nom, bonRetour.getStatut(), "cniTest");
 		h.setBonRetour(bonRetour);
 		bonRetour.getHistoriques().add(h);
+		historiqueRepository.save(h);
 		
 		
 		return bonRetour;
@@ -120,7 +122,9 @@ public class BonRetourServiceImp implements BonRetourService {
 		bl.setDisabled(true);
 		
 		if(bl!=null) {
-			bonRetourRepository.save(bl);
+			bl= bonRetourRepository.save(bl);
+			
+			historiqueRepository.save(h);
 		}
 	}
 
@@ -139,6 +143,7 @@ public class BonRetourServiceImp implements BonRetourService {
 		Historique h =Historique.getHistorique("Ajout nouveau BR: "+bl.getNom(), bl.getStatut(), "cniTest");
 		h.setBonRetour(bl);
 		bl.getHistoriques().add(h);
+		historiqueRepository.save(h);
 		
 		return bl;
 	}
@@ -172,6 +177,7 @@ public class BonRetourServiceImp implements BonRetourService {
 		h.setBonRetour(bl);
 		
 		bl.getColis().addAll(colis);
+		historiqueRepository.save(h);
 		return bl;
 	}
 
@@ -215,7 +221,9 @@ public class BonRetourServiceImp implements BonRetourService {
 		}
 		
 		
-		return bonRetourRepository.save(br);
+		br= bonRetourRepository.save(br);
+
+		return br;
 	}
 
 	@Override
@@ -225,7 +233,7 @@ public class BonRetourServiceImp implements BonRetourService {
 
 	@Override
 	public Page<Historique> getHistoriqueBonRetour(String nom, int page, int size) {
-		return historiqueRepository.findHistoriqueBonRetourByNom(nom,PageRequest.of(page, size));
+		return historiqueRepository.findHistoriqueBonRetourByNom2(nom,PageRequest.of(page, size));
 	}
 
 	

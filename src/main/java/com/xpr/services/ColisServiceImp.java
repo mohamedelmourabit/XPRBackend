@@ -53,6 +53,8 @@ public class ColisServiceImp implements ColisService {
 		h.setColis(colis);
 		
 		colis.getHistoriques().add(h);
+		
+		historiqueRepository.save(h);
 		//generate ticket 
 		return  colis;
 	}
@@ -110,6 +112,7 @@ public class ColisServiceImp implements ColisService {
 			colis= colisRepository.save(colis);
 			Historique h =Historique.getHistorique("Modification statut du colis: "+colis.getNumCommande(), colis.getStatut(), "cniTest");
 			h.setColis(colis);
+			historiqueRepository.save(h);
 			return colis;
 		 }else {
 			 throw new ColisException("Modification du colis interdit arpès ramassage ");
@@ -145,8 +148,12 @@ public class ColisServiceImp implements ColisService {
 			coli.setStatut(Constants.EN_ATTENTE_LIVRAISON);
 			
 			Historique h =Historique.getHistorique("Affectation du colis au livreur: "+coli.getNumCommande(), coli.getStatut(), "cniTest");
+			
+			
 			coli = colisRepository.save(coli);
+			h.setColis(coli);
 			coli.getHistoriques().add(h);
+			historiqueRepository.save(h);
 			
 		}
 		
@@ -170,7 +177,10 @@ public class ColisServiceImp implements ColisService {
 			colis.setStatut(Constants.EN_ATTENTE_LIVRAISON);
 			Historique h =Historique.getHistorique("Affectation du colis au livreur: "+colis.getNumCommande(), colis.getStatut(), "cniTest");
 			colis = colisRepository.save(colis);
+			
 			colis.getHistoriques().add(h);
+			h.setColis(colis);
+			historiqueRepository.save(h);
 		}
 		
 		colisRepository.save(colis);
@@ -236,9 +246,11 @@ public class ColisServiceImp implements ColisService {
 			coli.setLivreur(null);
 			Historique h =Historique.getHistorique("Désaffectation du colis au livreur: "+cniLivreur, coli.getStatut(), "cniTest");
 			coli = colisRepository.save(coli);
-			h.setColis(coli);
+			
 			coli.getHistoriques().add(h);
-			colisRepository.save(coli);
+			coli = colisRepository.save(coli);
+			h.setColis(coli);
+			historiqueRepository.save(h);
 		}
 		return colis;
 	}
@@ -249,9 +261,12 @@ public class ColisServiceImp implements ColisService {
 		colis.setLivreur(null);
 		Historique h =Historique.getHistorique("Désaffectation du livreur: "+cniLivreur, colis.getStatut(), "cniTest");
 		colis = colisRepository.save(colis);
-		h.setColis(colis);
+		
 		colis.getHistoriques().add(h);
-		return colisRepository.save(colis);
+		colis = colisRepository.save(colis);
+		h.setColis(colis);
+		historiqueRepository.save(h);
+		return colis;
 	}
 	
 	@Override
@@ -334,7 +349,7 @@ public class ColisServiceImp implements ColisService {
 
 	@Override
 	public Page<Commentaire> getCommentairesColis(String numCommande, int page, int size) {
-		return commentaireRepository.findCommentaireByColis(numCommande,PageRequest.of(page, size));
+		return commentaireRepository.findCommentaireByColis2(numCommande,PageRequest.of(page, size));
 	}
 	
 

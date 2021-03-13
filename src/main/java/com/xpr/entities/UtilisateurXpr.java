@@ -11,7 +11,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,6 +33,7 @@ public class UtilisateurXpr extends Utilisateur {
 	private Set<Business> Business=new HashSet<Business>();
 	
 	@ManyToOne
+	@JsonIgnore
 	private Client client;
 	
 	

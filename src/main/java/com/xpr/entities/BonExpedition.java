@@ -46,7 +46,7 @@ public class BonExpedition implements Serializable  {
 	@OneToMany(mappedBy = "bonExpedition")
 	private Set<Colis> colis=new HashSet<>();
 	
-	@OneToMany(mappedBy = "bonExpedition",fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "bonExpedition",fetch = FetchType.EAGER)
 	private Set<Historique> historiques=new HashSet<Historique>();
 	
 	@ManyToOne

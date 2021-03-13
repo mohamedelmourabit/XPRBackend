@@ -5,9 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.websocket.server.PathParam;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +33,26 @@ public class AccountRestController {
 	@Autowired
 	private AccountService accountService;
 	
+	@RequestMapping(value="/getAllProfiles",method=RequestMethod.GET)
+	public List<Profile> getAllProfiles() {
+		return accountService.getAllProfiles();
+	}
+
+	@RequestMapping(value="/getAllAutorisations",method=RequestMethod.GET)
+	public List<Autorisation> getAllAutorisations() {
+		return accountService.getAllAutorisations();
+	}
+
+	@RequestMapping(value="/getAllAutorisationsByProfile/{profile}",method=RequestMethod.GET)
+	public Page<Autorisation> findAutorisationByProfile(@PathVariable String profile, @RequestParam(name="page",defaultValue="0")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return accountService.findAutorisationByProfile(profile, page, size);
+	}
+
+	@RequestMapping(value="/saveProfile",method=RequestMethod.POST)
+	public Profile addProfile(@RequestBody Profile profile) {
+		return accountService.addProfile(profile);
+	}
+
 	@PostMapping("/saveUtilisateur")
 	public Utilisateur saveUtilisateur(@RequestBody Utilisateur appUser) {
 		return accountService.saveUtilisateur(appUser);
@@ -107,10 +131,25 @@ public class AccountRestController {
 	public Utilisateur register(@RequestBody RegisterForm userForm) {
 		if(!userForm.getPassword().equals(userForm.getRepassword())) throw new RuntimeException("You must confirm your password");
 		
-		Utilisateur user = accountService.findUtilisateurByCni(userForm.getEmail());
-		if(user !=null) throw new RuntimeException("This user already exists");
-		Utilisateur utilisateur = new Utilisateur(userForm.getEmail(),userForm.getPassword());
+		Utilisateur user = accountService.findUtilisateurByCni(userForm.getCni());
+		if(user !=null) throw new RuntimeException("Invalid CNI un utilisateur existant dispose déjà de ce numéro CNI");
 		
+		Utilisateur user2 = accountService.findUtilisateurByEmail(userForm.getEmail());
+		if(user2 !=null) throw new RuntimeException("Invalid Email un utilisateur existant dispose déjà de cet email");
+		
+		if(userForm.getCni()==null || userForm.getCni().isEmpty()) {
+			throw new RuntimeException("Veuillez saisir la carte d'identité obligatoirement !");	
+		}
+		
+		if(userForm.getCni()==null || userForm.getEmail().isEmpty()) {
+			throw new RuntimeException("Veuillez saisir l'addresse mail obligatoirement !");	
+		}
+		if(userForm.getCni()==null || !userForm.getPassword().equals(userForm.getRepassword())) {
+			throw new RuntimeException("les mots de passe saisie ne sont pas correspondant !");	
+		}
+		
+		Utilisateur utilisateur = new Utilisateur(userForm.getEmail(),userForm.getPassword());
+		utilisateur.setCni(userForm.getCni());
 		accountService.saveUtilisateur(utilisateur);
 		//accountService.addProfileToUser(utilisateur.getEmail(),"");
 		return utilisateur;
@@ -198,6 +237,8 @@ public class AccountRestController {
 		
 		
 	}
+	
+	
 	
 
 }

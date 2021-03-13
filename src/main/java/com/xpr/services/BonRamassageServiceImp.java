@@ -51,6 +51,7 @@ public class BonRamassageServiceImp implements BonRamassageService {
 		Historique h =Historique.getHistorique("Ajout nouveau BR: "+br.getNom(), br.getStatut(), "cniTest");
 		h.setBonRamassage(br);
 		br.getHistoriques().add(h);
+		historiqueRepository.save(h);
 		
 		return br;
 	}
@@ -98,7 +99,7 @@ public class BonRamassageServiceImp implements BonRamassageService {
 		h.setBonRamassage(bonRamassage);
 		bonRamassage.getHistoriques().add(h);
 		
-		
+		historiqueRepository.save(h);
 		return bonRamassage;
 	}
 
@@ -119,6 +120,7 @@ public class BonRamassageServiceImp implements BonRamassageService {
 		h.setBonRamassage(bl);
 		bl.getHistoriques().add(h);
 		bl.setDisabled(true);
+		historiqueRepository.save(h);
 		
 		if(bl!=null) {
 			bonRamassageRepository.save(bl);
@@ -140,6 +142,7 @@ public class BonRamassageServiceImp implements BonRamassageService {
 		Historique h =Historique.getHistorique("Ajout nouveau BR: "+bl.getNom(), bl.getStatut(), "cniTest");
 		h.setBonRamassage(bl);
 		bl.getHistoriques().add(h);
+		historiqueRepository.save(h);
 		
 		return bl;
 	}
@@ -171,6 +174,7 @@ public class BonRamassageServiceImp implements BonRamassageService {
 		
 		Historique h =Historique.getHistorique("Ajout " + colis.size()+" colis to BR: "+bl.getNom(), bl.getStatut(), "cniTest");
 		h.setBonRamassage(bl);
+		historiqueRepository.save(h);
 		
 		bl.getColis().addAll(colis);
 		return bl;
@@ -226,7 +230,7 @@ public class BonRamassageServiceImp implements BonRamassageService {
 
 	@Override
 	public Page<Historique> getHistoriqueBonRamassage(String nom, int page, int size) {
-		return historiqueRepository.findHistoriqueBonRamassageByNom(nom,PageRequest.of(page, size));
+		return historiqueRepository.findHistoriqueBonRamassageByNom2(nom,PageRequest.of(page, size));
 	}
 
 	

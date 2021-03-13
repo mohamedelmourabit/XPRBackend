@@ -48,7 +48,7 @@ public class BonRamassage implements Serializable {
 	
 	private boolean disabled;
 	
-	@OneToMany(mappedBy = "bonRamassage",fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "bonRamassage",fetch = FetchType.EAGER)
 	private Set<Historique> historiques=new HashSet<Historique>();
 	
 	@ManyToOne

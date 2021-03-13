@@ -23,12 +23,7 @@ public class Profile implements Serializable  {
 	private Long id;
 	
 	private String prflName;
-	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "user_profile",
-    joinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "user_cni", referencedColumnName = "cni"))
-	private Set<Utilisateur> utilisateurs = new HashSet<>();
+
 	
 	@ManyToMany
 	private Set<Autorisation> authorities = new HashSet<>();
@@ -63,18 +58,6 @@ public class Profile implements Serializable  {
 		this.prflName = prflName;
 	}
 
-
-
-
-	public Set<Utilisateur> getUtilisateurs() {
-		return utilisateurs;
-	}
-
-
-
-	public void setUtilisateurs(Set<Utilisateur> utilisateurs) {
-		this.utilisateurs = utilisateurs;
-	}
 
 
 

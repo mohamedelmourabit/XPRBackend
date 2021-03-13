@@ -112,11 +112,10 @@ public class Colis implements Serializable {
 	@JsonIgnore
 	private Set<Produit> produits=new HashSet<Produit>();
 	
-	@OneToMany(mappedBy = "colis",fetch = FetchType.LAZY)
-	@JsonIgnore
+	@OneToMany(mappedBy = "colis",fetch = FetchType.EAGER)
 	private Set<Historique> historiques=new HashSet<Historique>();
 	
-	@OneToMany(mappedBy = "colis",fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "colis",fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<Commentaire> commentaires=new HashSet<Commentaire>();
 	

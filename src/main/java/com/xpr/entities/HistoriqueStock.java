@@ -17,7 +17,12 @@ public class HistoriqueStock implements Serializable{
 	private Long id;
 	
 	@ManyToOne
-	private Produit produit;
+	private Stock stock;
+	
+	private String action;
+	
+	@ManyToOne
+	private Variante variante;
 	
 	private int qte;
 	
@@ -69,7 +74,37 @@ public class HistoriqueStock implements Serializable{
 	public void setQte(int qte) {
 		this.qte = qte;
 	}
-	
+
+
+	public Stock getStock() {
+		return stock;
+	}
+
+
+	public void setStock(Stock stock) {
+		this.stock = stock;
+	}
+
+
+	public String getAction() {
+		return action;
+	}
+
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+
+	public Variante getVariante() {
+		return variante;
+	}
+
+
+	public void setVariante(Variante variante) {
+		this.variante = variante;
+	}
+
 	
 
 }

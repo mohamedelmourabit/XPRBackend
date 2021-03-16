@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.xpr.entities.BonRetour;
 import com.xpr.entities.Colis;
 import com.xpr.entities.Historique;
+import com.xpr.entities.LigneColis;
 import com.xpr.exceptions.BonRetourException;
 import com.xpr.services.BonRetourService;
 
@@ -35,12 +36,12 @@ public class BonRetourRestController {
 		return bonRetourService.getHistoriqueBonRetour(nom, page, size);
 	}
 	@RequestMapping(value="/addColisToBonRetour/{blId}",method=RequestMethod.PUT)
-	public BonRetour addColisToBonRetour(@PathVariable String blId,@RequestBody  List<Colis> colis) throws BonRetourException {
-		return bonRetourService.addColisToBonRetour(blId, colis);
+	public BonRetour addColisToBonRetour(@PathVariable String blId,@RequestBody  List<LigneColis> ligneColisRetourne) throws BonRetourException {
+		return bonRetourService.addLigneColisToBonRetour(blId, ligneColisRetourne);
 	}
 	@RequestMapping(value="/deleteColisFomBonRetour/{blId}",method=RequestMethod.DELETE)
-	public BonRetour deleteColisFomBonRetour(@PathVariable String blId,@RequestBody  List<Colis> colis) {
-		return bonRetourService.deleteColisFomBonRetour(blId, colis);
+	public BonRetour deleteColisFomBonRetour(@PathVariable String blId,@RequestBody  List<LigneColis> ligneColisRetourne) {
+		return bonRetourService.deleteLigneColisFomBonRetour(blId, ligneColisRetourne);
 	}
 	@RequestMapping(value="/findBonRetourById/{nom}",method=RequestMethod.GET)
 	public BonRetour findBonRetourByNom(@PathVariable String nom) {
@@ -68,8 +69,8 @@ public class BonRetourRestController {
 
 
 	@RequestMapping(value="/generateBonRetour",method=RequestMethod.POST)
-	public BonRetour generateBonRetour(@RequestBody List<Colis> colis) {
-		return bonRetourService.generateBonRetour(colis);
+	public BonRetour generateBonRetour(@RequestBody List<LigneColis> LigneColisRetourne) {
+		return bonRetourService.generateBonRetour(LigneColisRetourne);
 	}
 
 	@RequestMapping(value="/getBonRetours",method=RequestMethod.GET)

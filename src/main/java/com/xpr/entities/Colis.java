@@ -12,8 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,6 +30,8 @@ public class Colis implements Serializable {
 	
 	// à crypter
 	private String nomComplet;
+	
+	private String produit;
 	
 	private double prix;
 	
@@ -108,10 +108,7 @@ public class Colis implements Serializable {
 	@JsonIgnore
 	private BonRetour bonRetour;
 	
-	@OneToMany(mappedBy = "colis",fetch = FetchType.LAZY)
-	@JsonIgnore
-	private Set<Produit> produits=new HashSet<Produit>();
-	
+
 	@OneToMany(mappedBy = "colis",fetch = FetchType.EAGER)
 	private Set<Historique> historiques=new HashSet<Historique>();
 	
@@ -119,16 +116,30 @@ public class Colis implements Serializable {
 	@JsonIgnore
 	private Set<Commentaire> commentaires=new HashSet<Commentaire>();
 	
-	@ManyToOne
-	@JsonIgnore
-	private Agence agence;
-	
+
 	@ManyToOne
 	private UtilisateurXpr creerPar;
 	
 	@ManyToOne
 	private UtilisateurXpr modifierPar;
 	
+	@OneToMany(mappedBy = "colis",fetch = FetchType.EAGER)
+	@JsonIgnore
+	private Set<Produit> produits=new HashSet<Produit>();
+	
+	@OneToMany(mappedBy = "colis",fetch = FetchType.EAGER)
+	@JsonIgnore
+	private Set<LigneColis> ligneColis=new HashSet<LigneColis>();
+	
+	@OneToMany(mappedBy = "colis",fetch = FetchType.LAZY)
+	@JsonIgnore
+	private Set<LigneColis> ligneColisLivre=new HashSet<LigneColis>();
+	
+	
+	@OneToMany(mappedBy = "colis",fetch = FetchType.LAZY)
+	@JsonIgnore
+	private Set<LigneColis> ligneColisRetourne=new HashSet<LigneColis>();
+
 
 	public Colis() {
 		this.dateCreation = new Date();
@@ -325,13 +336,6 @@ public class Colis implements Serializable {
 		this.dateModification = dateModification;
 	}
 
-	public Set<Produit> getProduits() {
-		return produits;
-	}
-
-	public void setProduits(Set<Produit> produits) {
-		this.produits = produits;
-	}
 
 	public String getRemarque() {
 		return remarque;
@@ -389,13 +393,6 @@ public class Colis implements Serializable {
 		this.villeDestination = villeDestination;
 	}
 
-	public Agence getAgence() {
-		return agence;
-	}
-
-	public void setAgence(Agence agence) {
-		this.agence = agence;
-	}
 
 	public BonRetour getBonRetour() {
 		return bonRetour;
@@ -429,6 +426,40 @@ public class Colis implements Serializable {
 		this.modifierPar = modifierPar;
 	}
 
+	public Set<LigneColis> getLigneColis() {
+		return ligneColis;
+	}
+
+	public void setLigneColis(Set<LigneColis> ligneColis) {
+		this.ligneColis = ligneColis;
+	}
+
+	public Set<LigneColis> getLigneColisLivre() {
+		return ligneColisLivre;
+	}
+
+	public void setLigneColisLivre(Set<LigneColis> ligneColisLivre) {
+		this.ligneColisLivre = ligneColisLivre;
+	}
+
+	public Set<LigneColis> getLigneColisRetourne() {
+		return ligneColisRetourne;
+	}
+
+	public void setLigneColisRetourne(Set<LigneColis> ligneColisRetourne) {
+		this.ligneColisRetourne = ligneColisRetourne;
+	}
+
+	public String getProduit() {
+		return produit;
+	}
+
+	public void setProduit(String produit) {
+		this.produit = produit;
+	}
+
+	
+	
 	
 	
 	

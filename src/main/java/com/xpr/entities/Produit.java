@@ -6,18 +6,21 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "produits")
 public class Produit implements Serializable  {
 	
-	@Id
-	private String id;
+	@Id @GeneratedValue
+	private Long id;
 	
 	private String idIntern;
 	
@@ -43,14 +46,11 @@ public class Produit implements Serializable  {
 	
 	private boolean containVariantes;
 	
+	private String marque;
+	
 	@OneToMany(mappedBy = "produit",fetch = FetchType.LAZY)
 	private Set<Variante> variantes=new HashSet<>();
 	
-	@OneToMany(mappedBy = "produit",fetch = FetchType.LAZY)
-	private Set<HistoriqueStock> historiqueStock=new HashSet<>();
-	
-	@OneToMany(mappedBy = "produit",fetch = FetchType.LAZY)
-	private Set<Stock> stocks=new HashSet<>();
 	
 	@ManyToOne
 	private Client client;
@@ -59,20 +59,24 @@ public class Produit implements Serializable  {
 	@ManyToMany
 	private Set<Colis> colis=new HashSet<Colis>();
 	
+	
 
 	 public Produit() {
 		
 	 }
 
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
+
+
+
 
 
 	public String getIdIntern() {
@@ -130,18 +134,9 @@ public class Produit implements Serializable  {
 	}
 
 
-	public void setPrixOriginale(double prixOriginale) {
-		this.prixOriginale = prixOriginale;
-	}
-
 
 	public double getPrixVente() {
 		return prixVente;
-	}
-
-
-	public void setPrixVente(double prixVente) {
-		this.prixVente = prixVente;
 	}
 
 
@@ -195,19 +190,6 @@ public class Produit implements Serializable  {
 	}
 
 
-	
-
-
-	public Set<HistoriqueStock> getHistoriqueStock() {
-		return historiqueStock;
-	}
-
-
-	public void setHistoriqueStock(Set<HistoriqueStock> historiqueStock) {
-		this.historiqueStock = historiqueStock;
-	}
-
-
 	public void setPrixOriginale(Double prixOriginale) {
 		this.prixOriginale = prixOriginale;
 	}
@@ -243,15 +225,6 @@ public class Produit implements Serializable  {
 	}
 
 
-	public Set<Stock> getStocks() {
-		return stocks;
-	}
-
-
-	public void setStocks(Set<Stock> stocks) {
-		this.stocks = stocks;
-	}
-
 
 	public Client getClient() {
 		return client;
@@ -261,8 +234,16 @@ public class Produit implements Serializable  {
 	public void setClient(Client client) {
 		this.client = client;
 	}
-	 
-	
+
+
+	public String getMarque() {
+		return marque;
+	}
+
+
+	public void setMarque(String marque) {
+		this.marque = marque;
+	}
 	 
 	
 	

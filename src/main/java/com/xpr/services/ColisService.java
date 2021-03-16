@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import com.xpr.entities.Colis;
 import com.xpr.entities.Commentaire;
 import com.xpr.entities.Historique;
+import com.xpr.entities.LigneColis;
 import com.xpr.exceptions.ColisException;
 import com.xpr.exceptions.LivreurException;
 
@@ -84,5 +85,13 @@ public interface ColisService {
 	public Commentaire addCommentaireToColis(String numCommande,Commentaire commentaire);
 	
 	public void deleteCommentaireToColis(long idCommentaire);
+	
+	
+	public Colis addLignesColisToColis(String nummCommande, List<LigneColis> lignesColis) throws ColisException;
+	
+	public Colis deleteLignesColisToColis(String nummCommande, List<LigneColis> lignesColis) throws ColisException;
 
+	
+	
+	
 }

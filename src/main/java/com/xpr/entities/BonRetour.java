@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "bonRetour")
+@Table(name = "bonRetours")
 public class BonRetour implements Serializable {
 	
 	@Id 
@@ -37,16 +37,14 @@ public class BonRetour implements Serializable {
 	private Client client;
 	
 	@OneToMany(mappedBy = "bonRetour",fetch = FetchType.EAGER)
-	private Set<Colis> colis=new HashSet<Colis>();
+	private Set<LigneColis> ligneColisRetourne=new HashSet<LigneColis>();
+	
 	
 	@ManyToOne
-	private Facture facture;
+	private Utilisateur creerPar;
 	
 	@ManyToOne
-	private UtilisateurXpr creerPar;
-	
-	@ManyToOne
-	private UtilisateurXpr modifierPar;
+	private Utilisateur modifierPar;
 	
 	private String statut;
 	
@@ -92,29 +90,17 @@ public class BonRetour implements Serializable {
 		this.client = client;
 	}
 
-	public Set<Colis> getColis() {
-		return colis;
+	
+
+	public Set<LigneColis> getLigneColisRetourne() {
+		return ligneColisRetourne;
 	}
 
-	public void setColis(Set<Colis> colis) {
-		this.colis = colis;
+	public void setLigneColisRetourne(Set<LigneColis> ligneColisRetourne) {
+		this.ligneColisRetourne = ligneColisRetourne;
 	}
 
-	public Facture getFacture() {
-		return facture;
-	}
-
-	public void setFacture(Facture facture) {
-		this.facture = facture;
-	}
-
-	public UtilisateurXpr getCreerPar() {
-		return creerPar;
-	}
-
-	public void setCreerPar(UtilisateurXpr creerPar) {
-		this.creerPar = creerPar;
-	}
+	
 
 	public boolean isDisabled() {
 		return disabled;
@@ -148,11 +134,23 @@ public class BonRetour implements Serializable {
 		this.dateModification = dateModification;
 	}
 
-	public UtilisateurXpr getModifierPar() {
+	public Utilisateur getModifierPar() {
 		return modifierPar;
 	}
 
 	public void setModifierPar(UtilisateurXpr modifierPar) {
+		this.modifierPar = modifierPar;
+	}
+
+	public Utilisateur getCreerPar() {
+		return creerPar;
+	}
+
+	public void setCreerPar(Utilisateur creerPar) {
+		this.creerPar = creerPar;
+	}
+
+	public void setModifierPar(Utilisateur modifierPar) {
 		this.modifierPar = modifierPar;
 	}
 	

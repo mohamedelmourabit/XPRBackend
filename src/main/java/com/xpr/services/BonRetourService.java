@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import com.xpr.entities.BonRetour;
 import com.xpr.entities.Colis;
 import com.xpr.entities.Historique;
+import com.xpr.entities.LigneColis;
 import com.xpr.exceptions.BonRetourException;
 
 
@@ -12,11 +13,11 @@ public interface BonRetourService {
 	
 	public BonRetour saveBonRetour(BonRetour bl) throws BonRetourException;
 	
-	public BonRetour addColisToBonRetour(String blId,List<Colis> colis) throws BonRetourException;
+	public BonRetour addLigneColisToBonRetour(String blId,List<LigneColis> ligneColisRetourne) throws BonRetourException;
 	
-	public BonRetour deleteColisFomBonRetour(String blId,List<Colis> colis);
+	public BonRetour deleteLigneColisFomBonRetour(String blId,List<LigneColis> ligneColisRetourne);
 	
-	public List<Colis> findColisFomBonRetour(String blId);
+	public List<LigneColis> findLigneColisFomBonRetour(String blId);
 
 	public BonRetour findBonRetourByNom(String nom);
 
@@ -32,7 +33,7 @@ public interface BonRetourService {
 	
 	public void deleteBonRetour(String nom) throws BonRetourException;
 	
-	public BonRetour generateBonRetour(List<Colis> colis);
+	public BonRetour generateBonRetour(List<LigneColis> ligneColisRetourne);
 	
 	public Page<BonRetour> findAllBonRetoursByClient(String cnilient, int page, int size);
 	

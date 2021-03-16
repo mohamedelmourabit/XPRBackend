@@ -7,8 +7,10 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.xpr.dao.AutorisationRepository;
@@ -45,6 +47,8 @@ public class AccountServiceImp implements AccountService {
 
 	@Override
 	public Utilisateur saveUtilisateur(Utilisateur appUser) {
+		appUser.setPassword(bCryptPasswordEncoder()
+		           .encode(appUser.getPassword()));
 		return userRepository.save(appUser);
 	}
 
@@ -235,6 +239,11 @@ public class AccountServiceImp implements AccountService {
 	@Override
 	public Page<Autorisation> findAutorisationByProfile(String profile, int page, int size) {
 		return profileRepository.findAuthoritiesByPrflName2(profile, PageRequest.of(page, size));
+	}
+	
+	
+	@Bean public BCryptPasswordEncoder bCryptPasswordEncoder() {
+	    return new BCryptPasswordEncoder(); 
 	}
 
 	

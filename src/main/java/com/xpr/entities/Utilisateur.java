@@ -1,6 +1,7 @@
 package com.xpr.entities;
 
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
@@ -32,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 		@Type(name = "Utilisateur", value = Client.class)
 		})
 
-public class Utilisateur {
+public class Utilisateur implements Serializable {
 	
 	@Id
 	private String cni;

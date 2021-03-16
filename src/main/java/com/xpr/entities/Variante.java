@@ -24,6 +24,9 @@ public class Variante implements Serializable  {
 	private double prix;
 	
 	private double prixAchat;
+	
+	private int qteReserve;
+	
 
 	@ManyToOne
 	@JsonIgnore
@@ -72,6 +75,23 @@ public class Variante implements Serializable  {
 	public void setProduit(Produit produit) {
 		this.produit = produit;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public int getQteReserve() {
+		return qteReserve;
+	}
+
+	public void setQteReserve(int qteReserve) {
+		this.qteReserve = qteReserve;
+	}
+
 	
 	
 }

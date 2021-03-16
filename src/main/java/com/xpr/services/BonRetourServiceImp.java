@@ -19,6 +19,7 @@ import com.xpr.entities.BonRetour;
 import com.xpr.entities.Client;
 import com.xpr.entities.Colis;
 import com.xpr.entities.Historique;
+import com.xpr.entities.LigneColis;
 import com.xpr.exceptions.BonRetourException;
 import com.xpr.utils.Constants;
 
@@ -38,7 +39,7 @@ public class BonRetourServiceImp implements BonRetourService {
 	public BonRetour saveBonRetour(BonRetour brt) throws BonRetourException {
 		LOGGER.info("Ajout d'un nouveau BRT");
 		
-		if(brt.getColis().isEmpty()) {
+		if(brt.getLigneColisRetourne().isEmpty()) {
 			throw new BonRetourException("Erreur création BRT sans colis");
 		}
 		
@@ -129,15 +130,15 @@ public class BonRetourServiceImp implements BonRetourService {
 	}
 
 	@Override
-	public BonRetour generateBonRetour(List<Colis> colis) {
-		LOGGER.info("Generate nouveau BRT avec {} colis ",colis.size());
+	public BonRetour generateBonRetour(List<LigneColis> ligneColisRetourne) {
+		LOGGER.info("Generate nouveau BRT avec {} ligneColisRetourne: ",ligneColisRetourne.size());
 		BonRetour bl = new BonRetour();
 		bl.setDateCreation(new Date());
-		if(colis!=null && colis.get(0)!=null) {
-			Client client = colis.get(0).getClient();
+		if(ligneColisRetourne!=null && ligneColisRetourne.get(0)!=null) {
+			Client client = ligneColisRetourne.get(0).getColis().getClient();
 			bl.setClient(client);
 		}
-		bl.setColis(new HashSet<Colis>(colis));
+		bl.setLigneColisRetourne((new HashSet<>(ligneColisRetourne)));
 		bl.setDateModification(new Date());
 		bl = bonRetourRepository.save(bl);
 		Historique h =Historique.getHistorique("Ajout nouveau BR: "+bl.getNom(), bl.getStatut(), "cniTest");
@@ -166,31 +167,31 @@ public class BonRetourServiceImp implements BonRetourService {
 	}
 
 	@Override
-	public BonRetour addColisToBonRetour(String idBr, List<Colis> colis) throws BonRetourException {
+	public BonRetour addLigneColisToBonRetour(String idBr, List<LigneColis> ligneColisRetourne) throws BonRetourException {
 		BonRetour bl = findBonRetourByNom(idBr);
 		bl.setDateModification(new Date());
 		if(!bl.getStatut().equals(Constants.NOUVEAU_BR) ) {
 			throw new BonRetourException("Impossible de modifier un bl après ramassage");
 		}
 		
-		Historique h =Historique.getHistorique("Ajout " + colis.size()+" colis to BR: "+bl.getNom(), bl.getStatut(), "cniTest");
+		Historique h =Historique.getHistorique("Ajout " + ligneColisRetourne.size()+" colis to BR: "+bl.getNom(), bl.getStatut(), "cniTest");
 		h.setBonRetour(bl);
 		
-		bl.getColis().addAll(colis);
+		bl.getLigneColisRetourne().addAll(ligneColisRetourne);
 		historiqueRepository.save(h);
 		return bl;
 	}
 
 	@Override
-	public BonRetour deleteColisFomBonRetour(String idBr, List<Colis> colis) {
+	public BonRetour deleteLigneColisFomBonRetour(String idBr, List<LigneColis> ligneColisRetourne) {
 		
 		BonRetour bl = findBonRetourByNom(idBr);
 		bl.setDateModification(new Date());
-		Iterator<Colis> iterator = bl.getColis().iterator();
+		Iterator<LigneColis> iterator = bl.getLigneColisRetourne().iterator();
 		while (iterator.hasNext()) {
-		    Colis element = iterator.next();
-		    for(Colis c : colis) {
-		    	if(c.getNumCommande().equals(element.getNumCommande())) {
+			LigneColis element = iterator.next();
+		    for(LigneColis c : ligneColisRetourne) {
+		    	if(c.getId().equals(element.getId())) {
 		    		iterator.remove();
 		    	}
 		    }
@@ -200,9 +201,9 @@ public class BonRetourServiceImp implements BonRetourService {
 	}
 
 	@Override
-	public List<Colis> findColisFomBonRetour(String idBl) {
+	public List<LigneColis> findLigneColisFomBonRetour(String idBl) {
 		BonRetour bl = findBonRetourByNom(idBl);
-		return new ArrayList<Colis>(bl.getColis());
+		return new ArrayList<LigneColis>(bl.getLigneColisRetourne());
 	}
 
 	@Override

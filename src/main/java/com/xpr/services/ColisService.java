@@ -1,10 +1,12 @@
 package com.xpr.services;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.xpr.dto.ColisSearch;
 import com.xpr.entities.Colis;
 import com.xpr.entities.Commentaire;
 import com.xpr.entities.Historique;
@@ -16,10 +18,11 @@ public interface ColisService {
 	
 	public Colis saveColis(Colis colis);
 	
+	public List<Colis> saveColisFromFile(File excelFile,long entiteId,String clientId);
 
 	public Colis findColisById(String numCommande);
-
-	public Page<Colis> findAllColisByMc(String mc, int page, int size);
+	
+	public Page<Colis> findAllColisByColisSearch(ColisSearch colisSearch, int page, int size,String sortBy,String sortType);
 
 	public List<Colis> findAll();
 
@@ -29,16 +32,13 @@ public interface ColisService {
 
 	public void deleteColis(String numCommande) throws ColisException;
 	
-	public List<Colis> affectationColisToLivreur(String emailLivreur,List<Colis> colis) throws LivreurException;
-	
-	public Colis affectationColisToLivreur(String emailLivreur,Colis colis) throws LivreurException;
-	
-	public List<Colis> desaffectationColisToLivreur(String emailLivreur,List<Colis> colis) throws LivreurException;
+	public List<Colis> affectationColisToLivreur(String cniAffecteur,String emailLivreur,List<Colis> colis) throws LivreurException;
 	
 
-	public Colis desaffectationColisToLivreur(String emailLivreur,Colis colis) throws LivreurException;
+	public List<Colis> desaffectationColisToLivreur(String cniAffecteur,String emailLivreur,List<Colis> colis) throws LivreurException;
 	
-	public Colis affectationColisToRamasseur(String emailLivreur,Colis colis) throws LivreurException;
+
+	public List<Colis> affectationColisToRamasseur(String cniAffecteur,String emailLivreur,List<Colis> colis) throws LivreurException;
 	
 	
 	public String generateCodeEnvoie();
@@ -46,7 +46,7 @@ public interface ColisService {
 	
 	public Page<Colis> findAllColisByLivreur(String emailLivreur, int page, int size);
 	
-	public Page<Colis> findAllColisByClient(String emailClient, int page, int size);
+	public Page<Colis> findAllColisByClient(String ice, int page, int size);
 	
 	public Page<Colis> findAllColisByUtilisateurs(String emailUtilisateur, int page, int size);
 	
@@ -65,8 +65,6 @@ public interface ColisService {
 	public Page<Colis> getAllColisUtilisateur(Pageable pageable) ;
 
 	public List<Colis> getAllColisWithoutBonRamassage() ;
-
-	public List<Colis> getAllColisWithoutBonLivraison() ;
 
 	public List<Colis> getAllColisWithoutBonExpedition() ;
 

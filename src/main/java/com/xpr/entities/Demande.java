@@ -10,9 +10,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.xpr.dao.helper.XprBaseModel;
+
 @Entity
 @Table(name = "demandes")
-public class Demande implements Serializable {
+public class Demande extends XprBaseModel implements Serializable {
 	
 	@Id
 	private String nom;
@@ -40,17 +42,15 @@ public class Demande implements Serializable {
 	@ManyToOne
 	private Client client;
 	@ManyToOne
-	private UtilisateurXpr creerPar;
+	private Utilisateur creerPar;
 	@ManyToOne
-	private UtilisateurXpr modifierPar;
+	private Utilisateur modifierPar;
 	
 	@ManyToOne
 	private Business business;
 	
 	private boolean resolu;
 	
-	@ManyToOne
-	private Service service;
 	
 	
 	public Demande() {
@@ -145,19 +145,21 @@ public class Demande implements Serializable {
 		this.dateModification = dateModification;
 	}
 
-	public UtilisateurXpr getCreerPar() {
+	
+
+	public Utilisateur getCreerPar() {
 		return creerPar;
 	}
 
-	public void setCreerPar(UtilisateurXpr creerPar) {
+	public void setCreerPar(Utilisateur creerPar) {
 		this.creerPar = creerPar;
 	}
 
-	public UtilisateurXpr getModifierPar() {
+	public Utilisateur getModifierPar() {
 		return modifierPar;
 	}
 
-	public void setModifierPar(UtilisateurXpr modifierPar) {
+	public void setModifierPar(Utilisateur modifierPar) {
 		this.modifierPar = modifierPar;
 	}
 
@@ -177,15 +179,7 @@ public class Demande implements Serializable {
 		this.resolu = resolu;
 	}
 
-	public Service getService() {
-		return service;
-	}
 
-	public void setService(Service service) {
-		this.service = service;
-	}
-	
-	
 	
 
 }

@@ -21,6 +21,7 @@ import com.xpr.exceptions.BonExpeditionException;
 import com.xpr.services.BonExpeditionService;
 
 @RestController
+@RequestMapping(path="/bonExpedition")
 public class BonExpeditionRestController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(BonExpeditionRestController.class);
@@ -48,10 +49,7 @@ public class BonExpeditionRestController {
 	public BonExpedition findBonExpeditionByNom(@PathVariable String nom) {
 		return bonExpeditionService.findBonExpeditionByNom(nom);
 	}
-	@RequestMapping(value="/findMyBonExpeditionByMc",method=RequestMethod.GET)
-	public Page<BonExpedition> findMyBonExpeditionByMc(@RequestParam(name="cni")String cni, @RequestParam(name="mc") String mc, @RequestParam(name="page",defaultValue="0")int page,@RequestParam(name="size",defaultValue="5")int size) {
-		return bonExpeditionService.findMyBonExpeditionByMc(cni, mc, page, size);
-	}
+	
 
 	@RequestMapping(value="/findAllBonExpeditionByMc",method=RequestMethod.GET)
 	public Page<BonExpedition> findAllBonExpeditionByMc(@RequestParam(name="mc")String mc, @RequestParam(name="page",defaultValue="0")int page,@RequestParam(name="size",defaultValue="5")int size) {
@@ -105,12 +103,6 @@ public class BonExpeditionRestController {
 		return bonExpeditionService.findAllBonExpeditionByMc(mc, page, size);
 	}
 	
-	@RequestMapping(value="/chercherBonExpeditionsByClient",method=RequestMethod.GET)
-	public Page<BonExpedition> findAllBonExpeditionsByClient(@RequestParam(name="email")String emailClient, int page, int size) {
-		return bonExpeditionService.findAllBonExpeditionsByClient(emailClient, page, size);
-	}
-	@RequestMapping(value="/chercherBonExpeditionsByUtilisateur",method=RequestMethod.GET)
-	public Page<BonExpedition> findAllBonExpeditionsByUtilisateurs(@RequestParam(name="email")String emailUtilisateur, int page, int size) {
-		return bonExpeditionService.findAllBonExpeditionsByUtilisateurs(emailUtilisateur, page, size);
-	}
+
+
 }

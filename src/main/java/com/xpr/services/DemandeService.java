@@ -1,11 +1,7 @@
 package com.xpr.services;
 
 import java.util.List;
-
 import org.springframework.data.domain.Page;
-
-import com.xpr.entities.BonLivraison;
-import com.xpr.entities.Colis;
 import com.xpr.entities.Demande;
 
 public interface DemandeService {

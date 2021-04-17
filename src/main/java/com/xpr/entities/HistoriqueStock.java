@@ -11,25 +11,15 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "historiqueStock")
-public class HistoriqueStock implements Serializable{
+public class HistoriqueStock extends Historique  implements Serializable{
 	
 	@Id @GeneratedValue
 	private Long id;
 	
 	@ManyToOne
-	private Stock stock;
+	private ProduitStockClient stock;
 	
-	private String action;
 	
-	@ManyToOne
-	private Variante variante;
-	
-	private int qte;
-	
-	private Date creationDate;
-	
-	@ManyToOne
-	private Utilisateur utilisateur;
 	
 	
 	public HistoriqueStock() {
@@ -46,65 +36,17 @@ public class HistoriqueStock implements Serializable{
 		this.id = id;
 	}
 
-	public Date getCreationDate() {
-		return creationDate;
-	}
 
-
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
-
-
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
-	}
-
-
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
-	}
-
-
-	public int getQte() {
-		return qte;
-	}
-
-
-	public void setQte(int qte) {
-		this.qte = qte;
-	}
-
-
-	public Stock getStock() {
+	public ProduitStockClient getStock() {
 		return stock;
 	}
 
 
-	public void setStock(Stock stock) {
+	public void setStock(ProduitStockClient stock) {
 		this.stock = stock;
 	}
 
-
-	public String getAction() {
-		return action;
-	}
-
-
-	public void setAction(String action) {
-		this.action = action;
-	}
-
-
-	public Variante getVariante() {
-		return variante;
-	}
-
-
-	public void setVariante(Variante variante) {
-		this.variante = variante;
-	}
-
+	
 	
 
 }

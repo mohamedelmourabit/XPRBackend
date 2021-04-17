@@ -10,10 +10,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xpr.dao.helper.XprBaseModel;
 
 @Entity
 @Table(name = "commentaires")
-public class Commentaire implements Serializable {
+public class Commentaire extends XprBaseModel implements Serializable {
 	
 	@Id @GeneratedValue
 	private long id;

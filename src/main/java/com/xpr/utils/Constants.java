@@ -11,7 +11,11 @@ public class Constants {
 	public static final String NOUVEAU_BE="Nouveau BE";
 	public static final String NOUVEAU_BRT="Nouveau BRT";
 	
+	public static final String EN_ATTENTE_AFFECTATION="En Attente d'affectation à un livreur"; 
+	
 	public static final String LIVRE="Livré";
+	
+	public static final String LIVRE_PARTIEL="Livré partiellement";
 	
 	public static final String ANNULE="Annule";
 	
@@ -27,6 +31,7 @@ public class Constants {
 	
 	public static final String HORS_ZONE="Hors zone";
 	
+	public static final String RAMASSE="Ramassé";
 	
 	public static final String EN_ATTENTE_RAMASSAGE="En Attente de ramassage";
 	
@@ -41,4 +46,6 @@ public class Constants {
 	public static final String PRIORITE_HAUTE="Haute";
 	
 	public static final String PRIORITE_MOYENNE="Moyenne";
+	
+	public static final String RECEPTIONNE_SUR_AGENCE ="Récepssioné sur agence";
 }

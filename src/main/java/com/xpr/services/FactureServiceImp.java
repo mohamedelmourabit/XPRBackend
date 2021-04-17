@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.xpr.dao.FactureRepository;
 import com.xpr.entities.Colis;
 import com.xpr.entities.Facture;
+import com.xpr.entities.LigneFacture;
 import com.xpr.exceptions.FactureException;
 import com.xpr.utils.Constants;
 
@@ -37,16 +38,27 @@ public class FactureServiceImp implements FactureService {
 			facture.setTotalNet(0);
 		}
 		
-		if(facture.getColis()!=null) {
+		if(facture.getLigneFactures()!=null) {
 		
 		
-		
-		for(Colis c : facture.getColis()) {
-			montantTotalNet = montantTotalNet + c.getPrix();
+			int qte=0;
+		for(LigneFacture c : facture.getLigneFactures()) {
+			double prix=0.0;
+			
+			if(c.getLigneColis().getProduit()!=null) {
+				 prix = c.getLigneColis().getProduit().getPrixVente();
+				
+			}else {
+				prix = c.getLigneColis().getVariante().getPrixVente();
+				
+			}
+			 qte = qte + c.getLigneColis().getQteLivre();
+			
+			montantTotalNet = montantTotalNet + prix;
 		}
 		facture.setTotalNet(montantTotalNet);
 		
-			facture.setNbrColis(facture.getColis().size());
+			facture.setNbrColis(qte);
 		}else {
 			facture.setTotalCrbt(0);
 			facture.setTotalFrais(0);
@@ -90,15 +102,28 @@ public class FactureServiceImp implements FactureService {
 				facture.setTotalNet(0);
 			}
 			
-			if(facture.getColis()!=null) {
-			
 
-			for(Colis c : facture.getColis()) {
-				montantTotalNet = montantTotalNet + c.getPrix();
+			if(facture.getLigneFactures()!=null) {
+			
+			
+				int qte=0;
+			for(LigneFacture c : facture.getLigneFactures()) {
+				double prix=0.0;
+				
+				if(c.getLigneColis().getProduit()!=null) {
+					 prix = c.getLigneColis().getProduit().getPrixVente();
+					
+				}else {
+					prix = c.getLigneColis().getVariante().getPrixVente();
+					
+				}
+				 qte = qte + c.getLigneColis().getQteLivre();
+				
+				montantTotalNet = montantTotalNet + prix;
 			}
 			facture.setTotalNet(montantTotalNet);
 			
-				facture.setNbrColis(facture.getColis().size());
+				facture.setNbrColis(qte);
 			}else {
 				facture.setTotalCrbt(0);
 				facture.setTotalFrais(0);

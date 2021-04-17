@@ -11,25 +11,23 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonView;
+import com.xpr.dao.core.view.ModelViews;
+import com.xpr.dao.helper.XprBaseModel;
 
 @Entity
 @Table(name = "bonRetours")
-public class BonRetour implements Serializable {
+public class BonRetour extends XprBaseModel implements Serializable {
 	
 	@Id 
 	@GenericGenerator(name = "bonRetour_nom", strategy = "com.xpr.generator.BonRetourGenerator")
     @GeneratedValue(generator = "bonRetour_nom") 
+	@JsonView(ModelViews.SelectView.class)
 	private String nom;
 	
-	
-	private Date dateCreation;
-	
-	private Date dateModification;
-	
+
 	@ManyToOne
 	private Livreur livreur;
 	
@@ -37,25 +35,24 @@ public class BonRetour implements Serializable {
 	private Client client;
 	
 	@OneToMany(mappedBy = "bonRetour",fetch = FetchType.EAGER)
-	private Set<LigneColis> ligneColisRetourne=new HashSet<LigneColis>();
-	
-	
-	@ManyToOne
-	private Utilisateur creerPar;
+	private Set<LigneBonRetour> ligneBonRetours=new HashSet<LigneBonRetour>();
 	
 	@ManyToOne
-	private Utilisateur modifierPar;
+	@JsonView(ModelViews.SelectView.class)
+	private StatutBonRetour statut;
 	
-	private String statut;
-	
+	@JsonView(ModelViews.ListView.class)
 	private boolean disabled;
 	
 	@OneToMany(mappedBy = "bonRetour",fetch = FetchType.EAGER)
-	private Set<Historique> historiques=new HashSet<Historique>();
+	private Set<HistoriqueBonRetour> historiques;
+	
+	@ManyToOne
+	private Entite entite;
 	
 	
 	public BonRetour() {
-		this.dateCreation = new Date();
+		
 	}
 
 	public String getNom() {
@@ -66,14 +63,7 @@ public class BonRetour implements Serializable {
 		this.nom = nom;
 	}
 
-	public Date getDateCreation() {
-		return dateCreation;
-	}
-
-	public void setDateCreation(Date dateCreation) {
-		this.dateCreation = dateCreation;
-	}
-
+	
 	public Livreur getLivreur() {
 		return livreur;
 	}
@@ -88,19 +78,15 @@ public class BonRetour implements Serializable {
 
 	public void setClient(Client client) {
 		this.client = client;
+	}	
+
+	public Set<LigneBonRetour> getLigneBonRetours() {
+		return ligneBonRetours;
 	}
 
-	
-
-	public Set<LigneColis> getLigneColisRetourne() {
-		return ligneColisRetourne;
+	public void setLigneBonRetours(Set<LigneBonRetour> ligneBonRetours) {
+		this.ligneBonRetours = ligneBonRetours;
 	}
-
-	public void setLigneColisRetourne(Set<LigneColis> ligneColisRetourne) {
-		this.ligneColisRetourne = ligneColisRetourne;
-	}
-
-	
 
 	public boolean isDisabled() {
 		return disabled;
@@ -110,48 +96,32 @@ public class BonRetour implements Serializable {
 		this.disabled = disabled;
 	}
 
-	public String getStatut() {
-		return statut;
-	}
+	
+	
+	
 
-	public void setStatut(String statut) {
-		this.statut = statut;
-	}
-
-	public Set<Historique> getHistoriques() {
+	public Set<HistoriqueBonRetour> getHistoriques() {
 		return historiques;
 	}
 
-	public void setHistoriques(Set<Historique> historiques) {
+	public void setHistoriques(Set<HistoriqueBonRetour> historiques) {
 		this.historiques = historiques;
 	}
 
-	public Date getDateModification() {
-		return dateModification;
+	public Entite getEntite() {
+		return entite;
 	}
 
-	public void setDateModification(Date dateModification) {
-		this.dateModification = dateModification;
+	public void setEntite(Entite entite) {
+		this.entite = entite;
 	}
 
-	public Utilisateur getModifierPar() {
-		return modifierPar;
+	public StatutBonRetour getStatut() {
+		return statut;
 	}
 
-	public void setModifierPar(UtilisateurXpr modifierPar) {
-		this.modifierPar = modifierPar;
-	}
-
-	public Utilisateur getCreerPar() {
-		return creerPar;
-	}
-
-	public void setCreerPar(Utilisateur creerPar) {
-		this.creerPar = creerPar;
-	}
-
-	public void setModifierPar(Utilisateur modifierPar) {
-		this.modifierPar = modifierPar;
+	public void setStatut(StatutBonRetour statut) {
+		this.statut = statut;
 	}
 	
 	

@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.websocket.server.PathParam;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,89 +15,113 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.xpr.dao.UtilisateurRepository;
+import com.xpr.dao.annotation.XprRole;
+import com.xpr.dao.core.controller.SecuredCRUDController;
 import com.xpr.dto.RegisterForm;
 import com.xpr.entities.Autorisation;
 import com.xpr.entities.Profile;
-import com.xpr.entities.Service;
 import com.xpr.entities.Utilisateur;
 import com.xpr.services.AccountService;
 
+
 @RestController
-public class AccountRestController {
+@RequestMapping(path="/account")
+public class AccountRestController extends SecuredCRUDController<Utilisateur, String> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountRestController.class);
 	
 	@Autowired
 	private AccountService accountService;
 	
+	@Autowired
+    public void setRepository(UtilisateurRepository repository) {
+        this.repository = repository;
+    }
+	
+	@Override
+	public void setIdentifier(String id, Utilisateur object) {
+		object.setEmail(id);
+		
+	}
+
+   
+	
 	@RequestMapping(value="/getAllProfiles",method=RequestMethod.GET)
+	 @XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
 	public List<Profile> getAllProfiles() {
 		return accountService.getAllProfiles();
 	}
 
 	@RequestMapping(value="/getAllAutorisations",method=RequestMethod.GET)
+	 @XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
 	public List<Autorisation> getAllAutorisations() {
 		return accountService.getAllAutorisations();
 	}
 
 	@RequestMapping(value="/getAllAutorisationsByProfile/{profile}",method=RequestMethod.GET)
+	 @XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
 	public Page<Autorisation> findAutorisationByProfile(@PathVariable String profile, @RequestParam(name="page",defaultValue="0")int page,@RequestParam(name="size",defaultValue="5")int size) {
 		return accountService.findAutorisationByProfile(profile, page, size);
 	}
 
 	@RequestMapping(value="/saveProfile",method=RequestMethod.POST)
+	 @XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
 	public Profile addProfile(@RequestBody Profile profile) {
 		return accountService.addProfile(profile);
 	}
 
 	@PostMapping("/saveUtilisateur")
+	 @XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
 	public Utilisateur saveUtilisateur(@RequestBody Utilisateur appUser) {
 		return accountService.saveUtilisateur(appUser);
 	}
 	
 	@RequestMapping(value="/findUtilisateurByEmail",method=RequestMethod.GET)
+	 @XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
 	public Utilisateur findUtilisateurByEmail(@RequestParam(name="email")String email) {
 		return accountService.findUtilisateurByEmail(email);
 	}
 	@RequestMapping(value="/findUtilisateurByCni",method=RequestMethod.GET)
+	 @XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
 	public Utilisateur findUtilisateurByCni(@RequestParam(name="cni")String cni) {
 		return accountService.findUtilisateurByCni(cni);
 	}
 
 	@RequestMapping(value="/addAutorisationToProfile",method=RequestMethod.PUT)
+	 @XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
 	public Profile addAutorisationToProfile(@RequestParam(name="authorisationName")String authorisation, @RequestParam(name="profileName")String profileName) {
 		return accountService.addAuthorisationToProfile(authorisation, profileName);
 	}
 
-	@RequestMapping(value="/removeAutorisationToUtilisateur",method=RequestMethod.PUT)
-	public Utilisateur removeAutorisationToUtilisateur(@RequestParam(name="cni")String cni, @RequestParam(name="authorisationName")String authorisation) {
-		return accountService.removeAuthorisationToUtilisateur(cni, authorisation);
-	}
+	
 
 	@RequestMapping(value="/addProfileToUtilisateur",method=RequestMethod.PUT)
+	 @XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
 	public Utilisateur addProfileToUtilisateur(@RequestParam(name="cni")String cni,@RequestParam(name="profileId") long profileId) {
 		return accountService.addProfileToUtilisateur(cni, profileId);
 	}
 	
 	@RequestMapping(value="/removeProfileToUtilisateur",method=RequestMethod.PUT)
+	 @XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
 	public Utilisateur removeProfileToUtilisateur(@RequestParam(name="cni")String cni,@RequestParam(name="profileId") long profileId) {
 		return accountService.removeProfileToUtilisateur(cni, profileId);
 	}
 
 	@RequestMapping(value="/findProfilesByUtilisateur",method=RequestMethod.GET)
-	public List<Profile> findProfilesByUsers(@RequestParam(name="cni")String cni) {
+	 @XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
+	public Set<Profile> findProfilesByUsers(@RequestParam(name="cni")String cni) {
 		return accountService.findProfilesByUsers(cni);
 	}
 
 	@RequestMapping(value="/saveAutorisation",method=RequestMethod.POST)
+	 @XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
 	public Autorisation saveAutorisation(String authorisationName) {
 		return accountService.saveAuthorisation(authorisationName);
 	}
 
-	@RequestMapping(value="/addAutorisationToUser",method=RequestMethod.PUT)
-	public Utilisateur addAutorisationToUser(@RequestParam(name="autorisationName")String authorisation,@RequestParam(name="email") String email) {
-		return accountService.addAuthorisationToUser(authorisation, email);
-	}
+
 
 	@RequestMapping(value="/findAutorisationUtilisateur",method=RequestMethod.GET)
 	public List<Autorisation> findAutorisationUtilisateur(@RequestParam(name="cni")String cni) {
@@ -112,20 +133,6 @@ public class AccountRestController {
 		return accountService.findAutorisationByProfile(profile);
 	}
 
-	@RequestMapping(value="/addUtilisateurToServie",method=RequestMethod.PUT)
-	public Utilisateur addUtilisateurToServie(@RequestParam(name="cni")String cni,@RequestParam(name="serviceId") long serviceId) {
-		return accountService.addUtilisateurToServie(cni, serviceId);
-	}
-
-	@RequestMapping(value="/removeUtilisateurServie",method=RequestMethod.PUT)
-	public Utilisateur removeUtilisateurServie(@RequestParam(name="cni")String cni,@RequestParam(name="serviceId") long serviceId) {
-		return accountService.removeUtilisateurServie(cni, serviceId);
-	}
-
-	@RequestMapping(value="/addService",method=RequestMethod.POST)
-	public Service saveService(@RequestBody Service service) {
-		return accountService.saveService(service);
-	}
 
 	@PostMapping("/register")
 	public Utilisateur register(@RequestBody RegisterForm userForm) {
@@ -162,22 +169,7 @@ public class AccountRestController {
 		
 	}
 	
-	@PostMapping("/autorisationToUser")
-	public Utilisateur addAutorisation(@RequestParam(name="cni") String cni,@RequestParam(name="autorisation") String autorisation) {
-		
-		Utilisateur user = accountService.findUtilisateurByCni(cni);
 	
-			if(user!=null) {
-				accountService.addAuthorisationToUser(autorisation, cni);
-			List<Autorisation> autorisations = getAuthorisation(cni);
-			user.setAuthorities(new HashSet<Autorisation>(autorisations));
-		}else {
-			throw new RuntimeException("Utilisateur introuvable !");
-		}
-		
-		return user;
-		
-	}
 	
 	
 	@PostMapping("/profileToUser")
@@ -196,7 +188,7 @@ public class AccountRestController {
 		
 	}
 	
-	@PostMapping("/logging")
+	@PostMapping("/loginByCni")
 	public Utilisateur checkConnection(@RequestParam(name="cni") String cni,@RequestParam(name="password") String password) {
 		
 		Utilisateur user = accountService.findUtilisateurByCni(cni);
@@ -206,6 +198,15 @@ public class AccountRestController {
 		}else {
 			throw new RuntimeException("Email où Mot de passe incorrecte !");
 		}
+		
+	}
+	
+	@PostMapping("/loginByEmail")
+	public Utilisateur checkConnectionByEmail(@RequestParam(name="email") String email,@RequestParam(name="password") String password) {
+		
+		Utilisateur user = accountService.findUtilisateurByEmail(email);
+		
+		return user;
 		
 	}
 	
@@ -237,6 +238,8 @@ public class AccountRestController {
 		
 		
 	}
+
+	
 	
 	
 	

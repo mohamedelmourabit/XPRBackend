@@ -10,22 +10,17 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "Ramasseurs")
-@DiscriminatorValue("Ramasseur")
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "typeUtilisateur", discriminatorType = DiscriminatorType.STRING)
-public class Ramasseur extends Utilisateur implements Serializable {
+public class Ramasseur  extends Utilisateur implements Serializable {
 		
-	private String nom;
-	
-	private String prenom;
-	
-	private String telephone;
 
 	
 	@OneToMany(mappedBy="ramasseur",fetch=FetchType.LAZY )
@@ -36,10 +31,11 @@ public class Ramasseur extends Utilisateur implements Serializable {
 	@JsonIgnore
 	private Set<BonRamassage> bonRamassages=new HashSet<BonRamassage>();
 	
+
+	@ManyToMany(fetch=FetchType.LAZY )
+	private Set<Ville> villes = new HashSet<Ville>();
 	
-	@OneToMany(mappedBy="ramasseur",fetch=FetchType.LAZY )
-	@JsonIgnore
-	private Set<BonLivraison> bonLivraisons = new HashSet<BonLivraison>();
+	
 	
 	
 	public Ramasseur() {
@@ -49,29 +45,7 @@ public class Ramasseur extends Utilisateur implements Serializable {
 		
 	}
 
-	public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	public String getPrenom() {
-		return prenom;
-	}
-
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
-
-	public String getTelephone() {
-		return telephone;
-	}
-
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
+	
 
 	
 	public Set<Colis> getColis() {
@@ -81,6 +55,26 @@ public class Ramasseur extends Utilisateur implements Serializable {
 	public void setColis(Set<Colis> colis) {
 		this.colis = colis;
 	}
+
+	public Set<BonRamassage> getBonRamassages() {
+		return bonRamassages;
+	}
+
+	public void setBonRamassages(Set<BonRamassage> bonRamassages) {
+		this.bonRamassages = bonRamassages;
+	}
+
+
+	public Set<Ville> getVilles() {
+		return villes;
+	}
+
+	public void setVilles(Set<Ville> villes) {
+		this.villes = villes;
+	}
+
+	
+	
 	
 	
 

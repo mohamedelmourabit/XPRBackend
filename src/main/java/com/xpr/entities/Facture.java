@@ -3,20 +3,26 @@ package com.xpr.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.ManyToAny;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xpr.dao.helper.XprBaseModel;
 
 @Entity
 @Table(name = "factures")
-public class Facture implements Serializable {
+public class Facture extends XprBaseModel implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -27,6 +33,7 @@ public class Facture implements Serializable {
 	
 	private double totalCrbt;
 	
+	// colis > 1000dh  + 15DH sur frais originale
 	private double totalFrais;
 	
 	private double totalNet;
@@ -39,11 +46,8 @@ public class Facture implements Serializable {
 	
 	private Date dateCreation;
 	
-	@OneToMany(mappedBy="facture",fetch=FetchType.EAGER )
-	private Set<Colis> colis=new HashSet<Colis>();
-	
-	@ManyToOne
-	private Client client; 
+	@OneToMany(mappedBy = "facture",fetch = FetchType.EAGER)
+	private Set<LigneFacture> ligneFactures=new HashSet<LigneFacture>();
 	
 	private boolean disabled;
 	
@@ -52,6 +56,18 @@ public class Facture implements Serializable {
 	
 	@ManyToOne
 	private Livreur livreur;
+	
+	private String typeReglement;
+	
+	private String statutAvecAgence;
+	
+	@ManyToMany
+	@JsonIgnore
+	private List<Client> clients;
+	
+	@ManyToOne
+	private Entite entite;
+	
 	
 	
 	public Facture() {
@@ -138,28 +154,6 @@ public class Facture implements Serializable {
 	public void setDateCreation(Date dateCreation) {
 		this.dateCreation = dateCreation;
 	}
-
-
-	public Set<Colis> getColis() {
-		return colis;
-	}
-
-
-	public void setColis(Set<Colis> colis) {
-		this.colis = colis;
-	}
-
-
-	public Client getClient() {
-		return client;
-	}
-
-
-	public void setClient(Client client) {
-		this.client = client;
-	}
-
-	
 
 	@Override
 	public int hashCode() {
@@ -266,6 +260,58 @@ public class Facture implements Serializable {
 	public void setLivreur(Livreur livreur) {
 		this.livreur = livreur;
 	}
+
+
+	public Set<LigneFacture> getLigneFactures() {
+		return ligneFactures;
+	}
+
+
+	public void setLigneFactures(Set<LigneFacture> ligneFactures) {
+		this.ligneFactures = ligneFactures;
+	}
+
+
+	public String getTypeReglement() {
+		return typeReglement;
+	}
+
+
+	public void setTypeReglement(String typeReglement) {
+		this.typeReglement = typeReglement;
+	}
+
+
+	public String getStatutAvecAgence() {
+		return statutAvecAgence;
+	}
+
+
+	public void setStatutAvecAgence(String statutAvecAgence) {
+		this.statutAvecAgence = statutAvecAgence;
+	}
+
+
+	public List<Client> getClients() {
+		return clients;
+	}
+
+
+	public void setClients(List<Client> clients) {
+		this.clients = clients;
+	}
+
+
+	public Entite getEntite() {
+		return entite;
+	}
+
+
+	public void setEntite(Entite entite) {
+		this.entite = entite;
+	}
+
+	
 	
 	
 	

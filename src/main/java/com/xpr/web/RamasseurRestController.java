@@ -18,6 +18,7 @@ import com.xpr.entities.Ramasseur;
 import com.xpr.services.RamasseurService;
 
 @RestController
+@RequestMapping(path="/ramasseur")
 public class RamasseurRestController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RamasseurRestController.class);
@@ -46,8 +47,8 @@ public class RamasseurRestController {
 		return ramasseurService.saveRamasseur(bl);
 	}
 	
-	@RequestMapping(value="/ramasseurs/{cni}",method=RequestMethod.DELETE)
-	public boolean supprimerRamasseur(@PathVariable String cni) {
+	@RequestMapping(value="/ramasseurs",method=RequestMethod.DELETE)
+	public boolean supprimerRamasseur(@RequestBody String cni) {
 		 ramasseurService.deleteRamasseur(cni);
 		 return true;
 	}

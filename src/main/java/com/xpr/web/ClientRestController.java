@@ -17,6 +17,7 @@ import com.xpr.exceptions.ClientException;
 import com.xpr.services.ClientService;
 
 @RestController
+@RequestMapping(path="/client")
 public class ClientRestController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientRestController.class);
@@ -29,10 +30,10 @@ public class ClientRestController {
 		return clientService.findAll();
 	}
 	
-	@RequestMapping(value="/clients/{email}",method=RequestMethod.GET)
-	public Client getClient(@PathVariable String email) {
+	@RequestMapping(value="/clients/{ice}",method=RequestMethod.GET)
+	public Client getClient(@PathVariable String ice) {
 		try {
-			return clientService.findClientByEmail(email);
+			return clientService.findClientByIce(ice);
 		} catch (ClientException e) {
 			LOGGER.error(e.getMessage(),e);
 			e.printStackTrace();
@@ -40,10 +41,10 @@ public class ClientRestController {
 		return null;
 	}
 	
-	@RequestMapping(value="/clients/{email}",method=RequestMethod.PUT)
-	public Client editClient(@PathVariable String email,@RequestBody Client c) {
+	@RequestMapping(value="/clients/{ice}",method=RequestMethod.PUT)
+	public Client editClient(@PathVariable String ice,@RequestBody Client c) {
 		
-		return clientService.updateClient(email, c);
+		return clientService.updateClient(ice, c);
 	}
 	
 	@PostMapping(value="/clients")
@@ -51,9 +52,9 @@ public class ClientRestController {
 		return clientService.saveClient(bl);
 	}
 	
-	@RequestMapping(value="/clients/{nom}",method=RequestMethod.DELETE)
-	public boolean supprimerClient(@PathVariable String nom) {
-		 clientService.deleteClient(nom);
+	@RequestMapping(value="/clients/{ice}",method=RequestMethod.DELETE)
+	public boolean supprimerClient(@PathVariable String ice) {
+		 clientService.deleteClient(ice);
 		 return true;
 	}
 	

@@ -17,6 +17,7 @@ import com.xpr.entities.Demande;
 import com.xpr.services.DemandeService;
 
 @RestController
+@RequestMapping(path="/demande")
 public class DemandeRestController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DemandeRestController.class);

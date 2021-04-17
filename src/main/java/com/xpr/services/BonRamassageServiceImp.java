@@ -43,15 +43,15 @@ public class BonRamassageServiceImp implements BonRamassageService {
 			throw new BonRamassageException("Erreur création BR sans colis");
 		}
 		
-		br.setDateCreation(new Date());
+		/*br.setDateCreation(new Date());
 		br.setStatut(Constants.EN_ATTENTE_RAMASSAGE);
 		
-		br = bonRamassageRepository.save(br);
+		br = bonRamassageRepository.save(br);*/
 		
-		Historique h =Historique.getHistorique("Ajout nouveau BR: "+br.getNom(), br.getStatut(), "cniTest");
+		/*Historique h =Historique.getHistorique("Ajout nouveau BR: "+br.getNom(), br.getStatut(), "cniTest");
 		h.setBonRamassage(br);
-		br.getHistoriques().add(h);
-		historiqueRepository.save(h);
+		br.getHistoriques().add(h);*/
+		//historiqueRepository.save(h);
 		
 		return br;
 	}
@@ -84,12 +84,12 @@ public class BonRamassageServiceImp implements BonRamassageService {
 		
 		BonRamassage bl = bonRamassageRepository.findByNom(nom);
 		bonRamassage.setNom(nom);
-		bonRamassage.setDateModification(new Date());
+		//bonRamassage.setDateModification(new Date());
 		if(!bonRamassage.getStatut().equals(Constants.NOUVEAU_BR) ) {
 			throw new BonRamassageException("Impossible de modifer un br après ramassage");
 		}
 		
-		if(bl.getStatut().equalsIgnoreCase(bonRamassage.getStatut())) {
+		/*if(bl.getStatut().equalsIgnoreCase(bonRamassage.getStatut())) {
 			throw new BonRamassageException("Impossible de modifier un br avec le meme statut!");
 		}
 		
@@ -99,7 +99,7 @@ public class BonRamassageServiceImp implements BonRamassageService {
 		h.setBonRamassage(bonRamassage);
 		bonRamassage.getHistoriques().add(h);
 		
-		historiqueRepository.save(h);
+		historiqueRepository.save(h);*/
 		return bonRamassage;
 	}
 
@@ -113,14 +113,14 @@ public class BonRamassageServiceImp implements BonRamassageService {
 		if(!bl.getStatut().equals(Constants.NOUVEAU_BR) ) {
 			throw new BonRamassageException("Impossible de supprimer un bl après ramassage");
 		}
-		bl.setDateModification(new Date());
-		bl.setStatut(Constants.ANNULE);
+		//bl.setDateModification(new Date());
+		//bl.setStatut(Constants.ANNULE);
 		
-		Historique h =Historique.getHistorique("Suppression BR: "+nom, bl.getStatut(), "cniTest");
+		/*Historique h =Historique.getHistorique("Suppression BR: "+nom, bl.getStatut(), "cniTest");
 		h.setBonRamassage(bl);
-		bl.getHistoriques().add(h);
+		bl.getHistoriques().add(h);*/
 		bl.setDisabled(true);
-		historiqueRepository.save(h);
+		//historiqueRepository.save(h);
 		
 		if(bl!=null) {
 			bonRamassageRepository.save(bl);
@@ -131,18 +131,18 @@ public class BonRamassageServiceImp implements BonRamassageService {
 	public BonRamassage generateBonRamassage(List<Colis> colis) {
 		LOGGER.info("Generate nouveau BR avec {} colis ",colis.size());
 		BonRamassage bl = new BonRamassage();
-		bl.setDateCreation(new Date());
+		//bl.setDateCreation(new Date());
 		if(colis!=null && colis.get(0)!=null) {
 			Client client = colis.get(0).getClient();
 			bl.setClient(client);
 		}
 		bl.setColis(new HashSet<Colis>(colis));
-		bl.setDateModification(new Date());
+		//bl.setDateModification(new Date());
 		bl = bonRamassageRepository.save(bl);
-		Historique h =Historique.getHistorique("Ajout nouveau BR: "+bl.getNom(), bl.getStatut(), "cniTest");
+		/*Historique h =Historique.getHistorique("Ajout nouveau BR: "+bl.getNom(), bl.getStatut(), "cniTest");
 		h.setBonRamassage(bl);
-		bl.getHistoriques().add(h);
-		historiqueRepository.save(h);
+		bl.getHistoriques().add(h);*/
+		//historiqueRepository.save(h);
 		
 		return bl;
 	}
@@ -167,14 +167,14 @@ public class BonRamassageServiceImp implements BonRamassageService {
 	@Override
 	public BonRamassage addColisToBonRamassage(String idBr, List<Colis> colis) throws BonRamassageException {
 		BonRamassage bl = findBonRamassageByNom(idBr);
-		bl.setDateModification(new Date());
+		//bl.setDateModification(new Date());
 		if(!bl.getStatut().equals(Constants.NOUVEAU_BR) ) {
 			throw new BonRamassageException("Impossible de modifier un bl après ramassage");
 		}
 		
-		Historique h =Historique.getHistorique("Ajout " + colis.size()+" colis to BR: "+bl.getNom(), bl.getStatut(), "cniTest");
+		/*Historique h =Historique.getHistorique("Ajout " + colis.size()+" colis to BR: "+bl.getNom(), bl.getStatut(), "cniTest");
 		h.setBonRamassage(bl);
-		historiqueRepository.save(h);
+		historiqueRepository.save(h);*/
 		
 		bl.getColis().addAll(colis);
 		return bl;
@@ -184,7 +184,7 @@ public class BonRamassageServiceImp implements BonRamassageService {
 	public BonRamassage deleteColisFomBonRamassage(String idBr, List<Colis> colis) {
 		
 		BonRamassage bl = findBonRamassageByNom(idBr);
-		bl.setDateModification(new Date());
+		//bl.setDateModification(new Date());
 		Iterator<Colis> iterator = bl.getColis().iterator();
 		while (iterator.hasNext()) {
 		    Colis element = iterator.next();
@@ -210,14 +210,14 @@ public class BonRamassageServiceImp implements BonRamassageService {
 		
 		BonRamassage br = findBonRamassageByNom(nom);
 		
-		br.setDateModification(new Date());
+		//br.setDateModification(new Date());
 		if(!br.getStatut().equals(Constants.NOUVEAU_BR) ) {
 			throw new BonRamassageException("Impossible de modifier un br après ramassage!");
 		}
 		
-		if(br.getStatut().equalsIgnoreCase(statut)) {
+		/*if(br.getStatut().equalsIgnoreCase(statut)) {
 			throw new BonRamassageException("Impossible de modifier un br avec le meme statut!");
-		}
+		}*/
 		
 		
 		return bonRamassageRepository.save(br);

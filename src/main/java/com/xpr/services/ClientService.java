@@ -9,15 +9,15 @@ public interface ClientService {
 	
 	public Client saveClient(Client client);
 
-	public Client findClientByEmail(String email) throws ClientException;
+	public Client findClientByIce(String ice) throws ClientException;
 
 	public Page<Client> findAllClientByMc(String mc, int page, int size);
 
 	public List<Client> findAll();
 
-	public Client updateClient(String email, Client client);
+	public Client updateClient(String ice, Client client);
 
-	public void deleteClient(String email);
+	public void deleteClient(String ice);
 	
 
 }

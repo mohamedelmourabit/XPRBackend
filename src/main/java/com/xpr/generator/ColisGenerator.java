@@ -16,7 +16,7 @@ public class ColisGenerator implements IdentifierGenerator {
 	public Serializable generate(SharedSessionContractImplementor session, Object object)
 	        throws HibernateException {
 
-	    String prefix = "PWC1032MA";
+	    String prefix = "XPR1032MA";
 	    Connection connection = session.connection();
 
 	    try {

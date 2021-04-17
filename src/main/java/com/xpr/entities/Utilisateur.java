@@ -4,51 +4,73 @@ package com.xpr.entities;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.xpr.dao.core.view.ModelViews;
 
 
 @Entity
-@Table(name = "utilisateurs")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@DiscriminatorColumn(name = "typeUtilisateur", discriminatorType = DiscriminatorType.STRING, length = 25)
-
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "typeUtilisateur")
-@JsonSubTypes({ @Type(name = "Livreur", value = Livreur.class),
-		@Type(name = "Utilisateur", value = Client.class)
-		})
-
 public class Utilisateur implements Serializable {
 	
 	@Id
-	private String cni;
-	
+	@JsonView(ModelViews.SelectView.class)
 	private String email;
 	
+	@JsonView(ModelViews.SelectView.class)
+	private String cni;
+	
+	@JsonIgnore
 	private String password;
 	
+	@JsonView(ModelViews.SelectView.class)
+	private String nom;
+	
+	@JsonView(ModelViews.SelectView.class)
+	private String prenom;
+	
+	@JsonView(ModelViews.SelectView.class)
+	private String telephone;
+	
 	@ManyToOne
-	private Service service;
+	@JsonView(ModelViews.SelectView.class)
+	private Entite entite;
+	
+	@ManyToOne
+	private Client client;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "utilisateurs_profiles",
+			joinColumns = @JoinColumn(
+					name = "Utilisateurs_email", referencedColumnName = "email"),
+			inverseJoinColumns = @JoinColumn(
+					name = "profile_id", referencedColumnName = "id"))
+	@JsonView(ModelViews.ListView.class)
+	@JsonIgnoreProperties({"autorisations"})
+	private Set<Profile> profiles = new HashSet<>();
+	
+	
+	private boolean disabled;
+	
+	@JsonView(ModelViews.SelectView.class)
+	protected String typeUtilisateur;
+	
+	
+	
 	
 		
-	public Utilisateur(String cni) {
+	public Utilisateur(String email) {
 		super();
-		this.cni = cni;
+		this.email = email;
 	}
 
 	public Utilisateur(String email, String password) {
@@ -57,19 +79,7 @@ public class Utilisateur implements Serializable {
 		this.password = password;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JsonIgnore
-	private Set<Autorisation> authorities = new HashSet<>();
-	
-	@ManyToMany
-	@JsonIgnore
-	private Set<Profile> profiles = new HashSet<>();
-	
-	
-	private boolean disabled;
-	
-	@Column(name = "typeUtilisateur", insertable = false, updatable = false)
-	protected String typeUtilisateur;
+		
 	
 	
 	public Utilisateur() {
@@ -83,16 +93,6 @@ public class Utilisateur implements Serializable {
 	@JsonSetter
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	
-
-	public Set<Autorisation> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(Set<Autorisation> authorities) {
-		this.authorities = authorities;
 	}
 
 
@@ -120,14 +120,6 @@ public class Utilisateur implements Serializable {
 		this.cni = cni;
 	}
 
-	public Service getService() {
-		return service;
-	}
-
-	public void setService(Service service) {
-		this.service = service;
-	}
-
 
 	public String getTypeUtilisateur() {
 		return typeUtilisateur;
@@ -144,6 +136,50 @@ public class Utilisateur implements Serializable {
 	public void setProfiles(Set<Profile> profiles) {
 		this.profiles = profiles;
 	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	
+	public Entite getEntite() {
+		return entite;
+	}
+
+	public void setEntite(Entite entite) {
+		this.entite = entite;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	
+
 	
 	
 	

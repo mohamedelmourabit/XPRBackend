@@ -2,98 +2,121 @@ package com.xpr.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.xpr.dao.core.view.ModelViews;
+import com.xpr.dao.helper.XprBaseModel;
+import com.xpr.utils.StringAttributeConverter;
+
 
 @Entity
 @Table(name = "colis")
-public class Colis implements Serializable {
+public class Colis extends XprBaseModel implements Serializable,Cloneable {
 	
 	@Id
 	@GenericGenerator(name = "colis_numCommande", strategy = "com.xpr.generator.ColisGenerator")
-    @GeneratedValue(generator = "colis_numCommande")  
+    @GeneratedValue(generator = "colis_numCommande") 
+	@JsonView(ModelViews.SelectView.class)
 	private String numCommande;
 	
+	@JsonView(ModelViews.SelectView.class)
 	private String codeEnvoi;
 	
+	@JsonView(ModelViews.SelectView.class)
+	private String idIntern;
+	
+	@JsonView(ModelViews.SelectView.class)
 	private String typeLivraison;
 	
 	// à crypter
+	@Convert(converter = StringAttributeConverter.class)
+	@JsonView(ModelViews.SelectView.class)
 	private String nomComplet;
 	
-	private String produit;
-	
-	private double prix;
-	
+	@JsonView(ModelViews.ListView.class)
 	private Date dateRamassage;
 	
-	
+	@JsonView(ModelViews.ListView.class)
 	private Date dateLivraison;
 	
-	
-	private Date dateCreation;
-	
-	private Date dateModification;
-	
-	
+	@JsonView(ModelViews.SelectView.class)
 	private boolean ouvertureColis;
 	
+	@JsonView(ModelViews.SelectView.class)
 	private boolean applicationFrais;
 	
+	@JsonView(ModelViews.SelectView.class)
 	private boolean applicationFraisAssurance;
 	
 	@Column(columnDefinition = "TEXT")
+	@JsonView(ModelViews.SelectView.class)
 	private String remarque;
 
 	//crypté
+	@Convert(converter = StringAttributeConverter.class)
+	@JsonView(ModelViews.SelectView.class)
 	private String destinataire;
 	
 	// telephone
+	@Convert(converter = StringAttributeConverter.class)
+	@JsonView(ModelViews.SelectView.class)
 	private String telephone;
 	
 	@ManyToOne
+	@JsonView(ModelViews.SelectView.class)
 	private Ville villeDestination;
 	
+	@JsonView(ModelViews.SelectView.class)
 	private String secteur;
 	
+	@Column(columnDefinition = "TEXT")
+	@JsonView(ModelViews.SelectView.class)
 	private String adresse;
 	
-	private double crbt;
-	
+		
 	@ManyToOne
 	@JsonIgnore
 	private Facture facture;
-	
-	@ManyToOne
-	@JsonIgnore
-	private BonLivraison bonLivraison;
-	
+
 	@ManyToOne
 	@JsonIgnore
 	private BonRamassage bonRamassage;
 	
 	
 	@ManyToOne
+	@JsonView(ModelViews.SelectView.class)
 	private Client client;
 	
 	@ManyToOne
+	@JsonView(ModelViews.SelectView.class)
+	private Entite entite;
+	
+	@ManyToOne
+	@JsonIgnore
 	private Livreur livreur;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Ramasseur ramasseur;
 	
-	private String statut;
+	@ManyToOne
+	@JoinColumn(name="status_id")
+    @JsonView(ModelViews.SelectView.class)
+	private StatutColis statut;
 	
+	@JsonView(ModelViews.ListView.class)
 	private boolean disabled;
 		
 	@ManyToOne
@@ -110,47 +133,26 @@ public class Colis implements Serializable {
 	
 
 	@OneToMany(mappedBy = "colis",fetch = FetchType.EAGER)
-	private Set<Historique> historiques=new HashSet<Historique>();
+	private Set<HistoriqueColis> historiques;
 	
 	@OneToMany(mappedBy = "colis",fetch = FetchType.EAGER)
 	@JsonIgnore
-	private Set<Commentaire> commentaires=new HashSet<Commentaire>();
+	private Set<Commentaire> commentaires;
 	
-
-	@ManyToOne
-	private UtilisateurXpr creerPar;
-	
-	@ManyToOne
-	private UtilisateurXpr modifierPar;
 	
 	@OneToMany(mappedBy = "colis",fetch = FetchType.EAGER)
-	@JsonIgnore
-	private Set<Produit> produits=new HashSet<Produit>();
-	
-	@OneToMany(mappedBy = "colis",fetch = FetchType.EAGER)
-	@JsonIgnore
-	private Set<LigneColis> ligneColis=new HashSet<LigneColis>();
-	
-	@OneToMany(mappedBy = "colis",fetch = FetchType.LAZY)
-	@JsonIgnore
-	private Set<LigneColis> ligneColisLivre=new HashSet<LigneColis>();
-	
-	
-	@OneToMany(mappedBy = "colis",fetch = FetchType.LAZY)
-	@JsonIgnore
-	private Set<LigneColis> ligneColisRetourne=new HashSet<LigneColis>();
+	 @JsonView(ModelViews.SelectView.class)
+	private Set<LigneColis> ligneColis;
 
-
+	@JsonView(ModelViews.ListView.class)
+	private boolean facturer;
+	
+	@JsonView(ModelViews.ListView.class)
+	private boolean facturerClient;
+	
+	
 	public Colis() {
-		this.dateCreation = new Date();
-	}
-
-	public String getCodeEnvoi() {
-		return codeEnvoi;
-	}
-
-	public void setCodeEnvoi(String codeEnvoi) {
-		this.codeEnvoi = codeEnvoi;
+		
 	}
 
 	public String getTypeLivraison() {
@@ -169,13 +171,7 @@ public class Colis implements Serializable {
 		this.nomComplet = nomComplet;
 	}
 
-	public double getPrix() {
-		return prix;
-	}
-
-	public void setPrix(double prix) {
-		this.prix = prix;
-	}
+	
 
 	public Date getDateRamassage() {
 		return dateRamassage;
@@ -264,28 +260,12 @@ public class Colis implements Serializable {
 		this.adresse = adresse;
 	}
 
-	public double getCrbt() {
-		return crbt;
-	}
-
-	public void setCrbt(double crbt) {
-		this.crbt = crbt;
-	}
-
 	public Facture getFacture() {
 		return facture;
 	}
 
 	public void setFacture(Facture facture) {
 		this.facture = facture;
-	}
-
-	public BonLivraison getBonLivraison() {
-		return bonLivraison;
-	}
-
-	public void setBonLivraison(BonLivraison bonLivraison) {
-		this.bonLivraison = bonLivraison;
 	}
 
 	public Client getClient() {
@@ -304,21 +284,6 @@ public class Colis implements Serializable {
 		this.livreur = livreur;
 	}
 
-	public Date getDateCreation() {
-		return dateCreation;
-	}
-
-	public void setDateCreation(Date dateCreation) {
-		this.dateCreation = dateCreation;
-	}
-
-	public String getStatut() {
-		return statut;
-	}
-
-	public void setStatut(String statut) {
-		this.statut = statut;
-	}
 
 	public boolean isDisabled() {
 		return disabled;
@@ -327,15 +292,6 @@ public class Colis implements Serializable {
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
 	}
-
-	public Date getDateModification() {
-		return dateModification;
-	}
-
-	public void setDateModification(Date dateModification) {
-		this.dateModification = dateModification;
-	}
-
 
 	public String getRemarque() {
 		return remarque;
@@ -369,13 +325,7 @@ public class Colis implements Serializable {
 		this.bonRamassage = bonRamassage;
 	}
 
-	public Set<Historique> getHistoriques() {
-		return historiques;
-	}
-
-	public void setHistoriques(Set<Historique> historiques) {
-		this.historiques = historiques;
-	}
+	
 
 	public Set<Commentaire> getCommentaires() {
 		return commentaires;
@@ -410,22 +360,7 @@ public class Colis implements Serializable {
 		this.ramasseur = ramasseur;
 	}
 
-	public UtilisateurXpr getCreerPar() {
-		return creerPar;
-	}
-
-	public void setCreerPar(UtilisateurXpr creerPar) {
-		this.creerPar = creerPar;
-	}
-
-	public UtilisateurXpr getModifierPar() {
-		return modifierPar;
-	}
-
-	public void setModifierPar(UtilisateurXpr modifierPar) {
-		this.modifierPar = modifierPar;
-	}
-
+	
 	public Set<LigneColis> getLigneColis() {
 		return ligneColis;
 	}
@@ -433,40 +368,70 @@ public class Colis implements Serializable {
 	public void setLigneColis(Set<LigneColis> ligneColis) {
 		this.ligneColis = ligneColis;
 	}
-
-	public Set<LigneColis> getLigneColisLivre() {
-		return ligneColisLivre;
-	}
-
-	public void setLigneColisLivre(Set<LigneColis> ligneColisLivre) {
-		this.ligneColisLivre = ligneColisLivre;
-	}
-
-	public Set<LigneColis> getLigneColisRetourne() {
-		return ligneColisRetourne;
-	}
-
-	public void setLigneColisRetourne(Set<LigneColis> ligneColisRetourne) {
-		this.ligneColisRetourne = ligneColisRetourne;
-	}
-
-	public String getProduit() {
-		return produit;
-	}
-
-	public void setProduit(String produit) {
-		this.produit = produit;
-	}
-
-	
-	
-	
-	
-	
-	
-	
-	
 		
-	
+	public String getCodeEnvoi() {
+		return codeEnvoi;
+	}
 
+	public void setCodeEnvoi(String codeEnvoi) {
+		this.codeEnvoi = codeEnvoi;
+	}
+	
+	public Colis clone() throws CloneNotSupportedException{
+	    return (Colis) super.clone();
+	}
+
+	public boolean isFacturer() {
+		return facturer;
+	}
+
+	public void setFacturer(boolean facturer) {
+		this.facturer = facturer;
+	}
+
+	public boolean isFacturerClient() {
+		return facturerClient;
+	}
+
+	public void setFacturerClient(boolean facturerClient) {
+		this.facturerClient = facturerClient;
+	}
+
+	public Entite getEntite() {
+		return entite;
+	}
+
+	public void setEntite(Entite entite) {
+		this.entite = entite;
+	}
+
+	public String getIdIntern() {
+		return idIntern;
+	}
+
+	public void setIdIntern(String idIntern) {
+		this.idIntern = idIntern;
+	}
+
+	public StatutColis getStatut() {
+		return statut;
+	}
+
+	public void setStatut(StatutColis statut) {
+		this.statut = statut;
+	}
+
+	public Set<HistoriqueColis> getHistoriques() {
+		return historiques;
+	}
+
+	public void setHistoriques(Set<HistoriqueColis> historiques) {
+		this.historiques = historiques;
+	}
+	
+	
+	
+	
+	
+	
 }

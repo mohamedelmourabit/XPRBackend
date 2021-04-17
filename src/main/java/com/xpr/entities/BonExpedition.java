@@ -5,10 +5,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.xpr.dao.core.view.ModelViews;
+import com.xpr.dao.helper.XprBaseModel;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,23 +20,23 @@ import javax.persistence.OneToMany;
 
 @Entity
 @Table(name="bonExpeditions")
-public class BonExpedition implements Serializable  {
+public class BonExpedition extends XprBaseModel implements Serializable  {
 	
 	@Id 
 	@GenericGenerator(name = "bonExpedition_nom", strategy = "com.xpr.generator.BonExpeditionGenerator")
-    @GeneratedValue(generator = "bonExpedition_nom") 
+    @GeneratedValue(generator = "bonExpedition_nom")
+	@JsonView(ModelViews.SelectView.class)
 	private String nom;
-		
-	private String statut;
 	
-
+	@ManyToOne
+	@JsonView(ModelViews.SelectView.class)	
+	private StatutBonExpedition statut;
+	
+	@JsonView(ModelViews.SelectView.class)
 	private String logistique;
 	
+	@JsonView(ModelViews.SelectView.class)
 	private String refBonLogistique;
-	
-	private Date dateCreation;
-	
-	private Date dateModification;
 	
 	@ManyToOne
 	private Agence depart;
@@ -43,34 +44,25 @@ public class BonExpedition implements Serializable  {
 	@ManyToOne
 	private Agence destination;
 	
-	@OneToMany(mappedBy = "bonExpedition")
-	private Set<Colis> colis=new HashSet<>();
 	
 	@OneToMany(mappedBy = "bonExpedition",fetch = FetchType.EAGER)
-	private Set<Historique> historiques=new HashSet<Historique>();
+	private Set<LigneBonExpedition> ligneBonExpeditions;
 	
-	@ManyToOne
-	private Utilisateur creerPar;
+	@OneToMany(mappedBy = "bonExpedition",fetch = FetchType.EAGER)
+	private Set<HistoriqueBonExpedition> historiques;
+	
 	
 	private boolean disabled;
 	
+	@JsonView(ModelViews.SelectView.class)
+	private double prix;
+	
 	@ManyToOne
-	private Client client;
+	@JsonView(ModelViews.SelectView.class)
+	private Entite entite;
 	
 	public BonExpedition() {
 	}
-
-
-
-	public String getStatut() {
-		return statut;
-	}
-
-	public void setStatut(String statut) {
-		this.statut = statut;
-	}
-
-
 	
 
 	public String getNom() {
@@ -101,13 +93,7 @@ public class BonExpedition implements Serializable  {
 		this.refBonLogistique = refBonLogistique;
 	}
 
-	public Date getDateCreation() {
-		return dateCreation;
-	}
-
-	public void setDateCreation(Date dateCreation) {
-		this.dateCreation = dateCreation;
-	}
+	
 
 	public Agence getDepart() {
 		return depart;
@@ -125,29 +111,18 @@ public class BonExpedition implements Serializable  {
 		this.destination = destination;
 	}
 
-	public Set<Colis> getColis() {
-		return colis;
-	}
+	
 
-	public void setColis(Set<Colis> colis) {
-		this.colis = colis;
-	}
 
-	public Set<Historique> getHistoriques() {
+	public Set<HistoriqueBonExpedition> getHistoriques() {
 		return historiques;
 	}
 
-	public void setHistoriques(Set<Historique> historiques) {
+
+	public void setHistoriques(Set<HistoriqueBonExpedition> historiques) {
 		this.historiques = historiques;
 	}
 
-	public Utilisateur getCreerPar() {
-		return creerPar;
-	}
-
-	public void setCreerPar(Utilisateur creerPar) {
-		this.creerPar = creerPar;
-	}
 
 	public boolean isDisabled() {
 		return disabled;
@@ -157,28 +132,46 @@ public class BonExpedition implements Serializable  {
 		this.disabled = disabled;
 	}
 
-	public Date getDateModification() {
-		return dateModification;
-	}
 
-	public void setDateModification(Date dateModification) {
-		this.dateModification = dateModification;
+	public Set<LigneBonExpedition> getLigneBonExpeditions() {
+		return ligneBonExpeditions;
 	}
 
 
-
-	public Client getClient() {
-		return client;
+	public void setLigneBonExpeditions(Set<LigneBonExpedition> ligneBonExpeditions) {
+		this.ligneBonExpeditions = ligneBonExpeditions;
 	}
 
 
-
-	public void setClient(Client client) {
-		this.client = client;
+	public double getPrix() {
+		return prix;
 	}
-	
-	
-	
+
+
+	public void setPrix(double prix) {
+		this.prix = prix;
+	}
+
+
+	public Entite getEntite() {
+		return entite;
+	}
+
+
+	public void setEntite(Entite entite) {
+		this.entite = entite;
+	}
+
+
+	public StatutBonExpedition getStatut() {
+		return statut;
+	}
+
+
+	public void setStatut(StatutBonExpedition statut) {
+		this.statut = statut;
+	}
+
 	
 	
 

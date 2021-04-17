@@ -28,13 +28,13 @@ public class ClientServiceImp implements ClientService {
 	}
 
 	@Override
-	public Client findClientByEmail(String email) throws ClientException {
-		LOGGER.info("Récuperation du client par mail : {} ", email);
+	public Client findClientByIce(String ice) throws ClientException {
+		LOGGER.info("Récuperation du client par ice : {} ", ice);
 		
-		Client c = clientRepository.findById(email).orElse(null);
+		Client c = clientRepository.findById(ice).orElse(null);
 		
 		if(c==null) {
-			throw new ClientException("Client "+email+" introuvable");
+			throw new ClientException("Client ice : "+ice+" introuvable");
 		}
 		return c;
 	}
@@ -51,16 +51,16 @@ public class ClientServiceImp implements ClientService {
 	}
 
 	@Override
-	public Client updateClient(String email, Client client) {
+	public Client updateClient(String ice, Client client) {
 		LOGGER.info("Modification du client : {} ", client.getNom());
-		client.setEmail(email);
+		client.setIce(ice);
 		return clientRepository.save(client);
 	}
 
 	@Override
-	public void deleteClient(String email) {
-		LOGGER.info("Suppresion client : {} ", email);
-		Client c = clientRepository.findById(email).orElse(null);
+	public void deleteClient(String ice) {
+		LOGGER.info("Suppresion client ice : {} ", ice);
+		Client c = clientRepository.findById(ice).orElse(null);
 		c.setDisabled(true);
 		clientRepository.delete(c);
 		

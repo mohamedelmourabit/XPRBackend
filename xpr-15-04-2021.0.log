@@ -1,0 +1,150 @@
+15/04/2021 17:27:32 WARN  [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1d15h23m28s827ms).
+15/04/2021 17:49:09 INFO  [Thread-6] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+15/04/2021 17:49:10 INFO  [Thread-6] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+15/04/2021 17:49:10 INFO  [Thread-6] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+15/04/2021 17:49:10 INFO  [Thread-6] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+15/04/2021 17:49:25 WARN  [restartedMain] org.springframework.boot.StartupInfoLogger - InetAddress.getLocalHost().getHostName() took 5002 milliseconds to respond. Please verify your network configuration (macOS machines may need to add entries to /etc/hosts).
+15/04/2021 17:49:30 INFO  [restartedMain] com.xpr.XprApplication - Starting XprApplication using Java 1.8.0_201 on MacBook-Pro-de-Bouhafs.local with PID 9178 (/Users/bouhafs/eclipse-workspace/Xpr/target/classes started by bouhafs in /Users/bouhafs/eclipse-workspace/Xpr)
+15/04/2021 17:49:30 DEBUG [restartedMain] com.xpr.XprApplication - Running with Spring Boot v2.4.3, Spring v5.3.4
+15/04/2021 17:49:30 INFO  [restartedMain] com.xpr.XprApplication - No active profile set, falling back to default profiles: default
+15/04/2021 17:49:31 INFO  [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+15/04/2021 17:49:31 INFO  [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 104 ms. Found 33 JPA repository interfaces.
+15/04/2021 17:49:31 INFO  [restartedMain] org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$668b6996] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15/04/2021 17:49:31 INFO  [restartedMain] org.springframework.ws.soap.addressing.server.AnnotationActionEndpointMapping - Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+15/04/2021 17:49:31 INFO  [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+15/04/2021 17:49:31 INFO  [restartedMain] org.apache.catalina.core.StandardService - Starting service [Tomcat]
+15/04/2021 17:49:31 INFO  [restartedMain] org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.43]
+15/04/2021 17:49:31 INFO  [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+15/04/2021 17:49:31 INFO  [restartedMain] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 806 ms
+15/04/2021 17:49:31 INFO  [restartedMain] org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+15/04/2021 17:49:31 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+15/04/2021 17:49:31 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+15/04/2021 17:49:31 INFO  [restartedMain] org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+15/04/2021 17:49:31 WARN  [restartedMain] org.hibernate.cfg.AnnotationBinder - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.xpr.entities.HistoriqueStock
+15/04/2021 17:49:31 WARN  [restartedMain] org.hibernate.cfg.AnnotationBinder - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.xpr.entities.Livreur
+15/04/2021 17:49:31 WARN  [restartedMain] org.hibernate.cfg.AnnotationBinder - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.xpr.entities.Ramasseur
+15/04/2021 17:49:31 INFO  [restartedMain] org.hibernate.tuple.PojoInstantiator - HHH000182: No default (no-argument) constructor for class: com.xpr.entities.StatutFactureClient (class must be instantiated by Interceptor)
+15/04/2021 17:49:31 INFO  [restartedMain] org.hibernate.tuple.PojoInstantiator - HHH000182: No default (no-argument) constructor for class: com.xpr.entities.StatutFacture (class must be instantiated by Interceptor)
+15/04/2021 17:49:35 INFO  [restartedMain] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+15/04/2021 17:49:35 INFO  [restartedMain] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+15/04/2021 17:49:36 DEBUG [restartedMain] com.xpr.sec.JWTAuthorizationFilter - Filter 'JWTAuthorizationFilter' configured for use
+15/04/2021 17:49:36 INFO  [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+15/04/2021 17:49:37 WARN  [restartedMain] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+15/04/2021 17:49:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/v2/api-docs'] with []
+15/04/2021 17:49:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/configuration/ui'] with []
+15/04/2021 17:49:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/swagger-resources/**'] with []
+15/04/2021 17:49:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/configuration/security'] with []
+15/04/2021 17:49:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/swagger-ui.html'] with []
+15/04/2021 17:49:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/webjars/**'] with []
+15/04/2021 17:49:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@704974b4, org.springframework.security.web.context.SecurityContextPersistenceFilter@6e1e9a68, org.springframework.security.web.header.HeaderWriterFilter@67d18d0c, org.springframework.security.web.authentication.logout.LogoutFilter@ceb2cdb, com.xpr.sec.JWTAuthorizationFilter@1783e2bd, com.xpr.sec.JWTAuthenticationFilter@6b3f089a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@72bd8efd, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@19efd44b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6a597f8d, org.springframework.security.web.session.SessionManagementFilter@74cf727a, org.springframework.security.web.access.ExceptionTranslationFilter@7d8c3660, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7b627e18]
+15/04/2021 17:49:37 INFO  [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+15/04/2021 17:49:38 INFO  [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+15/04/2021 17:49:47 INFO  [restartedMain] com.xpr.XprApplication - Started XprApplication in 36.492 seconds (JVM running for 8819.718)
+15/04/2021 17:49:48 DEBUG [restartedMain] com.xpr.XprApplication - Ajout d'un nouveau ramasseur : ramasseur1
+15/04/2021 17:49:48 DEBUG [restartedMain] com.xpr.XprApplication - Ajout d'un nouveau livreur : livreur1
+15/04/2021 17:49:49 DEBUG [restartedMain] com.xpr.XprApplication - Ajout d'un nouveau livreur : livreur2
+15/04/2021 17:49:49 DEBUG [restartedMain] com.xpr.XprApplication - add Client1
+15/04/2021 17:49:50 INFO  [restartedMain] org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+15/04/2021 17:53:03 INFO  [Thread-11] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+15/04/2021 17:53:03 INFO  [Thread-11] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+15/04/2021 17:53:03 INFO  [Thread-11] com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+15/04/2021 17:53:03 INFO  [Thread-11] com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+15/04/2021 17:53:19 WARN  [restartedMain] org.springframework.boot.StartupInfoLogger - InetAddress.getLocalHost().getHostName() took 5002 milliseconds to respond. Please verify your network configuration (macOS machines may need to add entries to /etc/hosts).
+15/04/2021 17:54:20 WARN  [restartedMain] org.springframework.boot.StartupInfoLogger - InetAddress.getLocalHost().getHostName() took 5003 milliseconds to respond. Please verify your network configuration (macOS machines may need to add entries to /etc/hosts).
+15/04/2021 17:54:25 INFO  [restartedMain] com.xpr.XprApplication - Starting XprApplication using Java 1.8.0_201 on MacBook-Pro-de-Bouhafs.local with PID 9736 (/Users/bouhafs/eclipse-workspace/Xpr/target/classes started by bouhafs in /Users/bouhafs/eclipse-workspace/Xpr)
+15/04/2021 17:54:25 DEBUG [restartedMain] com.xpr.XprApplication - Running with Spring Boot v2.4.3, Spring v5.3.4
+15/04/2021 17:54:25 INFO  [restartedMain] com.xpr.XprApplication - No active profile set, falling back to default profiles: default
+15/04/2021 17:54:25 INFO  [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+15/04/2021 17:54:25 INFO  [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+15/04/2021 17:54:26 INFO  [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+15/04/2021 17:54:26 INFO  [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 169 ms. Found 33 JPA repository interfaces.
+15/04/2021 17:54:27 INFO  [restartedMain] org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$29bee4fe] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15/04/2021 17:54:27 INFO  [restartedMain] org.springframework.ws.soap.addressing.server.AnnotationActionEndpointMapping - Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+15/04/2021 17:54:27 INFO  [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+15/04/2021 17:54:27 INFO  [restartedMain] org.apache.catalina.core.StandardService - Starting service [Tomcat]
+15/04/2021 17:54:27 INFO  [restartedMain] org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.43]
+15/04/2021 17:54:28 INFO  [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+15/04/2021 17:54:28 INFO  [restartedMain] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2207 ms
+15/04/2021 17:54:28 INFO  [restartedMain] org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+15/04/2021 17:54:28 INFO  [restartedMain] org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.28.Final
+15/04/2021 17:54:28 INFO  [restartedMain] org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+15/04/2021 17:54:28 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+15/04/2021 17:54:28 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+15/04/2021 17:54:28 INFO  [restartedMain] org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+15/04/2021 17:54:29 WARN  [restartedMain] org.hibernate.cfg.AnnotationBinder - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.xpr.entities.HistoriqueStock
+15/04/2021 17:54:29 WARN  [restartedMain] org.hibernate.cfg.AnnotationBinder - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.xpr.entities.Livreur
+15/04/2021 17:54:29 WARN  [restartedMain] org.hibernate.cfg.AnnotationBinder - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.xpr.entities.Ramasseur
+15/04/2021 17:54:29 INFO  [restartedMain] org.hibernate.tuple.PojoInstantiator - HHH000182: No default (no-argument) constructor for class: com.xpr.entities.StatutFactureClient (class must be instantiated by Interceptor)
+15/04/2021 17:54:29 INFO  [restartedMain] org.hibernate.tuple.PojoInstantiator - HHH000182: No default (no-argument) constructor for class: com.xpr.entities.StatutFacture (class must be instantiated by Interceptor)
+15/04/2021 17:54:34 INFO  [restartedMain] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+15/04/2021 17:54:34 INFO  [restartedMain] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+15/04/2021 17:54:34 DEBUG [restartedMain] com.xpr.sec.JWTAuthorizationFilter - Filter 'JWTAuthorizationFilter' configured for use
+15/04/2021 17:54:35 INFO  [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+15/04/2021 17:54:36 WARN  [restartedMain] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+15/04/2021 17:54:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/v2/api-docs'] with []
+15/04/2021 17:54:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/configuration/ui'] with []
+15/04/2021 17:54:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/swagger-resources/**'] with []
+15/04/2021 17:54:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/configuration/security'] with []
+15/04/2021 17:54:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/swagger-ui.html'] with []
+15/04/2021 17:54:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/webjars/**'] with []
+15/04/2021 17:54:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@17b29eb9, org.springframework.security.web.context.SecurityContextPersistenceFilter@4fe9cb07, org.springframework.security.web.header.HeaderWriterFilter@4a7f0ec3, org.springframework.security.web.authentication.logout.LogoutFilter@3450f94d, com.xpr.sec.JWTAuthorizationFilter@2feb7eb5, com.xpr.sec.JWTAuthenticationFilter@1440a902, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2b87aa4a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1ed5fa92, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4f30adcc, org.springframework.security.web.session.SessionManagementFilter@5de1d2fb, org.springframework.security.web.access.ExceptionTranslationFilter@10484e5d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7d0607ec]
+15/04/2021 17:54:38 INFO  [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+15/04/2021 17:54:38 INFO  [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+15/04/2021 17:54:46 INFO  [restartedMain] com.xpr.XprApplication - Started XprApplication in 40.869 seconds (JVM running for 46.565)
+15/04/2021 17:54:47 DEBUG [restartedMain] com.xpr.XprApplication - Ajout d'un nouveau ramasseur : ramasseur1
+15/04/2021 17:54:48 DEBUG [restartedMain] com.xpr.XprApplication - Ajout d'un nouveau livreur : livreur1
+15/04/2021 17:54:48 DEBUG [restartedMain] com.xpr.XprApplication - Ajout d'un nouveau livreur : livreur2
+15/04/2021 17:54:48 DEBUG [restartedMain] com.xpr.XprApplication - add Client1
+15/04/2021 17:55:40 INFO  [http-nio-8080-exec-1] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+15/04/2021 17:55:40 INFO  [http-nio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+15/04/2021 17:55:40 INFO  [http-nio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+15/04/2021 18:03:29 INFO  [Thread-6] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+15/04/2021 18:03:29 INFO  [Thread-6] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+15/04/2021 18:03:29 INFO  [Thread-6] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+15/04/2021 18:03:29 INFO  [Thread-6] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+15/04/2021 18:03:29 INFO  [restartedMain] com.xpr.XprApplication - Starting XprApplication using Java 1.8.0_201 on MBP-de-Bouhafs with PID 9736 (/Users/bouhafs/eclipse-workspace/Xpr/target/classes started by bouhafs in /Users/bouhafs/eclipse-workspace/Xpr)
+15/04/2021 18:03:29 DEBUG [restartedMain] com.xpr.XprApplication - Running with Spring Boot v2.4.3, Spring v5.3.4
+15/04/2021 18:03:29 INFO  [restartedMain] com.xpr.XprApplication - No active profile set, falling back to default profiles: default
+15/04/2021 18:03:30 INFO  [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+15/04/2021 18:03:30 INFO  [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 107 ms. Found 33 JPA repository interfaces.
+15/04/2021 18:03:30 INFO  [restartedMain] org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$29bee4fe] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15/04/2021 18:03:30 INFO  [restartedMain] org.springframework.ws.soap.addressing.server.AnnotationActionEndpointMapping - Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+15/04/2021 18:03:30 INFO  [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+15/04/2021 18:03:30 INFO  [restartedMain] org.apache.catalina.core.StandardService - Starting service [Tomcat]
+15/04/2021 18:03:30 INFO  [restartedMain] org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.43]
+15/04/2021 18:03:30 INFO  [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+15/04/2021 18:03:30 INFO  [restartedMain] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 783 ms
+15/04/2021 18:03:30 INFO  [restartedMain] org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+15/04/2021 18:03:30 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+15/04/2021 18:03:30 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+15/04/2021 18:03:30 INFO  [restartedMain] org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+15/04/2021 18:03:30 WARN  [restartedMain] org.hibernate.cfg.AnnotationBinder - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.xpr.entities.HistoriqueStock
+15/04/2021 18:03:30 WARN  [restartedMain] org.hibernate.cfg.AnnotationBinder - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.xpr.entities.Livreur
+15/04/2021 18:03:30 WARN  [restartedMain] org.hibernate.cfg.AnnotationBinder - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.xpr.entities.Ramasseur
+15/04/2021 18:03:31 INFO  [restartedMain] org.hibernate.tuple.PojoInstantiator - HHH000182: No default (no-argument) constructor for class: com.xpr.entities.StatutFactureClient (class must be instantiated by Interceptor)
+15/04/2021 18:03:31 INFO  [restartedMain] org.hibernate.tuple.PojoInstantiator - HHH000182: No default (no-argument) constructor for class: com.xpr.entities.StatutFacture (class must be instantiated by Interceptor)
+15/04/2021 18:03:35 INFO  [restartedMain] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+15/04/2021 18:03:35 INFO  [restartedMain] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+15/04/2021 18:03:35 DEBUG [restartedMain] com.xpr.sec.JWTAuthorizationFilter - Filter 'JWTAuthorizationFilter' configured for use
+15/04/2021 18:03:35 INFO  [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+15/04/2021 18:03:36 WARN  [restartedMain] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+15/04/2021 18:03:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/v2/api-docs'] with []
+15/04/2021 18:03:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/configuration/ui'] with []
+15/04/2021 18:03:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/swagger-resources/**'] with []
+15/04/2021 18:03:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/configuration/security'] with []
+15/04/2021 18:03:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/swagger-ui.html'] with []
+15/04/2021 18:03:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/webjars/**'] with []
+15/04/2021 18:03:37 INFO  [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@58f781ad, org.springframework.security.web.context.SecurityContextPersistenceFilter@48795f7b, org.springframework.security.web.header.HeaderWriterFilter@1c69eedc, org.springframework.security.web.authentication.logout.LogoutFilter@530d0600, com.xpr.sec.JWTAuthorizationFilter@5151690, com.xpr.sec.JWTAuthenticationFilter@47d8665e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@18a4f4b0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4b68f676, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@45fbccc7, org.springframework.security.web.session.SessionManagementFilter@1571f1df, org.springframework.security.web.access.ExceptionTranslationFilter@47b2e7fb, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7972fdc2]
+15/04/2021 18:03:37 INFO  [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+15/04/2021 18:03:37 INFO  [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+15/04/2021 18:03:49 INFO  [restartedMain] com.xpr.XprApplication - Started XprApplication in 20.016 seconds (JVM running for 590.029)
+15/04/2021 18:03:51 DEBUG [restartedMain] com.xpr.XprApplication - Ajout d'un nouveau ramasseur : ramasseur1
+15/04/2021 18:03:51 DEBUG [restartedMain] com.xpr.XprApplication - Ajout d'un nouveau livreur : livreur1
+15/04/2021 18:03:51 DEBUG [restartedMain] com.xpr.XprApplication - Ajout d'un nouveau livreur : livreur2
+15/04/2021 18:03:51 DEBUG [restartedMain] com.xpr.XprApplication - add Client1
+15/04/2021 18:03:52 INFO  [restartedMain] org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+15/04/2021 18:06:32 INFO  [http-nio-8080-exec-1] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+15/04/2021 18:06:32 INFO  [http-nio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+15/04/2021 18:06:32 INFO  [http-nio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+15/04/2021 22:22:23 WARN  [HikariPool-2 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Thread starvation or clock leap detected (housekeeper delta=2h55m51s454ms).
+15/04/2021 23:18:05 WARN  [HikariPool-2 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Thread starvation or clock leap detected (housekeeper delta=14m41s232ms).

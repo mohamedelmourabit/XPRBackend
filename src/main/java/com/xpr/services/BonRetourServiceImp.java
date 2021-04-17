@@ -19,6 +19,7 @@ import com.xpr.entities.BonRetour;
 import com.xpr.entities.Client;
 import com.xpr.entities.Colis;
 import com.xpr.entities.Historique;
+import com.xpr.entities.LigneBonRetour;
 import com.xpr.entities.LigneColis;
 import com.xpr.exceptions.BonRetourException;
 import com.xpr.utils.Constants;
@@ -39,19 +40,19 @@ public class BonRetourServiceImp implements BonRetourService {
 	public BonRetour saveBonRetour(BonRetour brt) throws BonRetourException {
 		LOGGER.info("Ajout d'un nouveau BRT");
 		
-		if(brt.getLigneColisRetourne().isEmpty()) {
+		if(brt.getLigneBonRetours().isEmpty()) {
 			throw new BonRetourException("Erreur création BRT sans colis");
 		}
 		
-		brt.setDateCreation(new Date());
-		brt.setStatut(Constants.NOUVEAU_BRT);
+		//brt.setDateCreation(new Date());
+		//brt.setStatut(Constants.NOUVEAU_BRT);
 		
 		brt = bonRetourRepository.save(brt);
 		
-		Historique h =Historique.getHistorique("Ajout nouveau BRT: "+brt.getNom(), brt.getStatut(), "cniTest");
+		/*Historique h =Historique.getHistorique("Ajout nouveau BRT: "+brt.getNom(), brt.getStatut(), "cniTest");
 		h.setBonRetour(brt);
 		brt.getHistoriques().add(h);
-		historiqueRepository.save(h);
+		historiqueRepository.save(h);*/
 		
 		return brt;
 	}
@@ -84,21 +85,21 @@ public class BonRetourServiceImp implements BonRetourService {
 		
 		BonRetour bl = bonRetourRepository.findByNom(nom);
 		bonRetour.setNom(nom);
-		bonRetour.setDateModification(new Date());
+		//bonRetour.setDateModification(new Date());
 		if(!bonRetour.getStatut().equals(Constants.NOUVEAU_BRT) ) {
 			throw new BonRetourException("Impossible de modifer un brt après ramassage");
 		}
 		
-		if(bl.getStatut().equalsIgnoreCase(bonRetour.getStatut())) {
+		/*if(bl.getStatut().equalsIgnoreCase(bonRetour.getStatut())) {
 			throw new BonRetourException("Impossible de modifier un brt avec le meme statut!");
-		}
+		}*/
 		
 		bonRetour = bonRetourRepository.save(bonRetour);
-		bonRetour.setDateModification(new Date());
-		Historique h =Historique.getHistorique("Modification BRT: "+nom, bonRetour.getStatut(), "cniTest");
+		//bonRetour.setDateModification(new Date());
+		/*Historique h =Historique.getHistorique("Modification BRT: "+nom, bonRetour.getStatut(), "cniTest");
 		h.setBonRetour(bonRetour);
 		bonRetour.getHistoriques().add(h);
-		historiqueRepository.save(h);
+		historiqueRepository.save(h);*/
 		
 		
 		return bonRetour;
@@ -114,18 +115,18 @@ public class BonRetourServiceImp implements BonRetourService {
 		if(!bl.getStatut().equals(Constants.NOUVEAU_BR) ) {
 			throw new BonRetourException("Impossible de supprimer un bl après ramassage");
 		}
-		bl.setDateModification(new Date());
-		bl.setStatut(Constants.ANNULE);
+		//bl.setDateModification(new Date());
+		//bl.setStatut(Constants.ANNULE);
 		
-		Historique h =Historique.getHistorique("Suppression BR: "+nom, bl.getStatut(), "cniTest");
+		/*Historique h =Historique.getHistorique("Suppression BR: "+nom, bl.getStatut(), "cniTest");
 		h.setBonRetour(bl);
-		bl.getHistoriques().add(h);
+		bl.getHistoriques().add(h);*/
 		bl.setDisabled(true);
 		
 		if(bl!=null) {
 			bl= bonRetourRepository.save(bl);
 			
-			historiqueRepository.save(h);
+			//historiqueRepository.save(h);
 		}
 	}
 
@@ -133,18 +134,27 @@ public class BonRetourServiceImp implements BonRetourService {
 	public BonRetour generateBonRetour(List<LigneColis> ligneColisRetourne) {
 		LOGGER.info("Generate nouveau BRT avec {} ligneColisRetourne: ",ligneColisRetourne.size());
 		BonRetour bl = new BonRetour();
-		bl.setDateCreation(new Date());
+		//bl.setDateCreation(new Date());
 		if(ligneColisRetourne!=null && ligneColisRetourne.get(0)!=null) {
 			Client client = ligneColisRetourne.get(0).getColis().getClient();
 			bl.setClient(client);
 		}
-		bl.setLigneColisRetourne((new HashSet<>(ligneColisRetourne)));
-		bl.setDateModification(new Date());
+		
+		for(LigneColis ligneColiRetourne : ligneColisRetourne) {
+			LigneBonRetour ligneBonRetour =new LigneBonRetour();
+			ligneBonRetour.setBonRetour(bl);
+			ligneBonRetour.setLigneColis(ligneColiRetourne);
+			
+			bl.getLigneBonRetours().add(ligneBonRetour);
+		}
+		
+		
+		//bl.setDateModification(new Date());
 		bl = bonRetourRepository.save(bl);
-		Historique h =Historique.getHistorique("Ajout nouveau BR: "+bl.getNom(), bl.getStatut(), "cniTest");
+		/*Historique h =Historique.getHistorique("Ajout nouveau BR: "+bl.getNom(), bl.getStatut(), "cniTest");
 		h.setBonRetour(bl);
 		bl.getHistoriques().add(h);
-		historiqueRepository.save(h);
+		historiqueRepository.save(h);*/
 		
 		return bl;
 	}
@@ -169,16 +179,22 @@ public class BonRetourServiceImp implements BonRetourService {
 	@Override
 	public BonRetour addLigneColisToBonRetour(String idBr, List<LigneColis> ligneColisRetourne) throws BonRetourException {
 		BonRetour bl = findBonRetourByNom(idBr);
-		bl.setDateModification(new Date());
+		//bl.setDateModification(new Date());
 		if(!bl.getStatut().equals(Constants.NOUVEAU_BR) ) {
 			throw new BonRetourException("Impossible de modifier un bl après ramassage");
 		}
 		
-		Historique h =Historique.getHistorique("Ajout " + ligneColisRetourne.size()+" colis to BR: "+bl.getNom(), bl.getStatut(), "cniTest");
-		h.setBonRetour(bl);
+		/*Historique h =Historique.getHistorique("Ajout " + ligneColisRetourne.size()+" colis to BR: "+bl.getNom(), bl.getStatut(), "cniTest");
+		h.setBonRetour(bl);*/
 		
-		bl.getLigneColisRetourne().addAll(ligneColisRetourne);
-		historiqueRepository.save(h);
+		for(LigneColis ligneColiRetourne : ligneColisRetourne) {
+			LigneBonRetour ligneBonRetour =new LigneBonRetour();
+			ligneBonRetour.setBonRetour(bl);
+			ligneBonRetour.setLigneColis(ligneColiRetourne);
+			
+			bl.getLigneBonRetours().add(ligneBonRetour);
+		}
+		//historiqueRepository.save(h);
 		return bl;
 	}
 
@@ -186,12 +202,12 @@ public class BonRetourServiceImp implements BonRetourService {
 	public BonRetour deleteLigneColisFomBonRetour(String idBr, List<LigneColis> ligneColisRetourne) {
 		
 		BonRetour bl = findBonRetourByNom(idBr);
-		bl.setDateModification(new Date());
-		Iterator<LigneColis> iterator = bl.getLigneColisRetourne().iterator();
+		//bl.setDateModification(new Date());
+		Iterator<LigneBonRetour> iterator = bl.getLigneBonRetours().iterator();
 		while (iterator.hasNext()) {
-			LigneColis element = iterator.next();
+			LigneBonRetour element = iterator.next();
 		    for(LigneColis c : ligneColisRetourne) {
-		    	if(c.getId().equals(element.getId())) {
+		    	if(c.getId().equals(element.getLigneColis().getId())) {
 		    		iterator.remove();
 		    	}
 		    }
@@ -201,9 +217,9 @@ public class BonRetourServiceImp implements BonRetourService {
 	}
 
 	@Override
-	public List<LigneColis> findLigneColisFomBonRetour(String idBl) {
+	public List<LigneBonRetour> findLigneBonRetourFomBonRetour(String idBl) {
 		BonRetour bl = findBonRetourByNom(idBl);
-		return new ArrayList<LigneColis>(bl.getLigneColisRetourne());
+		return new ArrayList<LigneBonRetour>(bl.getLigneBonRetours());
 	}
 
 	@Override
@@ -212,15 +228,15 @@ public class BonRetourServiceImp implements BonRetourService {
 		
 		BonRetour br = findBonRetourByNom(nom);
 		
-		br.setDateModification(new Date());
+		//br.setDateModification(new Date());
 		if(!br.getStatut().equals(Constants.NOUVEAU_BRT) ) {
 			throw new BonRetourException("Impossible de modifier un brt après ramassage!");
 		}
 		
-		if(br.getStatut().equalsIgnoreCase(statut)) {
+		/*if(br.getStatut().equalsIgnoreCase(statut)) {
 			throw new BonRetourException("Impossible de modifier un brt avec le meme statut!");
 		}
-		
+		*/
 		
 		br= bonRetourRepository.save(br);
 

@@ -1,12 +1,14 @@
 package com.xpr.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import com.xpr.entities.Produit;
 import com.xpr.entities.Variante;
 
 @RepositoryRestResource(collectionResourceRel = "variantes", path = "variantes")
-public interface VarianteRepository extends JpaRepository<Variante, Long> {
+public interface VarianteRepository extends JpaRepository<Variante, Long>,JpaSpecificationExecutor<Variante>  {
 	
 	public Variante findBySku(String sku);
 	

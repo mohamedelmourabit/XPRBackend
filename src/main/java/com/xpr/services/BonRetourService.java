@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import com.xpr.entities.BonRetour;
 import com.xpr.entities.Colis;
 import com.xpr.entities.Historique;
+import com.xpr.entities.LigneBonRetour;
 import com.xpr.entities.LigneColis;
 import com.xpr.exceptions.BonRetourException;
 
@@ -17,8 +18,7 @@ public interface BonRetourService {
 	
 	public BonRetour deleteLigneColisFomBonRetour(String blId,List<LigneColis> ligneColisRetourne);
 	
-	public List<LigneColis> findLigneColisFomBonRetour(String blId);
-
+	List<LigneBonRetour> findLigneBonRetourFomBonRetour(String idBl);
 	public BonRetour findBonRetourByNom(String nom);
 
 	public Page<BonRetour> findMyBonRetourByMc(String cni, String mc, int page, int size);

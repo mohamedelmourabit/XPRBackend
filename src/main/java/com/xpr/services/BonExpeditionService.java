@@ -20,8 +20,6 @@ public interface BonExpeditionService {
 
 	public BonExpedition findBonExpeditionByNom(String nom);
 
-	public Page<BonExpedition> findMyBonExpeditionByMc(String cni, String mc, int page, int size);
-
 	public Page<BonExpedition> findAllBonExpeditionByMc(String mc, int page, int size);
 
 	public List<BonExpedition> findAll();
@@ -34,9 +32,7 @@ public interface BonExpeditionService {
 	
 	public BonExpedition generateBonExpedition(List<Colis> colis);
 	
-	public Page<BonExpedition> findAllBonExpeditionsByClient(String cnilient, int page, int size);
-	
-	public Page<BonExpedition> findAllBonExpeditionsByUtilisateurs(String cniUtilisateur, int page, int size);
+	//public Page<BonExpedition> findAllBonExpeditionsByUtilisateurs(String cniUtilisateur, int page, int size);
 
 	public int getCountBonExpeditions();
 	

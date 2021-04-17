@@ -20,6 +20,7 @@ import com.xpr.exceptions.BonRetourException;
 import com.xpr.services.BonRetourService;
 
 @RestController
+@RequestMapping(path="/bonRetour")
 public class BonRetourRestController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(BonRetourRestController.class);

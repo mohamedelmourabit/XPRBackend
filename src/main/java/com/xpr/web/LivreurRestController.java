@@ -18,6 +18,7 @@ import com.xpr.entities.Livreur;
 import com.xpr.services.LivreurService;
 
 @RestController
+@RequestMapping(path="/livreur")
 public class LivreurRestController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(LivreurRestController.class);

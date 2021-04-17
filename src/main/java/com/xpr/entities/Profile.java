@@ -2,6 +2,7 @@ package com.xpr.entities;
 
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,26 +13,47 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.xpr.dao.core.view.ModelViews;
+import com.xpr.dao.helper.XprBaseModel;
+
+
+
 import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "profiles")
-public class Profile implements Serializable  {
+public class Profile extends XprBaseModel implements Serializable  {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(ModelViews.SelectView.class)
 	private Long id;
 	
+	@JsonView(ModelViews.SelectView.class)
 	private String prflName;
 
 	
-	@ManyToMany
-	private Set<Autorisation> authorities = new HashSet<>();
-	
+	@ManyToMany(mappedBy = "profiles")
+	@JsonIgnore
+	private Collection<Utilisateur> utilisateurs;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "profiles_autorisations",
+			joinColumns = @JoinColumn(
+					name = "profile_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(
+					name = "autorisation_id", referencedColumnName = "id"))
+	@JsonView(ModelViews.ListView.class)
+	private Set<Autorisation> autorisations = new HashSet<>();
 	
 	
 	public Profile() {
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	
@@ -60,17 +82,29 @@ public class Profile implements Serializable  {
 
 
 
-
-	public Set<Autorisation> getAuthorities() {
-		return authorities;
+	public Collection<Utilisateur> getUtilisateurs() {
+		return utilisateurs;
 	}
 
 
 
-	public void setAuthorities(Set<Autorisation> authorities) {
-		this.authorities = authorities;
+	public void setUtilisateurs(Collection<Utilisateur> utilisateurs) {
+		this.utilisateurs = utilisateurs;
 	}
 
+
+
+	public Set<Autorisation> getAutorisations() {
+		return autorisations;
+	}
+
+
+
+	public void setAutorisations(Set<Autorisation> autorisations) {
+		this.autorisations = autorisations;
+	}
+
+	
 
 
 	

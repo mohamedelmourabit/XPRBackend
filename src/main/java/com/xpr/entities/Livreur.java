@@ -17,38 +17,28 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.xpr.dao.core.view.ModelViews;
 
 @Entity
 @Table(name = "livreurs")
-@DiscriminatorValue("Livreur")
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "typeUtilisateur", discriminatorType = DiscriminatorType.STRING)
-public class Livreur extends Ramasseur implements Serializable {
+public class Livreur extends Utilisateur implements Serializable {
 		
-	private String nom;
-	
-	private String prenom;
-	
-	private String telephone;
 	
 	@ManyToMany(fetch=FetchType.LAZY )
-	private Set<Ville> villes = new HashSet<Ville>();
+	 @JsonView(ModelViews.SelectView.class)
+	private Set<Ville> villes;
 	
 	@OneToMany(mappedBy="livreur",fetch=FetchType.LAZY )
 	@JsonIgnore
-	private Set<Colis> colis = new HashSet<Colis>();
+	private Set<Colis> colis;
 
-	
-	@OneToMany(mappedBy="livreur",fetch=FetchType.LAZY)
-	@JsonIgnore
-	private Set<Stock> stocks=new HashSet<Stock>();
-	
+		
 	@OneToMany(mappedBy="livreur",fetch=FetchType.LAZY )
 	@JsonIgnore
-	private Set<Facture> factures = new HashSet<Facture>();
+	private Set<Facture> factures;
 	
 	
-
 	
 	public Livreur() {
 		
@@ -57,37 +47,6 @@ public class Livreur extends Ramasseur implements Serializable {
 		
 	}
 
-	public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	public String getPrenom() {
-		return prenom;
-	}
-
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
-
-	public String getTelephone() {
-		return telephone;
-	}
-
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
-	
-	public Set<Stock> getStocks() {
-		return stocks;
-	}
-
-	public void setStocks(Set<Stock> stocks) {
-		this.stocks = stocks;
-	}
 
 	public Set<Facture> getFactures() {
 		return factures;

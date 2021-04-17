@@ -17,6 +17,7 @@ import com.xpr.exceptions.FactureException;
 import com.xpr.services.FactureService;
 
 @RestController
+@RequestMapping(path="/facture")
 public class FactureRestController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(FactureRestController.class);

@@ -21,6 +21,7 @@ import com.xpr.exceptions.BonRamassageException;
 import com.xpr.services.BonRamassageService;
 
 @RestController
+@RequestMapping(path="/bonRamassage")
 public class BonRamassageRestController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(BonRamassageRestController.class);

@@ -11,48 +11,66 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.xpr.dao.core.view.ModelViews;
+import com.xpr.dao.helper.XprBaseModel;
+
 @Entity
 @Table(name = "bonRamassages")
-public class BonRamassage implements Serializable {
+public class BonRamassage extends XprBaseModel implements Serializable {
 	
 	@Id 
 	@GenericGenerator(name = "bonRamassage_nom", strategy = "com.xpr.generator.BonRamassageGenerator")
-    @GeneratedValue(generator = "bonRamassage_nom") 
+    @GeneratedValue(generator = "bonRamassage_nom")
+	@JsonView(ModelViews.SelectView.class)
 	private String nom;
 	
-	private Date dateCreation;
-	
-	private Date dateModification;
 	
 	@ManyToOne
+	@JsonView(ModelViews.ListView.class)
 	private Ramasseur ramasseur;
 	
 	@ManyToOne
+	@JsonView(ModelViews.SelectView.class)
 	private Client client;
 	
 	@OneToMany(mappedBy = "bonRamassage",fetch = FetchType.EAGER)
-	private Set<Colis> colis=new HashSet<Colis>();
+	private Set<Colis> colis;
+	
 	
 	@ManyToOne
+	@JsonIgnore
 	private Facture facture;
 	
 	@ManyToOne
-	private UtilisateurXpr creerPar;
+	@JsonView(ModelViews.SelectView.class)
+	private StatutBonRamassage statut;
 	
-	private String statut;
-	
+	@JsonIgnore
 	private boolean disabled;
 	
 	@OneToMany(mappedBy = "bonRamassage",fetch = FetchType.EAGER)
-	private Set<Historique> historiques=new HashSet<Historique>();
+	private Set<HistoriqueBonRamassage> historiques;
 	
 	@ManyToOne
+	@JsonView(ModelViews.SelectView.class)
 	private Agence agence;
+	
+	@ManyToOne
+	@JsonView(ModelViews.SelectView.class)
+	private Agence agenceDepart;
+	
+	@ManyToOne
+	@JsonView(ModelViews.SelectView.class)
+	private Agence agenceDestination;
+	
+	@ManyToOne
+	@JsonView(ModelViews.SelectView.class)
+	private Entite entite;
 	
 	public BonRamassage() {
 		
@@ -66,13 +84,7 @@ public class BonRamassage implements Serializable {
 		this.nom = nom;
 	}
 
-	public Date getDateCreation() {
-		return dateCreation;
-	}
-
-	public void setDateCreation(Date dateCreation) {
-		this.dateCreation = dateCreation;
-	}
+	
 
 	
 
@@ -84,19 +96,12 @@ public class BonRamassage implements Serializable {
 		this.ramasseur = ramasseur;
 	}
 
-	public String getStatut() {
-		return statut;
-	}
-
-	public void setStatut(String statut) {
-		this.statut = statut;
-	}
-
-	public Set<Historique> getHistoriques() {
+	
+	public Set<HistoriqueBonRamassage> getHistoriques() {
 		return historiques;
 	}
 
-	public void setHistoriques(Set<Historique> historiques) {
+	public void setHistoriques(Set<HistoriqueBonRamassage> historiques) {
 		this.historiques = historiques;
 	}
 
@@ -124,13 +129,6 @@ public class BonRamassage implements Serializable {
 		this.facture = facture;
 	}
 
-	public UtilisateurXpr getCreerPar() {
-		return creerPar;
-	}
-
-	public void setCreerPar(UtilisateurXpr creerPar) {
-		this.creerPar = creerPar;
-	}
 
 	public boolean isDisabled() {
 		return disabled;
@@ -140,13 +138,7 @@ public class BonRamassage implements Serializable {
 		this.disabled = disabled;
 	}
 
-	public Date getDateModification() {
-		return dateModification;
-	}
-
-	public void setDateModification(Date dateModification) {
-		this.dateModification = dateModification;
-	}
+	
 
 	public Agence getAgence() {
 		return agence;
@@ -156,6 +148,39 @@ public class BonRamassage implements Serializable {
 		this.agence = agence;
 	}
 
+	public Agence getAgenceDepart() {
+		return agenceDepart;
+	}
+
+	public void setAgenceDepart(Agence agenceDepart) {
+		this.agenceDepart = agenceDepart;
+	}
+
+	public Agence getAgenceDestination() {
+		return agenceDestination;
+	}
+
+	public void setAgenceDestination(Agence agenceDestination) {
+		this.agenceDestination = agenceDestination;
+	}
+
+	public Entite getEntite() {
+		return entite;
+	}
+
+	public void setEntite(Entite entite) {
+		this.entite = entite;
+	}
+
+	public StatutBonRamassage getStatut() {
+		return statut;
+	}
+
+	public void setStatut(StatutBonRamassage statut) {
+		this.statut = statut;
+	}
+
+	
 	
 	
 	

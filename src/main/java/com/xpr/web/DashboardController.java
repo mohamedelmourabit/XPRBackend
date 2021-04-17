@@ -15,19 +15,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.xpr.services.BonLivraisonService;
+import com.xpr.services.BonRamassageService;
 import com.xpr.services.ColisService;
 import com.xpr.services.DemandeService;
 import com.xpr.services.FactureService;
 import com.xpr.utils.Constants;
 
 @RestController
+@RequestMapping(path="/dashboard")
 public class DashboardController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DashboardController.class);
 	
 	@Autowired
-	private BonLivraisonService bonLivraisonService;
+	private BonRamassageService bonRamassageService;
 	
 	@Autowired
 	private ColisService colisService;
@@ -101,7 +102,7 @@ public class DashboardController {
 		
 		int numberColisEnAttente = colisService.getCountColisByStatut(Constants.EXPEDIE);
 		
-		int numberBonLivraison = bonLivraisonService.getCountBonLivraisons();
+		int numberBonLivraison = bonRamassageService.getCountBonRamassages();
 		
 		int numberFacture = factureService.getCountFactures();
 		

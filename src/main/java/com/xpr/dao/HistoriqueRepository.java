@@ -19,28 +19,23 @@ public interface HistoriqueRepository extends JpaRepository<Historique, Long> {
 	@Query("SELECT h FROM Historique h  WHERE h.utilisateur.cni=:x order by h.dateCreation ASC")
 	public Page<Historique> findHistoriqueUtilisateurByCNI2(@Param("x")String cni, Pageable pageable);
 	
-	@Query("SELECT h FROM Historique h  WHERE h.colis.numCommande=:x")
+	@Query("SELECT h FROM Historique h  WHERE h.colis.numCommande=:x order by h.id DESC")
 	public List<Historique> findHistoriqueColisByNom(@Param("x")String numCommande);
 	
-	@Query("SELECT h FROM Historique h  WHERE h.colis.numCommande=:x")
+	@Query("SELECT h FROM Historique h  WHERE h.colis.numCommande=:x order by h.id DESC" )
 	public Page<Historique> findHistoriqueColisByNumCommande(@Param("x")String numCommande, Pageable pageable);
 	
-	@Query("SELECT h FROM Historique h WHERE h.bonLivraison.nom=:x")
-	public List<Historique> findHistoriqueBLByNom(@Param("x")String nomBL);
 	
-	@Query("SELECT h FROM Historique h WHERE h.bonLivraison.nom=:x")
-	public Page<Historique> findHistoriqueBLByNom2(@Param("x")String nomBL, Pageable pageable);
-	
-	@Query("SELECT h FROM Historique h WHERE h.bonRamassage.nom=:x")
+	@Query("SELECT h FROM Historique h WHERE h.bonRamassage.nom=:x order by h.id DESC")
 	public List<Historique> findHistoriqueBonRamassageByNom(@Param("x")String nomBonRamassage);
 	
-	@Query("SELECT h FROM Historique h WHERE h.bonLivraison.nom=:x")
-	public Page<Historique> findHistoriqueBonRamassageByNom2(@Param("x")String nomBonRamassage, Pageable pageable);
-	
-	@Query("SELECT h FROM Historique h WHERE h.demande.nom=:x")
+	@Query("SELECT h FROM Historique h WHERE h.bonRamassage.nom=:x order by h.id DESC")
+	public Page<Historique> findHistoriqueBonRamassageByNom2(@Param("x")String nomBonRamassage,Pageable pageable);
+
+	@Query("SELECT h FROM Historique h WHERE h.demande.nom=:x order by h.id DESC")
 	public List<Historique> findHistoriqueDemandeByNom(@Param("x")String nomDemande);
 	
-	@Query("SELECT h FROM Historique h WHERE h.demande.nom=:x")
+	@Query("SELECT h FROM Historique h WHERE h.demande.nom=:x order by h.id DESC")
 	public Page<Historique> findHistoriqueDemandeByNom2(@Param("x")String nomDemande, Pageable pageable);
 	
 	
@@ -52,10 +47,12 @@ public interface HistoriqueRepository extends JpaRepository<Historique, Long> {
 	
 	
 	@Query("SELECT h FROM Historique h WHERE h.bonRetour.nom=:x")
-	public List<Historique> findHistoriqueBonRetourByNom(@Param("x")String nomBonRamassage);
+	public List<Historique> findHistoriqueBonRetourByNom(@Param("x")String nomBonRetour);
 	
 	@Query("SELECT h FROM Historique h WHERE h.bonRetour.nom=:x")
-	public Page<Historique> findHistoriqueBonRetourByNom2(@Param("x")String nomBonRamassage, Pageable pageable);
+	public Page<Historique> findHistoriqueBonRetourByNom2(@Param("x")String nomBonRetour, Pageable pageable);
+	
+	
 	
 
 }

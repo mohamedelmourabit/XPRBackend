@@ -12,9 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xpr.dao.helper.XprBaseModel;
+
 @Entity
 @Table(name = "business")
-public class Business implements Serializable  {
+public class Business extends XprBaseModel implements Serializable  {
 	
 	@Id @GeneratedValue
 	private Long id;
@@ -22,10 +25,11 @@ public class Business implements Serializable  {
 	private String nom;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Client client;
 	
 	@OneToMany(mappedBy = "business",fetch = FetchType.LAZY)
-	private Set<Colis> colis=new HashSet<Colis>();
+	private Set<LigneColis> colis=new HashSet<LigneColis>();
 
 	
 	

@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.xpr.dao.StockRepository;
-import com.xpr.entities.Stock;
+import com.xpr.dao.ProduitStockClientRepository;
+import com.xpr.entities.ProduitStockClient;
+
 
 
 @Service
@@ -18,97 +19,78 @@ public class StockServiceImp implements StockService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StockServiceImp.class);
 	
 	@Autowired
-	private StockRepository stockRepository;
+	private ProduitStockClientRepository produitStockClientepository;
 
 
 	@Override
-	public Stock saveStock(Stock entity) {
-		return stockRepository.save(entity);
+	public ProduitStockClient saveStock(ProduitStockClient entity) {
+		return produitStockClientepository.save(entity);
 	}
 
 	@Override
-	public List<Stock> findStockByClientAndVarianteSku(String iceClient, String sku) {
-		return stockRepository.findStockByClientAndVarianteSku(iceClient, sku);
+	public List<ProduitStockClient> findStockByClientAndVarianteSku(String iceClient, String sku) {
+		return produitStockClientepository.findStockByClientAndVarianteSku(iceClient, sku);
 	}
 
 	@Override
-	public List<Stock> findStockByClientAndVarianteSkuAndVille(String iceClient, String sku, String ville) {
-		return stockRepository.findStockByClientAndVarianteSkuAndVille(iceClient, sku, ville);
+	public List<ProduitStockClient> findStockByClientAndVarianteSkuAndVille(String iceClient, String sku, String ville) {
+		return produitStockClientepository.findStockByClientAndVarianteSkuAndVille(iceClient, sku, ville);
 	}
 
 	@Override
-	public Page<Stock> findAll(Pageable pageable) {
-		return stockRepository.findAll(pageable);
+	public Page<ProduitStockClient> findAll(Pageable pageable) {
+		return produitStockClientepository.findAll(pageable);
 	}
 
 	@Override
-	public List<Stock> findStockVarianteSku(String sku) {
-		return stockRepository.findStockVarianteSku(sku);
+	public List<ProduitStockClient> findStockVarianteSku(String sku) {
+		return produitStockClientepository.findStockVarianteSku(sku);
 	}
 	@Override
-	public List<Stock> findStockByAgenceAndVarianteSku(Long idAgence, String sku) {
-		return stockRepository.findStockByAgenceAndVarianteSku(idAgence, sku);
-	}
-
-	@Override
-	public List<Stock> findStockByLivreurAndVarianteSku(String cniLivreur, String sku) {
-		return stockRepository.findStockByLivreurAndVarianteSku(cniLivreur, sku);
-	}
-	@Override
-	public Optional<Stock> findById(Long id) {
-		return stockRepository.findById(id);
+	public List<ProduitStockClient> findStockByAgenceAndVarianteSku(Long idAgence, String sku) {
+		return produitStockClientepository.findStockByAgenceAndVarianteSku(idAgence, sku);
 	}
 
+	
 	@Override
-	public List<Stock> findStockByClientAndLivreurAndVille(String iceClient, String ville) {
-		return stockRepository.findStockByClientAndLivreurAndVille(iceClient, ville);
+	public Optional<ProduitStockClient> findById(Long id) {
+		return produitStockClientepository.findById(id);
 	}
 
-	@Override
-	public List<Stock> findStockByClientAndProduitNature(String iceClient, String nature) {
-		return stockRepository.findStockByClientAndProduitNature(iceClient, nature);
-	}
 
 	@Override
-	public List<Stock> findStockByClientAndLivreur(String iceClient, String livreur) {
-		return stockRepository.findStockByClientAndLivreur(iceClient, livreur);
+	public List<ProduitStockClient> findStockByClientAndProduitNature(String iceClient, String nature) {
+		return produitStockClientepository.findStockByClientAndProduitNature(iceClient, nature);
 	}
+
+	
 	@Override
-	public List<Stock> findStockByClientAndAgence(String iceClient, long agenceId) {
-		return stockRepository.findStockByClientAndAgence(iceClient, agenceId);
+	public List<ProduitStockClient> findStockByClientAndAgence(String iceClient, long agenceId) {
+		return produitStockClientepository.findStockByClientAndAgence(iceClient, agenceId);
 	}
 	
 	@Override
-	public List<Stock> findStockDisponibleByClient(String iceClient) {
-		return stockRepository.findStockDisponibleByClient(iceClient);
+	public List<ProduitStockClient> findStockDisponibleByClient(String iceClient) {
+		return null;// produitStockClientepository.findStockDisponibleByClient(iceClient);
+	}
+	
+	@Override
+	public List<ProduitStockClient> findStockDisponibleByAgence(long idAgence) {
+		return produitStockClientepository.findStockDisponibleByAgence(idAgence);
 	}
 	@Override
-	public List<Stock> findStockDisponibleByLivreur(String cniLivreur) {
-		return stockRepository.findStockDisponibleByLivreur(cniLivreur);
+	public List<ProduitStockClient> findStockByClient(String iceClient) {
+		return produitStockClientepository.findStockByClient(iceClient);
 	}
+	
 	@Override
-	public List<Stock> findStockDisponibleByAgence(long idAgence) {
-		return stockRepository.findStockDisponibleByAgence(idAgence);
+	public List<ProduitStockClient> findStockByAgence(long idAgence) {
+		return produitStockClientepository.findStockByAgence(idAgence);
 	}
+	
 	@Override
-	public List<Stock> findStockByClient(String iceClient) {
-		return stockRepository.findStockByClient(iceClient);
-	}
-	@Override
-	public List<Stock> findStockByLivreur(String cniLivreur) {
-		return stockRepository.findStockByLivreur(cniLivreur);
-	}
-	@Override
-	public List<Stock> findStockByAgence(long idAgence) {
-		return stockRepository.findStockByAgence(idAgence);
-	}
-	@Override
-	public List<Stock> findStockDisponibleByClientAndLivreur(String iceClient, String livreur) {
-		return stockRepository.findStockDisponibleByClientAndLivreur(iceClient, livreur);
-	}
-	@Override
-	public List<Stock> findStockDisponibleByClientAndAgence(String iceClient, long agenceId) {
-		return stockRepository.findStockDisponibleByClientAndAgence(iceClient, agenceId);
+	public List<ProduitStockClient> findStockDisponibleByClientAndAgence(String iceClient, long agenceId) {
+		return produitStockClientepository.findStockDisponibleByClientAndAgence(iceClient, agenceId);
 	}
 
 	

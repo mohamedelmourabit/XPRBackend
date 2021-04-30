@@ -14,7 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xpr.dao.BonExpeditionRepository;
+import com.xpr.dao.BonRamassageRepository;
+import com.xpr.dao.core.controller.SecuredCRUDController;
+import com.xpr.dao.helper.CustomJPARepository;
 import com.xpr.entities.BonExpedition;
+import com.xpr.entities.BonRamassage;
 import com.xpr.entities.Colis;
 import com.xpr.entities.Historique;
 import com.xpr.exceptions.BonExpeditionException;
@@ -22,12 +27,17 @@ import com.xpr.services.BonExpeditionService;
 
 @RestController
 @RequestMapping(path="/bonExpedition")
-public class BonExpeditionRestController {
+public class BonExpeditionRestController extends SecuredCRUDController<BonExpedition, String> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(BonExpeditionRestController.class);
 	
 	@Autowired
 	private BonExpeditionService bonExpeditionService;
+	
+	@Autowired
+    public void setRepository(BonExpeditionRepository repository) {
+        this.repository = (CustomJPARepository<BonExpedition, String>) repository;
+    }
 	
 	@RequestMapping(value="/getHistoriqueBonExpedition/{nom}",method=RequestMethod.GET)
 	public List<Historique> getHistoriqueBonExpedition(String nom) {
@@ -101,6 +111,12 @@ public class BonExpeditionRestController {
 	@RequestMapping(value="/chercherBonExpeditions",method=RequestMethod.GET)
 	public Page<BonExpedition> chercherBonExpedition(@RequestParam(name="mc",defaultValue="") String mc,@RequestParam(name="page",defaultValue="0")int page,@RequestParam(name="size",defaultValue="5")int size) {
 		return bonExpeditionService.findAllBonExpeditionByMc(mc, page, size);
+	}
+
+	@Override
+	public void setIdentifier(String id, BonExpedition object) {
+		object.setNom(id);
+		
 	}
 	
 

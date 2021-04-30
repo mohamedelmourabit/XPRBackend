@@ -19,8 +19,13 @@ public interface HistoriqueRepository extends JpaRepository<Historique, Long> {
 	@Query("SELECT h FROM Historique h  WHERE h.utilisateur.cni=:x order by h.dateCreation ASC")
 	public Page<Historique> findHistoriqueUtilisateurByCNI2(@Param("x")String cni, Pageable pageable);
 	
-	@Query("SELECT h FROM Historique h  WHERE h.colis.numCommande=:x order by h.id DESC")
+	@Query("SELECT h FROM Historique h  WHERE h.colis.numCommande=:x and h.disabled=false order by h.id ASC")
 	public List<Historique> findHistoriqueColisByNom(@Param("x")String numCommande);
+	
+	
+	@Query("SELECT h FROM Historique h WHERE h.colis.numCommande=:x order by h.id ASC")
+	public List<Historique> getHistoriqueColisByNumCommande(@Param("x")String numCommande);
+	
 	
 	@Query("SELECT h FROM Historique h  WHERE h.colis.numCommande=:x order by h.id DESC" )
 	public Page<Historique> findHistoriqueColisByNumCommande(@Param("x")String numCommande, Pageable pageable);

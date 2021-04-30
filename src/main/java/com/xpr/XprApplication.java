@@ -1,5 +1,6 @@
 package com.xpr;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -195,6 +196,7 @@ public class XprApplication implements CommandLineRunner {
 		Client clientXPR = new Client(); // contrat prixlivraison datedebut dateFin
 
 		clientXPR.setContact("XPR");
+		clientXPR.setPrefixCommande("XPR");
 		clientXPR.setTypeClient("ENTITE");
 		clientXPR.setEntite(XPR);
 		clientXPR.setIce("iceXPR");
@@ -401,8 +403,6 @@ public class XprApplication implements CommandLineRunner {
 		livreur2.getVilles().add(casa);
 		
 		
-		
-
 		Client client1 = new Client(); // contrat prixlivraison datedebut dateFin
 
 		client1.setContact("client1Contact");
@@ -450,7 +450,7 @@ public class XprApplication implements CommandLineRunner {
 			colis1 = new Colis();
 			// colis1.setCreerPar(uc);
 			colis1.setClient(client1);
-			// colis1.setDateCreation(new Date());
+			
 
 			int numberColis = colisRepository.getCountColis();
 			// numberColis = numberColis+10001;//annnée
@@ -458,7 +458,7 @@ public class XprApplication implements CommandLineRunner {
 			colis1.setCodeEnvoi("XPR1032MA" + numberColis);
 
 			colis1.setClient(client1); //
-			colis1.setAdresse("addresse1");
+			colis1.setAdresse("addresse" + i);
 			colis1.setApplicationFrais(true);
 			colis1.setApplicationFraisAssurance(false);
 			Commentaire cCom = new Commentaire();
@@ -470,9 +470,9 @@ public class XprApplication implements CommandLineRunner {
 			colis1.setCommentaires(new HashSet<Commentaire>());
 			colis1.getCommentaires().add(cCom);
 			colis1.setClient(client1);
-			colis1.setDestinataire("Houssam");
-			colis1.setNomComplet("Houssam Houssam");
-			colis1.setTelephone("06 20 67 47 78 // 06 20 67 56 59");
+			colis1.setDestinataire("Houssam" + i);
+			colis1.setNomComplet("Houssam Houssam " + i);
+			colis1.setTelephone("06 20 67 47 78");
 			colis1.setDateLivraison(null);
 			colis1.setDateRamassage(null);
 			colis1.setDestinataire("destinataire1");
@@ -481,12 +481,12 @@ public class XprApplication implements CommandLineRunner {
 			colis1.setIdIntern("idIntern" + i);
 			colis1.setStatut(statutColisNouveauColis);
 			colis1.setVilleDestination(casa);
-			colis1.setCreatedDate(new Date());
+			colis1.setCreatedDate(getDate(i));
 			colis1.setCreatedBy(utilisateurSuperAdminXpr.getEmail());
 			LigneColis lc = new LigneColis();
 			lc.setQte(i+2);
 			Produit p = new Produit();
-			p.setNom("produit1");
+			p.setNom("produit1" + i);
 			p.setQte(i+2);
 			p.setPrixVente(1200.00);
 			p.setPrixOriginale(1000.00);
@@ -544,44 +544,55 @@ public class XprApplication implements CommandLineRunner {
 
 		// Generation du Bon ramassage
 
-		BonRamassage br = new BonRamassage();
-		br.setClient(client1);
-		br.setStatut(statutBonRamassageEnAttenteRamassage);
-		br.setColis(new HashSet<Colis>());
-		br.getColis().add(colis1);
-		colis1.setStatut(statutColisEnAttenteRamassage);
-		colis1.setDateRamassage(new Date());
-		colis1 = colisRepository.save(colis1);
-		HistoriqueBonRamassage h1 = new HistoriqueBonRamassage();
-		h1.setAction("creer nouveau br");
-		h1.setBonRamassage(br);
-		h1.setUtilisateur(uc);
-		h1.setStatut(br.getStatut().getLibelle());
-		h1.setDateCreation(new Date());
-
-		br.setRamasseur(ramasseur1);
-		br.setAgence(agenceFes);
-		br.setHistoriques(new HashSet<HistoriqueBonRamassage>());
-		br.getHistoriques().add(h1); // livreur envoi colis vers agence ?
-
-		br = bonRamassageRepository.save(br);
-		System.out.println("br " + br.getNom());
-		historiqueRepository.save(h);
-
-		// ramassage par le livreur depot sur agenceFES et envoi vers Casa
-
-		br.setStatut(statutBonRamassageRamasse);
-
-		HistoriqueBonRamassage h2 = new HistoriqueBonRamassage();
-		h2.setAction("En cours de depot sur agence FES"); // Expedition inter agence
-		h2.setBonRamassage(br);
-		h2.setUtilisateur(utilisateurXpr);
-		h2.setStatut(br.getStatut().getLibelle());
-		h2.setDateCreation(new Date());
-
-		br.getHistoriques().add(h2);
-		br = bonRamassageRepository.save(br);
-		historiqueRepository.save(h);
+		for(int i=0;i<30;i++) {
+			BonRamassage br = new BonRamassage();
+			br.setCreatedDate(getDate(i));
+			if(i%2==0) {
+				br.setEntite(SEM);
+			}else {
+				br.setEntite(XPR);
+			}
+			
+			
+			
+			br.setClient(client1);
+			br.setStatut(statutBonRamassageEnAttenteRamassage);
+			br.setColis(new HashSet<Colis>());
+			br.getColis().add(colis1);
+			colis1.setStatut(statutColisEnAttenteRamassage);
+			colis1.setDateRamassage(new Date());
+			colis1 = colisRepository.save(colis1);
+			HistoriqueBonRamassage h1 = new HistoriqueBonRamassage();
+			h1.setAction("creer nouveau br");
+			h1.setBonRamassage(br);
+			h1.setUtilisateur(uc);
+			h1.setStatut(br.getStatut().getLibelle());
+			h1.setDateCreation(new Date());
+	
+			br.setRamasseur(ramasseur1);
+			br.setAgence(agenceFes);
+			br.setHistoriques(new HashSet<HistoriqueBonRamassage>());
+			br.getHistoriques().add(h1); // livreur envoi colis vers agence ?
+	
+			br = bonRamassageRepository.save(br);
+			System.out.println("br " + br.getNom());
+			historiqueRepository.save(h);
+	
+			// ramassage par le livreur depot sur agenceFES et envoi vers Casa
+	
+			br.setStatut(statutBonRamassageRamasse);
+	
+			HistoriqueBonRamassage h2 = new HistoriqueBonRamassage();
+			h2.setAction("En cours de depot sur agence FES"); // Expedition inter agence
+			h2.setBonRamassage(br);
+			h2.setUtilisateur(utilisateurXpr);
+			h2.setStatut(br.getStatut().getLibelle());
+			h2.setDateCreation(new Date());
+	
+			br.getHistoriques().add(h2);
+			br = bonRamassageRepository.save(br);
+			historiqueRepository.save(h);
+		}
 
 		// Réceptioniste utilisateurXPR (scanne Bon ramassage et dispatch)
 
@@ -590,7 +601,7 @@ public class XprApplication implements CommandLineRunner {
 		h.setAction("réception colis sur agenceFes");
 		h.setColis(colis1);
 		h.setUtilisateur(utilisateurXpr2);
-		h.setStatut(br.getStatut().getLibelle());
+		h.setStatut("expeide");
 		h.setDateCreation(new Date());
 		colis1.setHistoriques(new HashSet<HistoriqueColis>());
 		colis1.getHistoriques().add(h);
@@ -1195,6 +1206,13 @@ public class XprApplication implements CommandLineRunner {
 
 		// Apres Livraison
 
+	}
+	
+	public static Date getDate(int i) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.DAY_OF_MONTH, i);
+		return c.getTime();
 	}
 
 }

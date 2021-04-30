@@ -38,7 +38,7 @@ public class StringAttributeConverter implements AttributeConverter<String, Stri
 	}
 
 	@Override
-	public String convertToEntityAttribute(String dbData) {
+	public  String  convertToEntityAttribute(String dbData) {
 		if(dbData!=null) {
 			try {
 				cipher.init(Cipher.DECRYPT_MODE, key);

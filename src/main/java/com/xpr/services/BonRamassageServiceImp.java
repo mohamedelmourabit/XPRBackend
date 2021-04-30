@@ -75,7 +75,9 @@ public class BonRamassageServiceImp implements BonRamassageService {
 
 	@Override
 	public List<BonRamassage> findAll() {
-		return bonRamassageRepository.findAll();
+		List<BonRamassage> list = new ArrayList<BonRamassage>();
+		bonRamassageRepository.findAll().iterator().forEachRemaining(list::add);
+		return  list;
 	}
 
 	@Override

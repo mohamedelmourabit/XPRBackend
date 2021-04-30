@@ -8,12 +8,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.xpr.dao.helper.CustomJPARepository;
 import com.xpr.entities.BonExpedition;
 import com.xpr.entities.BonRamassage;
 
 
 
-public interface BonExpeditionRepository extends JpaRepository<BonExpedition, Long>,JpaSpecificationExecutor<BonExpedition> {
+public interface BonExpeditionRepository extends CustomJPARepository<BonExpedition, String>,JpaSpecificationExecutor<BonExpedition> {
 	
 	public BonExpedition findByNom(String nom);
 	

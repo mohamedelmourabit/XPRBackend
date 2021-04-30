@@ -58,7 +58,7 @@ public abstract class SecuredCRUDController<T, V extends Serializable> {
 
     public static final int DEFAULT_PAGE_SIZE = 25;
     public static final String DEFAULT_SORT_COLUMN = "createdDate";
-    public static final String DEFAULT_SORT_ORDER = "ASC";
+    public static final String DEFAULT_SORT_ORDER = "DESC";
     @Autowired
     public ExportService exportService;
    
@@ -132,24 +132,38 @@ public abstract class SecuredCRUDController<T, V extends Serializable> {
         if (request.isPresent()) {
             List<String> actionUserRoles = (List<String>) request.get().getAttribute("actionUserRoles");
 
+            if (actionUserRoles.stream().anyMatch(authority -> authority.contains("$ALL"))) {
+                request.get().setAttribute("role", "ALL");
+                authorized = true;
+               
+            }
+            
+            if (!authorized && actionUserRoles.stream().anyMatch(authority -> authority.contains("$ENTITE"))) {
+                request.get().setAttribute("role", "ENTITE");
+                authorized = true;
+               
+            }
             
             if (!authorized && actionUserRoles.stream().anyMatch(authority -> authority.contains("$CLIENT"))) {
                 request.get().setAttribute("role", "CLIENT");
                 authorized = true;
                 
             }
-
-            if (!authorized && actionUserRoles.stream().anyMatch(authority -> authority.contains("$ENTITE"))) {
-                request.get().setAttribute("role", "ENTITE");
+            
+            
+            if (!authorized && actionUserRoles.stream().anyMatch(authority -> authority.contains("$LIVREUR"))) {
+                request.get().setAttribute("role", "LIVREUR");
+                authorized = true;
+               
+            }
+            
+            if (!authorized && actionUserRoles.stream().anyMatch(authority -> authority.contains("$RAMASSEUR"))) {
+                request.get().setAttribute("role", "RAMASSEUR");
                 authorized = true;
                
             }
 
-            if (actionUserRoles.stream().anyMatch(authority -> authority.contains("$ALL"))) {
-                request.get().setAttribute("role", "ALL");
-                authorized = true;
-               
-            }
+            
         }
         return authorized;
     }
@@ -369,7 +383,7 @@ public abstract class SecuredCRUDController<T, V extends Serializable> {
      */
     @JsonView(ModelViews.ListView.class)
     @XprRole(role = XprRole.Role.LIST,view = "ModelViews.FullView")
-    public ResponseEntity<Page<T>> list(@RequestParam(defaultValue="{}", required = false) Map<String,String> params) {
+    public ResponseEntity<Page<T>> list(@RequestParam(defaultValue="{}", required = false) Map<String,String> params, GenericSearchSpecification searchSpecifications) {
     	
         int page = params.get("page") != null ? Integer.parseInt(params.remove("page")): 0;
         int pageSize = params.get("size") != null ? Integer.parseInt(params.remove("size")) : DEFAULT_PAGE_SIZE;
@@ -379,7 +393,7 @@ public abstract class SecuredCRUDController<T, V extends Serializable> {
 
         Pageable dataPage = PageRequest.of(page, pageSize, sort);
         Page<T> result;
-        Specification<T> searchSpecifications;
+        
         
       
 	        Map<String, Object> parsedParams = null;
@@ -388,8 +402,10 @@ public abstract class SecuredCRUDController<T, V extends Serializable> {
 	            parsedParams = Collections.unmodifiableMap(this.parseSearchParams(params));
 	        }
 	       
-	     
-	        searchSpecifications = new GenericSearchSpecification(parsedParams,null);
+	        if(searchSpecifications==null) {
+	        	searchSpecifications = new GenericSearchSpecification(parsedParams,null);
+	        }
+	        
 	        result =  this.repository.findAll(searchSpecifications, dataPage);
 	        JsonPage<T> jsonPage = new JsonPage<>(result, dataPage);
 	        return new ResponseEntity<>(jsonPage, HttpStatus.OK);

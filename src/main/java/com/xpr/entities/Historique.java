@@ -30,10 +30,11 @@ public class Historique implements Serializable  {
 	private Date dateCreation;
 	
 	 
-
 	@ManyToOne
 	@JsonView(ModelViews.SelectView.class)
 	private Utilisateur utilisateur;
+	
+	private boolean disabled;
 	
 
 	public Historique() {
@@ -95,6 +96,18 @@ public class Historique implements Serializable  {
 
 	public void setDateCreation(Date dateCreation) {
 		this.dateCreation = dateCreation;
+	}
+
+
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
 	}
 
 	

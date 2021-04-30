@@ -1,9 +1,13 @@
 package com.xpr.dao.specification;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
@@ -11,27 +15,33 @@ import org.springframework.data.jpa.domain.Specification;
 import com.xpr.dao.helper.GenericSearchSpecification;
 import com.xpr.dto.ColisSearch;
 import com.xpr.entities.Colis;
+import com.xpr.utils.StringAttributeConverter;
 
 
 public class ColisSpecification extends GenericSearchSpecification<Colis> implements Specification<Colis> {
 	
 	private ColisSearch colisSearch;
 	
+	private StringAttributeConverter stringAttributeConverter;
+	
 	
 	public ColisSpecification(ColisSearch colisSearch) {
 		super(null, null);
 		this.colisSearch = colisSearch;
+		try {
+			stringAttributeConverter = new StringAttributeConverter();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public Predicate toPredicate(Root<Colis> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 		final List<Predicate> predicates = new ArrayList<Predicate>();
 		
-		predicates.add(cb.equal(root.get("disabled"),false));
+		//predicates.add(cb.equal(root.get("disabled"),false));
 		
-		if(colisSearch.getNumCommande() !=null) {
-			predicates.add(cb.equal(root.get("numCommande"),colisSearch.getNumCommande()));
-		}
 		
 		if(colisSearch.getMc()!=null) {
 			Predicate numCommande = cb.like(root.get("numCommande"), "%"+colisSearch.getMc()+"%");
@@ -45,6 +55,8 @@ public class ColisSpecification extends GenericSearchSpecification<Colis> implem
 			
 			Predicate nomComplet = cb.like(root.get("nomComplet"), "%"+colisSearch.getMc()+"%");
 			
+			
+		
 			Predicate destinataire = cb.like(root.get("destinataire"), "%"+colisSearch.getMc()+"%");
 			
 			Predicate telephone = cb.like(root.get("telephone"), "%"+colisSearch.getMc()+"%");
@@ -55,19 +67,21 @@ public class ColisSpecification extends GenericSearchSpecification<Colis> implem
 			
 			Predicate adresse = cb.like(root.get("adresse"), "%"+colisSearch.getMc()+"%");
 			
+			Predicate remarque = cb.like(root.get("remarque"), "%"+colisSearch.getMc()+"%");
+			
 			Predicate clientName = cb.like(root.join("client").get("nom"), "%"+colisSearch.getMc()+"%");
 			
 			Predicate clientId = cb.like(root.join("client").get("ice"), "%"+colisSearch.getMc()+"%");
 			
-			
+		
 			Predicate statut = cb.like(root.join("statut").get("libelle"), "%"+colisSearch.getMc()+"%");
 			
-			Predicate produit = cb.like(root.join("ligneColis").join("produit").get("nom"), "%"+colisSearch.getMc()+"%");
+			Predicate produit = cb.like(root.join("ligneColis").join("produit",JoinType.LEFT).get("nom"), "%"+colisSearch.getMc()+"%");
 			
-			Predicate produitFromVariante = cb.like(root.join("ligneColis").join("variante").join("produit").get("nom"), "%"+colisSearch.getMc()+"%");
+			Predicate produitFromVariante = cb.like(root.join("ligneColis").join("variante",JoinType.LEFT).join("produit",JoinType.LEFT).get("nom"), "%"+colisSearch.getMc()+"%");
 			
 			
-			Predicate varianteSku = cb.like(root.join("ligneColis").join("variante").get("sku"), "%"+colisSearch.getMc()+"%");
+			Predicate varianteSku = cb.like(root.join("ligneColis").join("variante",JoinType.LEFT).get("sku"), "%"+colisSearch.getMc()+"%");
 			
 			Predicate prix = cb.like(root.join("ligneColis").get("prix").as(String.class), "%"+colisSearch.getMc()+"%");
 			
@@ -78,7 +92,9 @@ public class ColisSpecification extends GenericSearchSpecification<Colis> implem
 			
 			predicates.add(cb.or(numCommande,codeEnvoi,idIntern,typeLivraison,
 					nomComplet,destinataire,telephone,villeDestination,secteur
-					,adresse,clientName,clientId,statut,produit,produitFromVariante,varianteSku,prix,entiteName,entiteId));
+					,adresse,clientName,clientId,statut,produit,produitFromVariante,varianteSku,prix,entiteName,entiteId,remarque));
+	
+			//predicates.add(cb.or(destinataire));	
 		}
 		
         if(colisSearch.getNumCommande() !=null) {
@@ -104,11 +120,13 @@ public class ColisSpecification extends GenericSearchSpecification<Colis> implem
         }
         
         if(colisSearch.getTelephone() !=null) {
-            predicates.add(cb.equal(root.get("nomComplet"),colisSearch.getTelephone()));
+            predicates.add(cb.equal(root.get("nomComplet"),colisSearch.getNomComplet()));
         }
         
         if(colisSearch.getVilleDestination() !=null) {
-            predicates.add(cb.equal(root.join("villeDestination").get("nom"),colisSearch.getVilleDestination().getNom()));
+        	if(colisSearch.getVilleDestination().getNom()!=null) {
+        		predicates.add(cb.equal(root.join("villeDestination").get("nom"),colisSearch.getVilleDestination().getNom()));
+        	}
         }
         
         if(colisSearch.getSecteur() !=null) {
@@ -131,8 +149,14 @@ public class ColisSpecification extends GenericSearchSpecification<Colis> implem
         	}
         }
         
-        if(colisSearch.getStatut() !=null) {
-            predicates.add(cb.equal(root.join("statut").get("libelle"),colisSearch.getStatut()));
+        if(colisSearch.getStatutCode() !=null) {
+        	
+            predicates.add(cb.equal(root.join("statut").get("code"),colisSearch.getStatutCode()));
+        }
+        
+        if(colisSearch.getStatutLibelle() !=null) {
+        	
+            predicates.add(cb.equal(root.join("statut").get("libelle"),colisSearch.getStatutLibelle()));
         }
         
         if(colisSearch.getProduitName()!=null) {
@@ -167,6 +191,29 @@ public class ColisSpecification extends GenericSearchSpecification<Colis> implem
                  
         	}
         	
+        }
+        
+        if(colisSearch.getPeriode()!=null) {
+        	String firstDate = colisSearch.getPeriode().toString().split("TO")[0];
+          	String secondDate = colisSearch.getPeriode().toString().split("TO")[1];
+          		
+				try {
+					Date dateBefore = new SimpleDateFormat("yyyy-MM-dd").parse(firstDate);
+					Date dateAfter = new SimpleDateFormat("yyyy-MM-dd").parse(secondDate); 
+					
+		          	if(dateBefore!=null && dateAfter!=null) {
+		          		Predicate dateBeforePredicate =  cb.greaterThanOrEqualTo(root.<Date>get("createdDate"), dateBefore);
+		                  predicates.add(dateBeforePredicate);
+		                  
+		                  Predicate dateAfterPredicate =  cb.lessThanOrEqualTo(root.<Date>get("createdDate"), dateAfter);
+		                  predicates.add(dateAfterPredicate);
+		          	}
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+				
         }
            
 		

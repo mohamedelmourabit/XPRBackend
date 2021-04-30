@@ -7,13 +7,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.xpr.dao.helper.CustomJPARepository;
 import com.xpr.entities.BonRamassage;
 import com.xpr.entities.Colis;
 
 
 
 
-public interface BonRamassageRepository extends JpaRepository<BonRamassage, Long>,JpaSpecificationExecutor<BonRamassage> {
+public interface BonRamassageRepository extends CustomJPARepository<BonRamassage, String>,JpaSpecificationExecutor<BonRamassage>  {
 	
 	public BonRamassage findByNom(String nom);
 	

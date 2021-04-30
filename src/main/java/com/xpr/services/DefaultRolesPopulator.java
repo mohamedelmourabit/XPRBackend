@@ -42,8 +42,13 @@ public class DefaultRolesPopulator implements RolesPopulator {
         Map<String, Object> controllers = listableBeanFactory.getBeansWithAnnotation(Controller.class);
 
         System.out.println("Populating roles");
-        final String[] relations = {"CLIENT", "ENTITE", "ALL"};
+        final String[] relations = { "ALL", "ENTITE","CLIENT"};
         final String[] actions = {"CREATE", "UPDATE", "DELETE", "LIST", "LISTSELECT"};
+        
+        final String[] relationsLivreur = {"LIVREUR"};
+        final String[] actions2 = { "UPDATE","LIST", "LISTSELECT"};
+        
+        final String[] relationsRamasseur = {"RAMASSEUR"};
 
         controllers.forEach((key, value) ->  {
             String controller = key.replace("Controller", "");
@@ -69,6 +74,7 @@ public class DefaultRolesPopulator implements RolesPopulator {
 	            for (String action : actions) {
 	                for(String relation : relations) {
 	                	
+	                
 	                    String role = controller + "$" + action + "$" + relation;
 	                    Optional<Autorisation> result = Optional.ofNullable(this.autorisationRepository.findByAuthName(role));
 	                    if (!result.isPresent()) {
@@ -80,6 +86,43 @@ public class DefaultRolesPopulator implements RolesPopulator {
 	                    }
 	                }
 	            }
+	            
+	            if(controller.equals("colisRest") || controller.equals("factureRest") || controller.equals("bonRetourRest")  ) {
+	            	for (String action : actions2) {
+		                for(String relation : relationsLivreur) {
+		                	
+		                
+		                    String role = controller + "$" + action + "$" + relation;
+		                    Optional<Autorisation> result = Optional.ofNullable(this.autorisationRepository.findByAuthName(role));
+		                    if (!result.isPresent()) {
+		                        System.out.println(role);
+		                        Autorisation autorisation = new Autorisation();
+		                        autorisation.setAuthName(role);
+		                        autorisation.setUri(uri[0]);
+		                        this.autorisationRepository.save(autorisation);
+		                    }
+		                }
+		            }
+	            }
+	            
+	            if(controller.equals("bonRamassageRest") ) {
+	            	for (String action : actions2) {
+		                for(String relation : relationsRamasseur) {
+		                	
+		                
+		                    String role = controller + "$" + action + "$" + relation;
+		                    Optional<Autorisation> result = Optional.ofNullable(this.autorisationRepository.findByAuthName(role));
+		                    if (!result.isPresent()) {
+		                        System.out.println(role);
+		                        Autorisation autorisation = new Autorisation();
+		                        autorisation.setAuthName(role);
+		                        autorisation.setUri(uri[0]);
+		                        this.autorisationRepository.save(autorisation);
+		                    }
+		                }
+		            }
+	            }
+	            
             }});
 
         return true;

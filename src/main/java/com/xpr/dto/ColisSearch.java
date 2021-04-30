@@ -3,6 +3,8 @@ package com.xpr.dto;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Convert;
 import javax.persistence.ManyToOne;
 import com.xpr.entities.BonExpedition;
 import com.xpr.entities.BonRetour;
@@ -16,11 +18,14 @@ import com.xpr.entities.Livreur;
 import com.xpr.entities.Ramasseur;
 import com.xpr.entities.Utilisateur;
 import com.xpr.entities.Ville;
+import com.xpr.utils.StringAttributeConverter;
 
 
 public class ColisSearch {
 	
 	private String numCommande;
+	
+	private String periode;
 	
 	
 	private String codeEnvoi;
@@ -56,10 +61,10 @@ public class ColisSearch {
 
 	private String remarque;
 
-	
+	@Convert(converter = StringAttributeConverter.class)
 	private String destinataire;
 	
-	
+	@Convert(converter = StringAttributeConverter.class)
 	private String telephone;
 	
 	
@@ -83,7 +88,9 @@ public class ColisSearch {
 	
 	private Ramasseur ramasseur;
 	
-	private String statut;
+	private String statutCode;
+	
+	private String statutLibelle;
 	
 	private boolean disabled;
 		
@@ -379,13 +386,26 @@ public class ColisSearch {
 	}
 
 
-	public String getStatut() {
-		return statut;
+	
+
+
+	public String getStatutCode() {
+		return statutCode;
 	}
 
 
-	public void setStatut(String statut) {
-		this.statut = statut;
+	public void setStatutCode(String statutCode) {
+		this.statutCode = statutCode;
+	}
+
+
+	public String getStatutLibelle() {
+		return statutLibelle;
+	}
+
+
+	public void setStatutLibelle(String statutLibelle) {
+		this.statutLibelle = statutLibelle;
 	}
 
 
@@ -556,6 +576,16 @@ public class ColisSearch {
 
 	public void setDateAu(Date dateAu) {
 		this.dateAu = dateAu;
+	}
+
+
+	public String getPeriode() {
+		return periode;
+	}
+
+
+	public void setPeriode(String periode) {
+		this.periode = periode;
 	}
 	
 	

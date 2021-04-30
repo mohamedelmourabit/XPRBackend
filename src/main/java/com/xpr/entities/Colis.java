@@ -2,6 +2,7 @@ package com.xpr.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -41,7 +42,7 @@ public class Colis extends XprBaseModel implements Serializable,Cloneable {
 	private String typeLivraison;
 	
 	// à crypter
-	@Convert(converter = StringAttributeConverter.class)
+	//@Convert(converter = StringAttributeConverter.class)
 	@JsonView(ModelViews.SelectView.class)
 	private String nomComplet;
 	
@@ -65,12 +66,12 @@ public class Colis extends XprBaseModel implements Serializable,Cloneable {
 	private String remarque;
 
 	//crypté
-	@Convert(converter = StringAttributeConverter.class)
+	//@Convert(converter = StringAttributeConverter.class)
 	@JsonView(ModelViews.SelectView.class)
 	private String destinataire;
 	
 	// telephone
-	@Convert(converter = StringAttributeConverter.class)
+	//@Convert(converter = StringAttributeConverter.class)
 	@JsonView(ModelViews.SelectView.class)
 	private String telephone;
 	
@@ -142,7 +143,7 @@ public class Colis extends XprBaseModel implements Serializable,Cloneable {
 	
 	@OneToMany(mappedBy = "colis",fetch = FetchType.EAGER)
 	 @JsonView(ModelViews.SelectView.class)
-	private Set<LigneColis> ligneColis;
+	private Set<LigneColis> ligneColis = new HashSet<LigneColis>();
 
 	@JsonView(ModelViews.ListView.class)
 	private boolean facturer;
@@ -194,13 +195,20 @@ public class Colis extends XprBaseModel implements Serializable,Cloneable {
 		return numCommande;
 	}
 
-	public void setNumCommande(String numCommande) {
+	public void setNumCommandeWithPrefix(String numCommande) {
 		
 		if(this.client!=null) {
 			this.numCommande = this.client.getPrefixCommande()+"-"+numCommande;
 		}else {
 			this.numCommande = numCommande;
 		}
+	}
+	
+	public void setNumCommande(String numCommande) {
+		
+		
+		this.numCommande = numCommande;
+		
 	}
 
 	public boolean isOuvertureColis() {

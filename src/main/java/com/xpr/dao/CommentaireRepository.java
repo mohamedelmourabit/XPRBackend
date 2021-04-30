@@ -15,11 +15,11 @@ import com.xpr.entities.Commentaire;
 public interface CommentaireRepository extends JpaRepository<Commentaire, Long> {
 	
 	
-	@Query("SELECT b FROM Commentaire b  WHERE b.colis.numCommande=:x order by b.dateCreation ASC")
+	@Query("SELECT b FROM Commentaire b  WHERE b.colis.numCommande=:x order by b.dateCreation DESC")
 	public List<Commentaire> findCommentaireByColis(@Param("x")String numCommande);
 	
 	
-	@Query("SELECT b FROM Commentaire b  WHERE b.colis.numCommande=:x order by b.dateCreation ASC")
+	@Query("SELECT b FROM Commentaire b  WHERE b.colis.numCommande=:x order by b.dateCreation DESC")
 	public Page<Commentaire> findCommentaireByColis2(@Param("x")String numCommande,Pageable pageable);
 
 	

@@ -50,6 +50,7 @@ import com.xpr.entities.Commentaire;
 import com.xpr.entities.Entite;
 import com.xpr.entities.Historique;
 import com.xpr.entities.Livreur;
+import com.xpr.entities.Ramasseur;
 import com.xpr.entities.StatutColis;
 import com.xpr.entities.Utilisateur;
 import com.xpr.entities.Ville;
@@ -224,28 +225,90 @@ public class ColisRestController extends SecuredCRUDController<Colis, String> {
 	@RequestMapping(value="/listColis",method=RequestMethod.GET)
 	@XprRole(role = XprRole.Role.LIST, view= "ModelViews.FullView")
 	public ResponseEntity<Page<Colis>>  getListColis(@RequestParam(defaultValue="{}", required = false) Map<String,String> params){
-		this.checkEligibility();
+		boolean authorized = this.checkEligibility();
 		Optional<HttpServletRequest> request = this.getCurrentHttpRequest();
-        String permissionType = request.get().getAttribute("role").toString();
+        String role = request.get().getAttribute("role").toString();
         
         Utilisateur user = (Utilisateur) request.get().getAttribute("user");
         
-        if (this.isSuperSuperAdmin()  || this.isSuperAdmin()  || !this.isAdmin()  || this.checkEligibility() ) {
-		       if("CLIENT".equals(permissionType)){
+        if(authorized) {
+        	
+        	 if("CLIENT".equals(role)){
 		       	 	params.put("client.ice",user.getClient().getIce());
 		       }
 	        
-		       if("ENTITE".equals(permissionType)){
+		       if("ENTITE".equals(role)){
 		    	   params.put("entite.id",user.getEntite().getId()+"");
 		       }
-		   
-			}else {
+		       if("LIVREUR".equals(role)) {
+		    	   params.put("livreur.cni",user.getCni());
+		       }
+		       
+		      if("RAMASSEUR".equals(role)) {
+		    	   params.put("ramasseur.cni",user.getCni());
+		       }
+        	
+        }else {
 			
-	        	throw new AccessDeniedException("Unauthorized operation");
-	       
-			}
+        	throw new AccessDeniedException("Unauthorized operation");
+       
+		}
         
-		return this.list(params);
+        
+   		
+        ColisSearch cs = new ColisSearch();
+        if(params.get("numCommande")!=null)
+        cs.setNumCommande(params.get("numCommande"));
+        if(params.get("idIntern")!=null)
+        cs.setIdIntern(params.get("idIntern"));
+        if(params.get("codeEnvoi")!=null)
+        cs.setCodeEnvoi(params.get("codeEnvoi"));
+        if(params.get("telephone")!=null)
+        cs.setTelephone(params.get("telephone"));
+        if(params.get("typeLivraison")!=null)
+        cs.setTypeLivraison(params.get("typeLivraison"));
+        
+		Entite entite = new Entite();
+		if(params.get("entite.id")!=null)
+		entite.setId(Long.parseLong(params.get("entite.id")));
+		if(params.get("entite.nom")!=null)
+		entite.setNom(params.get("entite.nom"));
+		Client client = new Client();
+		if(params.get("client.ice")!=null)
+		client.setIce(params.get("client.ice"));
+		if(params.get("client.ice")!=null)
+		client.setNom(params.get("client.nom"));
+		Ville v = new Ville();
+		if(params.get("villeDestination.nom")!=null)
+		v.setNom(params.get("villeDestination.nom"));
+		Livreur livreur = new Livreur();
+		if(params.get("livreur.cni")!=null)
+		livreur.setCni(params.get("livreur.cni"));
+		
+		cs.setLivreur(livreur);
+		cs.setEntite(entite);
+		cs.setClient(client);
+		cs.setVilleDestination(v);
+		if(params.get("mc")!=null)
+		cs.setMc(params.get("mc"));
+		if(params.get("destinataire")!=null)
+		cs.setDestinataire(params.get("destinataire"));
+		
+		
+		if(params.get("statut.code")!=null)
+		cs.setStatutCode(params.get("statut.code"));
+		
+		if(params.get("statut.libelle")!=null)
+			cs.setStatutLibelle(params.get("statut.libelle"));
+		
+		if(params.get("periode")!=null)
+	        cs.setPeriode(params.get("periode"));
+        
+        ColisSpecification colisSpecification = new ColisSpecification(cs);
+        
+        
+        
+		return this.list(params,colisSpecification);
 	}
 	
 	@RequestMapping(value="/colis/{numCommande}",method=RequestMethod.GET)
@@ -253,7 +316,7 @@ public class ColisRestController extends SecuredCRUDController<Colis, String> {
 		return colisService.findColisById(numCommande);
 	}
 	
-	@RequestMapping(value="/colis/{numCommande}",method=RequestMethod.PUT)
+	@RequestMapping(value="/update/{numCommande}",method=RequestMethod.PUT)
 	public Colis editColis(@PathVariable String numCommande,@RequestBody Colis c) throws ColisException {
 		
 		
@@ -313,6 +376,19 @@ public class ColisRestController extends SecuredCRUDController<Colis, String> {
 		return colisService.getCommentairesColis(numCommande);
 	}
 	
+	@RequestMapping(value="/addCommentaire/{numCommande}",method=RequestMethod.POST)
+	public Commentaire getCommentaires(@PathVariable String numCommande,@RequestBody Commentaire commentaire) {
+		
+		return colisService.addCommentaireToColis(numCommande, commentaire);
+	}
+	
+	@RequestMapping(value="/deleteCommentaire/{idCommentaire}",method=RequestMethod.DELETE)
+	public void deleteCommentaires(@PathVariable Long idCommentaire) {
+		
+		 colisService.deleteCommentaireToColis(idCommentaire);
+	}
+	
+	
 	@RequestMapping(value="/getColis",method=RequestMethod.GET)
 	public Page<Colis> chercherColisService(@RequestParam(name="mc",defaultValue="") String mc,
 			@RequestParam(name = "entiteId", required = false) Long entiteId,
@@ -347,6 +423,8 @@ public class ColisRestController extends SecuredCRUDController<Colis, String> {
 		colisSearch.setVilleDestination(v);
 		colisSearch.setMc(mc);
 		colisSearch.setDestinataire(destinataire);
+		
+		
 		
 		
 		
@@ -467,4 +545,12 @@ public class ColisRestController extends SecuredCRUDController<Colis, String> {
 			
 		
 	}
+	
+	@RequestMapping(value="/getAllStatutsColis",method=RequestMethod.GET)
+	@XprRole(role = XprRole.Role.LIST, view= "ModelViews.SelectView")
+	public List<StatutColis> getAllStatusColis() {
+		return statutColisRepositoy.getAllStatutColis();
+	}
+	
+	
 }

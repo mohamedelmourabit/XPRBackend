@@ -69,7 +69,7 @@ public class BonExpeditionServiceImp implements BonExpeditionService {
 
 	@Override
 	public List<BonExpedition> findAll() {
-		return bonExpeditionRepository.findAll();
+		return null;
 	}
 
 	@Override

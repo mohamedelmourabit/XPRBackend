@@ -13,6 +13,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.xpr.dao.UtilisateurRepository;
 import com.xpr.dao.annotation.XprRole;
+import com.xpr.entities.Livreur;
 import com.xpr.entities.Utilisateur;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,9 +76,7 @@ public class XprHandlerInterceptor implements HandlerInterceptor {
                     request.setAttribute("controller", controller);
                     request.setAttribute("action", action);
                     request.setAttribute("view", annotation.view());
-                    request.setAttribute("entiteId", user.getEntite().getId());
-                    
-                    request.setAttribute("clientIce", user.getClient().getIce());
+                   
                     
                     request.setAttribute("user", user);
                 }

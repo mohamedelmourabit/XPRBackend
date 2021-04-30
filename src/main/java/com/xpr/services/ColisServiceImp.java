@@ -102,7 +102,13 @@ public class ColisServiceImp extends AbstractCRUDController<Colis, String> imple
 		colis.setStatut(statutColis);
 		String codeEnvoie = generateCodeEnvoie();
 		colis.setCodeEnvoi(codeEnvoie);
-	
+		
+		
+		
+		Client client = getCurrentUser().getClient();
+		
+		colis.setClient(client);
+		
 		colis.setTypeLivraison("Standart");
 		
 		Colis clonedColis;
@@ -167,30 +173,39 @@ public class ColisServiceImp extends AbstractCRUDController<Colis, String> imple
 		Colis colis1 = findColisById(numCommande);
 
 	
-		if (colis1.getStatut().equals(Constants.NOUVEAU_COLIS)
-				|| colis1.getStatut().equals(Constants.EN_ATTENTE_RAMASSAGE)) {
+		if (colis1.getStatut().getLibelle().equals(Constants.NOUVEAU_COLIS)
+				|| colis1.getStatut().getLibelle().equals(Constants.EN_ATTENTE_RAMASSAGE)) {
 			colis.setNumCommande(numCommande);
 			
-			
-			ligneColisRepository.deleteAll(colis1.getLigneColis());
-			
-			
-				
-				for(LigneColis ligneColis : colis.getLigneColis()) {
-					if(ligneColis.getStock()==null) {
-						
-						Produit p = ligneColis.getProduit();
-						
-						p =produitRepository.save(p);
-						ligneColis.setProduit(p);
-						ligneColis.setColis(colis);
-					}
+		
+			for(LigneColis ligneColis : colis.getLigneColis()) {
+				if(ligneColis.getStock()==null) {
+					
+					Produit p = ligneColis.getProduit();
+					
+					p =produitRepository.save(p);
+					ligneColis.setProduit(p);
+					ligneColis.setColis(colis);
 					ligneColisRepository.save(ligneColis);
 				}
+				
+			}
+			
+			if(!colis1.getStatut().getCode().equals(colis.getStatut().getCode())) {
+				
+				HistoriqueColis h = HistoriqueColis.getHistorique("Modification du colis "+ colis.getNumCommande() , colis,
+						getCurrentUser().getEmail());
+				h.setColis(colis);
+
+				colis.getHistoriques().add(h);
+
+				historiqueRepository.save(h);
+				
+			}
+			
+			
 					
-			
-			
-			
+
 			return colisRepository.save(colis);
 		} else {
 			throw new ColisException("Modification du colis interdit arpès ramassage ");
@@ -211,10 +226,16 @@ public class ColisServiceImp extends AbstractCRUDController<Colis, String> imple
 			colis.setNumCommande(numCommande);
 			
 			colis = colisRepository.save(colis);
-			HistoriqueColis h = HistoriqueColis.getHistorique("Modification statut du colis", colis,
-					getCurrentUser().getEmail());
-			h.setColis(colis);
-			historiqueRepository.save(h);
+			
+			
+			if(!colis.getStatut().getCode().equals(statut)) {
+				HistoriqueColis h = HistoriqueColis.getHistorique("Modification statut du colis", colis,
+						getCurrentUser().getEmail());
+				h.setColis(colis);
+				historiqueRepository.save(h);
+			}
+			
+			
 			return colis;
 		} else {
 			throw new ColisException("Modification du colis interdit arpès ramassage ");
@@ -228,6 +249,13 @@ public class ColisServiceImp extends AbstractCRUDController<Colis, String> imple
 		//colis.setDateModification(new Date());
 		if (colis.getStatut().getLibelle().equals(Constants.NOUVEAU_COLIS)
 				|| colis.getStatut().getLibelle().equals(Constants.EN_ATTENTE_RAMASSAGE)) {
+			
+			
+			for(Historique h : historiqueRepository.getHistoriqueColisByNumCommande(colis.getNumCommande())){
+				historiqueRepository.delete(h);
+			}
+			
+			
 			colisRepository.delete(colis);
 		} else {
 			throw new ColisException("Suppresion du colis interdit arpès ramassage ");
@@ -409,7 +437,9 @@ public class ColisServiceImp extends AbstractCRUDController<Colis, String> imple
 	public Commentaire addCommentaireToColis(String numCommande, Commentaire commentaire) {
 		Colis c = colisRepository.findById(numCommande).orElse(null);
 		if (c != null) {
-
+			commentaire.setDateCreation(new Date());
+			commentaire.setCreatedBy(getCurrentUser().getEmail());
+			
 			commentaire.setColis(c);
 			commentaire = commentaireRepository.save(commentaire);
 			return commentaire;
